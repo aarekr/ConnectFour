@@ -8,7 +8,7 @@ vaikuttaa mielenkiintoisimmalta verrattuna muihin aiheisiin.
 * Loin projektille repositorion
 * Kirjoitin määrittelydokumentin niin laajasti kun ymmärrän aiheen tällä hetkellä
 * Loin tuntiraportoinnin
-* Tutustuin minimax -algoritmiin
+* Tutustuin minimax -algoritmiin ja alpha-beta-karsintaan
 
 ## Ohjelman edistyminen
 Koodia ei toistaiseksi ole.
@@ -17,7 +17,8 @@ Koodia ei toistaiseksi ole.
 Perusasioita aiheeseen liittyvistä algoritmeista.
 
 ## Epäselvät asiat / vaikeudet
-
+* Tulisiko vertailla esim. kahta algoritmia ja niiden suoriutumista pelissä?
+* Millä graafinen käyttöliittymä tulisi toteuttaa?
 
 ## Ensi viikolla
 Tavoitteena tutustua aiheeseen syvällisemmin.
