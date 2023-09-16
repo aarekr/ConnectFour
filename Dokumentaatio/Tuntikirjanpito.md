@@ -13,7 +13,8 @@
  Pvm   | Aika | Aktiviteetti |
 -------|------|--------------|
 13.09. |  3h  | Grafiikka sekä pelimerkkien ja vapaiden paikkojen hallinta koodattu |
-15.09. |  4h  | Neljän merkin suora johtaa voittoon, AI arpoo sarakkeet |
+15.09. |  4h  | Neljän merkin suora johtaa voittoon. AI arpoo sarakkeet |
+16.09. |  3h  | Tutustumista Minimax -algoritmiin. Kirjoitin 3 yksikkötestiä |
 
 ## Yhteensä
 
@@ -21,6 +22,5 @@
 --------|------|
    1    | 6,5h |
    2    |      |
-
 
 
