@@ -12,11 +12,20 @@ Pelaajat voivat pudottaa pelimerkkejä vapaisiin paikkoihin.
 * Kirjoitin testimielessä (tyhmän) tekoälyn joka arpoo pelimerkkien sarakkeet eikä ota 
 huomioon vastustajan liikkeitä. Pelaajan pelatessa tarkoituksella huonosti, tekoäly 
 voittaa.
+* Kolme yksikkötestiä kirjoitettu. Yksi testaa, että pelin alussa rivi 0 on tyhjä. 
+Kaksi muuta testaavat, että samalla rivillä olevat merkit vaikuttavat oikein pelin 
+loppumiseen ja jatkumiseen.
 
 ## Mitä opittu
+* Testaamisen perusteet
+* Minimax -algoritmin perusteet ja miten alpha-beta käytetään sen kanssa
 
 ## Epäselvät asiat / vaikeudet
+* Ei epäselvyyksiä tai vaikeuksia. Tämän viikon alussa uudet ja vaikealta tuntuvat 
+asiat selvisivät viikon aikana työtä tehdessä.
 
 ## Ensi viikolla
-
+* Kirjoittaa random AI:n tilalle Minimax -algoritmi ja ymmärtää sen toiminta pelissä.
+* Lisätä testejä.
+* Saada testikattavuus mukaan koodiin ja visuaaliseen muotoon.
 
