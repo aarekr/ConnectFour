@@ -11,6 +11,8 @@ yellow = (255, 255, 0)
 red = (255, 0, 0)
 global turn
 turn = random.randint(1,2)  # game starter chosen randomly: 1=human, 2=AI
+global chip_count  # counting total number of chips players have dropped
+chip_count = 0
 
 # creating the game board
 n_rows = 6
@@ -47,6 +49,9 @@ def draw_board(board):
 def drop_chip(board, row, col, chip):
     global turn
     print("dropping chip:", chip)
+    global chip_count
+    chip_count += 1
+    print("chip_count:", chip_count)
     board[row][col] = chip
     if turn == 1: turn = 2
     elif turn == 2: turn = 1
@@ -93,6 +98,29 @@ def check_if_4_in_row(board, player):
                 print("player 2 won")
                 return False
     return True
+
+def is_terminal_node(board):
+    if chip_count == 42:  # i.e. all chips used
+        return True
+    if check_if_4_in_row(board, 1) == False or check_if_4_in_row(board, 2) == False:
+        return True       # one of the players won
+    return False
+
+def minimax(board, depth, maximizingPlayer):
+    terminal_node = is_terminal_node(board)
+    if depth == 0 or terminal_node == True:  # game ends
+        # return the heuristic value of node
+        print("depth == 0 or terminal_node == True")
+    if maximizingPlayer:
+        value = -math.inf
+        # for...
+            # value = max(value, minimax(child, depth - 1, False))
+        return value  # value_new?
+    else:  # minimizing player
+        value = math.inf
+        # for...
+            # value = min(value, minimax(child, depth - 1, True))
+        return value  # value_new?
 
 print_board(board)
 game_active = True
@@ -142,7 +170,7 @@ while game_active:
             pygame.time.wait(1000)
             col = 0
             while True:
-                col = random.randint(0,5)
+                col = random.randint(0,6)
                 row = next_free_row(board, col)
                 print("player 2 row-col:", row, col)
                 if board[n_rows-1][col] == 0:

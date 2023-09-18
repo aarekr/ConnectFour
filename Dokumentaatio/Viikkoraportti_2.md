@@ -21,7 +21,7 @@ loppumiseen ja jatkumiseen.
 * Minimax -algoritmin perusteet ja miten alpha-beta käytetään sen kanssa
 
 ## Epäselvät asiat / vaikeudet
-* Ei epäselvyyksiä tai vaikeuksia. Tämän viikon alussa uudet ja vaikealta tuntuvat 
+* Ei epäselvyyksiä tai vaikeuksia. Tämän viikon alussa uudet ja vaikealta tuntuneet 
 asiat selvisivät viikon aikana työtä tehdessä.
 
 ## Ensi viikolla
