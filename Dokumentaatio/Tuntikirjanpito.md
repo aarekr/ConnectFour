@@ -16,11 +16,18 @@
 15.09. |  4h  | Neljän merkin suora johtaa voittoon. AI arpoo sarakkeet |
 16.09. |  3h  | Tutustumista Minimax -algoritmiin. Kirjoitin 3 yksikkötestiä |
 
+## Viikko 3
+
+ Pvm   | Aika | Aktiviteetti |
+-------|------|--------------|
+18.09. |  2h  | Minimax -algoritmin runko |
+20.09. | 2,5h | Minimaxiin pari lisäriviä, 4 uutta testiä, uusi 4 rivissä funktio |
+
 ## Yhteensä
 
  Viikko | Aika |
 --------|------|
    1    | 6,5h |
-   2    |      |
+   2    | 10h  |
 
 

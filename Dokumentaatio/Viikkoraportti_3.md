@@ -7,7 +7,7 @@
 * Minimax -algoritmin runko koodissa. Ei toimi vielä pelitilanteessa.
 
 ## Mitä opittu
-* Puurakenne päätöksenteossa eli 7 solmua vaihtoehtointa
+* Puurakenne päätöksenteossa eli 7 solmua vaihtoehtoina
 
 ## Epäselvät asiat / vaikeudet
 

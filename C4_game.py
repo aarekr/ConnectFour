@@ -62,47 +62,42 @@ def next_free_row(board, col):
         if board[row][col] == 0:
             return row
 
-def check_if_4_in_row(board, player):
-    print("checking winner")
-    # one of the if statements has to be removed in each loop
+def all_free_columns(board):
+    free_columns = []
+    for col in range(n_columns):
+        if board[n_rows-1][col] == 0:
+            free_columns.append(col)
+    print("all free columns:", free_columns)
+    return free_columns
+
+def check_if_game_active(board, player):
+    print("checking winner", player)
     for row in range(n_rows-3):
         for col in range(n_columns-3):
-            if board[row][col] == 1 and board[row+1][col] == 1 and board[row+2][col] == 1 and board[row+3][col] == 1:
-                print("player 1 won")
-                return False
-            if board[row][col] == 2 and board[row+1][col] == 2 and board[row+2][col] == 2 and board[row+3][col] == 2:
-                print("player 2 won")
-                return False
-    for row in range(n_rows-3):
-        for col in range(n_columns-3):
-            if board[row][col] == 1 and board[row][col+1] == 1 and board[row][col+2] == 1 and board[row][col+3] == 1:
-                print("player 1 won")
-                return False
-            if board[row][col] == 2 and board[row][col+1] == 2 and board[row][col+2] == 2 and board[row][col+3] == 2:
-                print("player 2 won")
+            if board[row][col] == player and board[row+1][col] == player and board[row+2][col] == player and board[row+3][col] == player:
+                print("player", player, "won")
                 return False
     for row in range(n_rows-3):
         for col in range(n_columns-3):
-            if board[row][col] == 1 and board[row+1][col+1] == 1 and board[row+2][col+2] == 1 and board[row+3][col+3] == 1:
-                print("player 1 won")
+            if board[row][col] == player and board[row][col+1] == player and board[row][col+2] == player and board[row][col+3] == player:
+                print("player", player, "won")
                 return False
-            if board[row][col] == 2 and board[row+1][col+1] == 2 and board[row+2][col+2] == 2 and board[row+3][col+3] == 2:
-                print("player 2 won")
+    for row in range(n_rows-3):
+        for col in range(n_columns-3):
+            if board[row][col] == player and board[row+1][col+1] == player and board[row+2][col+2] == player and board[row+3][col+3] == player:
+                print("player", player, "won")
                 return False
     for row in range(3, n_rows):
         for col in range(n_columns-3):
-            if board[row][col] == 1 and board[row-1][col+1] == 1 and board[row-2][col+2] == 1 and board[row-3][col+3] == 1:
-                print("player 1 won")
-                return False
-            if board[row][col] == 2 and board[row-1][col+1] == 2 and board[row-2][col+2] == 2 and board[row-3][col+3] == 2:
-                print("player 2 won")
+            if board[row][col] == player and board[row-1][col+1] == player and board[row-2][col+2] == player and board[row-3][col+3] == player:
+                print("player", player, "won")
                 return False
     return True
 
 def is_terminal_node(board):
     if chip_count == 42:  # i.e. all chips used
         return True
-    if check_if_4_in_row(board, 1) == False or check_if_4_in_row(board, 2) == False:
+    if check_if_game_active(board, 1) == False or check_if_game_active(board, 2) == False:
         return True       # one of the players won
     return False
 
@@ -111,14 +106,17 @@ def minimax(board, depth, maximizingPlayer):
     if depth == 0 or terminal_node == True:  # game ends
         # return the heuristic value of node
         print("depth == 0 or terminal_node == True")
+    free_columns = all_free_columns(board)
     if maximizingPlayer:
         value = -math.inf
-        # for...
+        for col in free_columns:
+            row = next_free_row(board, col)
             # value = max(value, minimax(child, depth - 1, False))
         return value  # value_new?
     else:  # minimizing player
         value = math.inf
-        # for...
+        for col in free_columns:
+            row = next_free_row(board, col)
             # value = min(value, minimax(child, depth - 1, True))
         return value  # value_new?
 
@@ -162,9 +160,10 @@ while game_active:
                     row = next_free_row(board, col)
                     if board[n_rows-1][col] == 0:
                         drop_chip(board, row, col, 1)
-                        game_active = check_if_4_in_row(board, turn)
                 print_board(board)
                 draw_board(board)
+                game_active = check_if_game_active(board, 1)
+                if game_active == False: break
         # Player == 2, AI
         elif turn == 2:
             pygame.time.wait(1000)
@@ -175,9 +174,10 @@ while game_active:
                 print("player 2 row-col:", row, col)
                 if board[n_rows-1][col] == 0:
                     drop_chip(board, row, col, 2)
-                    game_active = check_if_4_in_row(board, turn)
                     break
             print_board(board)
             draw_board(board)
+            game_active = check_if_game_active(board, 2)
+            if game_active == False: break
 print("game ended")
 
