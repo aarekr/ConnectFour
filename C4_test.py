@@ -53,7 +53,7 @@ class TestFreeColumns(unittest.TestCase):
         self.asserEqual(C4.game.all_free_columns(board), [0,1,2,3,4,5,6])
 
     def should_show_6_free_columns(self):
-        """ Test that 6 columns are free when columns 2 is full """
+        """ Test that 6 columns are free when column 2 is full """
         board = np.zeros((6, 7))
         board[2][0] = 1
         board[2][1] = 2

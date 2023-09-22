@@ -65,7 +65,7 @@ def next_free_row(board, col):
 def all_free_columns(board):
     free_columns = []
     for col in range(n_columns):
-        if board[n_rows-1][col] == 0:
+        if board[n_rows-1][col] == 0:  # at least top row in column is empty
             free_columns.append(col)
     print("all free columns:", free_columns)
     return free_columns
@@ -95,7 +95,7 @@ def check_if_game_active(board, player):
     return True
 
 def is_terminal_node(board):
-    if chip_count == 42:  # i.e. all chips used
+    if chip_count == 42:  # all chips used
         return True
     if check_if_game_active(board, 1) == False or check_if_game_active(board, 2) == False:
         return True       # one of the players won
@@ -104,17 +104,19 @@ def is_terminal_node(board):
 def minimax(board, depth, maximizingPlayer):
     terminal_node = is_terminal_node(board)
     if depth == 0 or terminal_node == True:  # game ends
-        # return the heuristic value of node
         print("depth == 0 or terminal_node == True")
+        # return the heuristic value of node
     free_columns = all_free_columns(board)
     if maximizingPlayer:
         value = -math.inf
+        best_col = -1
         for col in free_columns:
             row = next_free_row(board, col)
             # value = max(value, minimax(child, depth - 1, False))
         return value  # value_new?
     else:  # minimizing player
         value = math.inf
+        best_col = -1
         for col in free_columns:
             row = next_free_row(board, col)
             # value = min(value, minimax(child, depth - 1, True))
@@ -164,10 +166,11 @@ while game_active:
                 draw_board(board)
                 game_active = check_if_game_active(board, 1)
                 if game_active == False: break
-        # Player == 2, AI
+        # Player 2, AI
         elif turn == 2:
             pygame.time.wait(1000)
             col = 0
+            # all_free_columns function should be used here
             while True:
                 col = random.randint(0,6)
                 row = next_free_row(board, col)

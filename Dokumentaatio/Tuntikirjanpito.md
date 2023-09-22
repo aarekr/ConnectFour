@@ -22,6 +22,7 @@
 -------|------|--------------|
 18.09. |  2h  | Minimax -algoritmin runko |
 20.09. | 2,5h | Minimaxiin pari lisäriviä, 4 uutta testiä, uusi 4 rivissä funktio |
+22.09. |  2h  | Pistelaskujärjestelmän hahmottaminen |
 
 ## Yhteensä
 
@@ -29,5 +30,6 @@
 --------|------|
    1    | 6,5h |
    2    | 10h  |
+   3    |
 
 
