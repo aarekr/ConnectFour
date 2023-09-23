@@ -34,10 +34,12 @@ def print_board(board):
 
 # drawing the game board in a window
 def draw_board(board):
+    # drawing the blue game board and white empty slots
     for col in range(n_columns):
         for row in range(n_rows):
             pygame.draw.rect(screen, blue, (col*slot_size, row*slot_size+slot_size, slot_size, slot_size))
             pygame.draw.circle(screen, white, (int(col*slot_size+slot_size/2), int(row*slot_size+slot_size+slot_size/2)), radius)
+    # drawing players' red and yellow chips
     for col in range(n_columns):
         for row in range(n_rows):
             if board[row][col] == 1:
