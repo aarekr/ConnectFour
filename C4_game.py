@@ -11,8 +11,9 @@ blue = (0, 0, 255)
 white = (255, 255, 255)
 yellow = (255, 255, 0)
 red = (255, 0, 0)
+
 global TURN
-TURN = random.randint(1, 2)  # game starter chosen randomly: 1=human, 2=AI
+TURN = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
 global CHIP_COUNT  # counting total number of chips players have dropped
 CHIP_COUNT = 0
 
@@ -22,7 +23,7 @@ def create_game_board(rows, columns):
     return board
 
 def game_start_text():
-    """ printing who starts the game on top of the game board """
+    """ printing who starts the game in top part of the game board window """
     who_starts = ""
     if TURN == 1:
         who_starts = "You start"
@@ -57,6 +58,7 @@ def draw_board(board):
 
 def drop_chip(board, row, col, chip):
     """ player drops their chip and TURN is given to the other player """
+    # global variables are causing pylint errors, so they should be replaced
     global TURN
     print("dropping chip:", chip)
     global CHIP_COUNT
@@ -71,9 +73,12 @@ def drop_chip(board, row, col, chip):
 
 def next_free_row(board, col):
     """ returning the lowest free row in the given column """
+    free_row = -1
     for row in range(N_ROWS):
         if board[row][col] == 0:
-            return row
+            free_row = row
+            break
+    return free_row
 
 def all_free_columns(board):
     """ returning a list of columns that have at least of free slot/row """
@@ -119,14 +124,14 @@ def is_terminal_node(board):
         True if all chips used or one of the players won """
     if CHIP_COUNT == 42:  # all chips used
         return True
-    if check_if_game_active(board, 1) == False or check_if_game_active(board, 2) == False:
+    if not check_if_game_active(board, 1) or not check_if_game_active(board, 2):
         return True       # one of the players won
     return False
 
 def minimax(board, depth, maximizing_player):
     """ minimax function that determins the best move for the AI """
     terminal_node = is_terminal_node(board)
-    if depth == 0 or terminal_node == True:  # game ends
+    if depth == 0 or terminal_node:  # game ends
         print("depth == 0 or terminal_node == True")
         # return the heuristic value of node
     free_columns = all_free_columns(board)
@@ -147,8 +152,8 @@ def minimax(board, depth, maximizing_player):
 
 N_ROWS = 6
 N_COLUMNS = 7
-board = create_game_board(N_ROWS, N_COLUMNS)
-print_board(board)
+BOARD = create_game_board(N_ROWS, N_COLUMNS)
+print_board(BOARD)
 GAME_ACTIVE = True
 pygame.init()
 
@@ -161,7 +166,7 @@ RADIUS = int(SLOT_SIZE/2 - 5)
 screen = pygame.display.set_mode(board_size)
 text_font = pygame.font.SysFont("Comic Sans MS", 60)
 game_start_text()
-draw_board(board)
+draw_board(BOARD)
 pygame.display.update()
 
 print("game started")
@@ -170,13 +175,13 @@ while GAME_ACTIVE:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-        if event.type == pygame.MOUSEMOTION and TURN == 1:
+        if event.type == pygame.MOUSEMOTION: # and TURN == 1:
             pygame.draw.rect(screen, black, (0, 0, WIDTH, SLOT_SIZE))
             posx = event.pos[0]
             if TURN == 1:
                 pygame.draw.circle(screen, red, (posx, int(SLOT_SIZE/2)), RADIUS)
-            elif TURN == 2:
-                pygame.draw.circle(screen, yellow, (posx, int(SLOT_SIZE/2)), RADIUS)
+            # elif TURN == 2: # remove this since never reached?
+                # pygame.draw.circle(screen, yellow, (posx, int(SLOT_SIZE/2)), RADIUS)
         pygame.display.update()
         # Player 1, human
         if TURN == 1:
@@ -184,30 +189,30 @@ while GAME_ACTIVE:
                 pygame.draw.rect(screen, black, (0, 0, WIDTH, SLOT_SIZE))
                 if TURN == 1:
                     posx = event.pos[0]
-                    col = int(math.floor(posx/SLOT_SIZE))
-                    row = next_free_row(board, col)
-                    if board[N_ROWS-1][col] == 0:
-                        drop_chip(board, row, col, 1)
-                print_board(board)
-                draw_board(board)
-                GAME_ACTIVE = check_if_game_active(board, 1)
-                if GAME_ACTIVE == False:
+                    COL = int(math.floor(posx/SLOT_SIZE))
+                    ROW = next_free_row(BOARD, COL)
+                    if BOARD[N_ROWS-1][COL] == 0:
+                        drop_chip(BOARD, ROW, COL, 1)
+                print_board(BOARD)
+                draw_board(BOARD)
+                GAME_ACTIVE = check_if_game_active(BOARD, 1)
+                if not GAME_ACTIVE:
                     break
         # Player 2, AI
         elif TURN == 2:
             pygame.time.wait(1000)
-            col = 0
+            COL = 0
             # all_free_columns function should be used here
             while True:
-                col = random.randint(0, 6)
-                row = next_free_row(board, col)
-                print("player 2 row-col:", row, col)
-                if board[N_ROWS-1][col] == 0:
-                    drop_chip(board, row, col, 2)
+                COL = random.randint(0, 6)
+                ROW = next_free_row(BOARD, COL)
+                print("player 2 row-col:", ROW, COL)
+                if BOARD[N_ROWS-1][COL] == 0:
+                    drop_chip(BOARD, ROW, COL, 2)
                     break
-            print_board(board)
-            draw_board(board)
-            GAME_ACTIVE = check_if_game_active(board, 2)
-            if GAME_ACTIVE == False:
+            print_board(BOARD)
+            draw_board(BOARD)
+            GAME_ACTIVE = check_if_game_active(BOARD, 2)
+            if not GAME_ACTIVE:
                 break
 print("game ended")

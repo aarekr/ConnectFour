@@ -23,14 +23,14 @@
 18.09. |  2h  | Minimax -algoritmin runko |
 20.09. | 2,5h | Minimaxiin pari lisäriviä, 4 uutta testiä, uusi 4 rivissä funktio |
 22.09. |  2h  | Pistelaskujärjestelmän hahmottaminen |
-23.09. |      | Pylint, 
+23.09. |  6h  | Pylintin käyttöönotto, testikattavuus, koodin refaktorointia, pari uutta testiä |
 
 ## Yhteensä
 
- Viikko | Aika |
---------|------|
-   1    | 6,5h |
-   2    | 10h  |
-   3    |
+ Viikko | Aika  |
+--------|-------|
+    1   |  6,5h |
+    2   | 10,0h |
+    3   | 12,5h |
 
 
