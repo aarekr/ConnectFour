@@ -1,4 +1,4 @@
-# Testikattavuusraportti
+# Testidokumentti
 
 ## Yksikkötestaus
 Testauksessa on käytetty Pythonin unittest -työkalua.

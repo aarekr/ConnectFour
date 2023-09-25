@@ -12,14 +12,12 @@ white = (255, 255, 255)
 yellow = (255, 255, 0)
 red = (255, 0, 0)
 
-global TURN
 TURN = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
-global CHIP_COUNT  # counting total number of chips players have dropped
-CHIP_COUNT = 0
+CHIP_COUNT = 0  # counting total number of chips players have dropped
 
 def create_game_board(rows, columns):
     """ creating the game board """
-    board = np.zeros((rows, columns))
+    board = np.zeros((rows, columns), dtype = int)
     return board
 
 def game_start_text():
@@ -118,6 +116,45 @@ def check_if_game_active(board, player):
                 return False
     return True
 
+def get_position_value(board):
+    position_value = 0
+    # Horizontal counting
+    """for row in range(N_ROWS):
+        all_chips_in_row = [board[row][0], board[row][1], board[row][2], board[row][3],
+                                  board[row][4], board[row][5], board[row][6]]
+        print("all_chips_in_row:", all_chips_in_row)
+        for col in range(N_COLUMNS - 3):
+            four_consequtive_chips = [board[row][col], board[row][col+1], board[row][col+2], board[row][col+3]]
+            # print("four_consequtive_chips:", four_consequtive_chips)
+            #print("AI chips:", four_consequtive_chips.count(2))"""
+    
+    # Vertical counting
+    """for col in range(N_COLUMNS):
+        column_content = [board[0][col], board[1][col], board[2][col],
+                          board[3][col], board[4][col], board[5][col]]
+        print("column_content:", column_content)
+        for row in range(N_ROWS-3):
+            four_consequtive_slots = [board[row][col], board[row+1][col], board[row+2][col], board[row+3][col]]
+            print("four_consequtive_slots:", row, col, four_consequtive_slots)
+            if four_consequtive_slots.count(2) == 2 and four_consequtive_slots.count(0) == 2:
+                position_value = 50
+            elif four_consequtive_slots.count(2) == 3 and four_consequtive_slots.count(0) == 1:
+                position_value = 100
+            print("AI chips:", four_consequtive_slots.count(2), "position_value:", position_value)"""
+    
+    # checking if human player has 3 consequtive chips in a column
+    for col in range(N_COLUMNS):
+        column_content = [board[0][col], board[1][col], board[2][col],
+                          board[3][col], board[4][col], board[5][col]]
+        print("column_content:", column_content)
+        for row in range(N_ROWS-3):
+            four_consequtive_slots = [board[row][col], board[row+1][col], board[row+2][col], board[row+3][col]]
+            if four_consequtive_slots.count(1) == 3 and four_consequtive_slots.count(0) == 1:
+                print("human player has 3 chips in a column and 1 slot is empty")
+                print("---> the column is:", col)
+
+    return position_value
+
 def is_terminal_node(board):
     """ minimax helper function,
         returns False is game continues,
@@ -203,6 +240,7 @@ while GAME_ACTIVE:
             pygame.time.wait(1000)
             COL = 0
             # all_free_columns function should be used here
+            evaluate_position_value(BOARD)
             while True:
                 COL = random.randint(0, 6)
                 ROW = next_free_row(BOARD, COL)
