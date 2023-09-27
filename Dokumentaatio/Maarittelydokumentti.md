@@ -28,3 +28,4 @@ Tämän jälkeen tekoäly valitsee oman sarakkeen. Peli jatkuu kunnes toinen on 
 * PEP 257 – Docstring Conventions. python.org. https://peps.python.org/pep-0257/
 * Coverage.py. https://coverage.readthedocs.io/en/7.3.1/
 * Muhammed Ali. Code coverage vs. test coverage in Python. Honeybadger. https://www.honeybadger.io/blog/code-test-coverage-python/
+* numpy.zeros. Numpy.org. https://numpy.org/doc/stable/reference/generated/numpy.zeros.html

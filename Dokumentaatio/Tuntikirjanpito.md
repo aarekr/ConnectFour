@@ -25,6 +25,14 @@
 22.09. |  2h  | Pistelaskujärjestelmän hahmottaminen |
 23.09. |  6h  | Pylintin käyttöönotto, testikattavuus, koodin refaktorointia, pari uutta testiä |
 
+## Viikko 4
+
+ Pvm   | Aika | Aktiviteetti |
+-------|------|--------------|
+25.09. |  5h  | Luento, pistelaskujärjestelmän runko, minimaxin kehittäminen |
+27.09. | 2,5h | Minimax -algoritmi on aktiivinen vaaka- ja pystyriveillä. Tekee toisinaan virheitä. |
+29.09. |      | |
+
 ## Yhteensä
 
  Viikko | Aika  |
@@ -32,5 +40,6 @@
     1   |  6,5h |
     2   | 10,0h |
     3   | 12,5h |
+    4   | 
 
 

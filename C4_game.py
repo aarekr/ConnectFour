@@ -58,10 +58,8 @@ def drop_chip(board, row, col, chip):
     """ player drops their chip and TURN is given to the other player """
     # global variables are causing pylint errors, so they should be replaced
     global TURN
-    print("dropping chip:", chip)
     global CHIP_COUNT
-    CHIP_COUNT += 1
-    print("chip_count:", CHIP_COUNT)
+    row = next_free_row(board, col)
     board[row][col] = chip
     if TURN == 1:
         TURN = 2
@@ -84,66 +82,68 @@ def all_free_columns(board):
     for col in range(N_COLUMNS):
         if board[N_ROWS-1][col] == 0:  # at least top row in column is empty
             free_columns.append(col)
-    print("all free columns:", free_columns)
+    # print("all free columns:", free_columns)
     return free_columns
 
 def check_if_game_active(board, player):
     """ checking if the player has 4 in row and game ends or is still active """
-    print("checking winner", player)
+    # print("checking winner", player)
     for row in range(N_ROWS-3):
         for col in range(N_COLUMNS-3):
             if (board[row][col] == player and board[row+1][col] == player
                     and board[row+2][col] == player and board[row+3][col] == player):
-                print("player", player, "won")
+                # print("player", player, "won")
                 return False
     for row in range(N_ROWS-3):
         for col in range(N_COLUMNS-3):
             if (board[row][col] == player and board[row][col+1] == player
                     and board[row][col+2] == player and board[row][col+3] == player):
-                print("player", player, "won")
+                # print("player", player, "won")
                 return False
     for row in range(N_ROWS-3):
         for col in range(N_COLUMNS-3):
             if (board[row][col] == player and board[row+1][col+1] == player
                     and board[row+2][col+2] == player and board[row+3][col+3] == player):
-                print("player", player, "won")
+                # print("player", player, "won")
                 return False
     for row in range(3, N_ROWS):
         for col in range(N_COLUMNS-3):
             if (board[row][col] == player and board[row-1][col+1] == player
                     and board[row-2][col+2] == player and board[row-3][col+3] == player):
-                print("player", player, "won")
+                # print("player", player, "won")
                 return False
     return True
 
-def get_position_value(board):
+def get_position_value(board, player):
     position_value = 0
     # Horizontal counting
-    """for row in range(N_ROWS):
-        all_chips_in_row = [board[row][0], board[row][1], board[row][2], board[row][3],
-                                  board[row][4], board[row][5], board[row][6]]
-        print("all_chips_in_row:", all_chips_in_row)
+    for row in range(N_ROWS):
         for col in range(N_COLUMNS - 3):
-            four_consequtive_chips = [board[row][col], board[row][col+1], board[row][col+2], board[row][col+3]]
+            four_consequtive_slots = [board[row][col], board[row][col+1], board[row][col+2], board[row][col+3]]
+            if four_consequtive_slots.count(player) == 4:
+                position_value += 100
+            elif four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
+                position_value += 30
+            elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
+                position_value += 10
             # print("four_consequtive_chips:", four_consequtive_chips)
-            #print("AI chips:", four_consequtive_chips.count(2))"""
+            # print("AI chips:", four_consequtive_chips.count(2))
     
     # Vertical counting
-    """for col in range(N_COLUMNS):
-        column_content = [board[0][col], board[1][col], board[2][col],
-                          board[3][col], board[4][col], board[5][col]]
-        print("column_content:", column_content)
+    for col in range(N_COLUMNS):
         for row in range(N_ROWS-3):
             four_consequtive_slots = [board[row][col], board[row+1][col], board[row+2][col], board[row+3][col]]
-            print("four_consequtive_slots:", row, col, four_consequtive_slots)
-            if four_consequtive_slots.count(2) == 2 and four_consequtive_slots.count(0) == 2:
-                position_value = 50
-            elif four_consequtive_slots.count(2) == 3 and four_consequtive_slots.count(0) == 1:
-                position_value = 100
-            print("AI chips:", four_consequtive_slots.count(2), "position_value:", position_value)"""
+            # print("four_consequtive_slots:", row, col, four_consequtive_slots)
+            if four_consequtive_slots.count(player) == 4:
+                position_value += 100
+            elif four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
+                position_value += 30
+            elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
+                position_value += 10
+            # print("AI chips:", four_consequtive_slots.count(2), "position_value:", position_value)
     
     # checking if human player has 3 consequtive chips in a column
-    for col in range(N_COLUMNS):
+    """for col in range(N_COLUMNS):
         column_content = [board[0][col], board[1][col], board[2][col],
                           board[3][col], board[4][col], board[5][col]]
         print("column_content:", column_content)
@@ -151,41 +151,73 @@ def get_position_value(board):
             four_consequtive_slots = [board[row][col], board[row+1][col], board[row+2][col], board[row+3][col]]
             if four_consequtive_slots.count(1) == 3 and four_consequtive_slots.count(0) == 1:
                 print("human player has 3 chips in a column and 1 slot is empty")
-                print("---> the column is:", col)
+                print("---> the column is:", col)"""
 
     return position_value
 
 def is_terminal_node(board):
     """ minimax helper function,
-        returns False is game continues,
-        True if all chips used or one of the players won """
-    if CHIP_COUNT == 42:  # all chips used
-        return True
-    if not check_if_game_active(board, 1) or not check_if_game_active(board, 2):
-        return True       # one of the players won
-    return False
+        returns False if game continues,
+        returns True and draw(0)/winner(1 or 2) tuple if all chips used or one of the players won """
+    if CHIP_COUNT == 42:  # all chips used and draw (0)
+        return True, 0
+    if not check_if_game_active(board, 1):  # human player won (1)
+        return True, 1
+    elif not check_if_game_active(board, 2):  # AI won (2)
+        return True, 2
+    return False, -1  # game continues, no winner or draw
 
 def minimax(board, depth, maximizing_player):
     """ minimax function that determins the best move for the AI """
-    terminal_node = is_terminal_node(board)
+    terminal_node, winner = is_terminal_node(board)
     if depth == 0 or terminal_node:  # game ends
-        print("depth == 0 or terminal_node == True")
         # return the heuristic value of node
+        if depth == 0:
+            # print("depth == 0")
+            return get_position_value(board, maximizing_player), 0
+        elif terminal_node:
+            # print("terminal_node == True", "winner:", winner)
+            if winner == 1:
+                return -9999, 0
+            elif winner == 2:
+                return 9999, 0
+        else:
+            # print("else")
+            return 0, 0
     free_columns = all_free_columns(board)
     if maximizing_player:
         value = -math.inf
         best_col = -1
         for col in free_columns:
             row = next_free_row(board, col)
-            # value = max(value, minimax(child, depth - 1, False))
-        return value  # value_new?
+            minimax_board = board.copy()
+            drop_chip(minimax_board, row, col, 2)  # dropping AI chip
+            minimax_value = minimax(minimax_board, depth - 1, False)[0]
+            if minimax_value > value:
+                value = minimax_value
+                best_col = col
+        return value, best_col
     else:  # minimizing player
         value = math.inf
         best_col = -1
         for col in free_columns:
             row = next_free_row(board, col)
-            # value = min(value, minimax(child, depth - 1, True))
-        return value  # value_new?
+            minimax_board = board.copy()
+            drop_chip(minimax_board, row, col, 1)  # dropping human player chip
+            minimax_value = minimax(minimax_board, depth - 1, True)[0]
+            if minimax_value < value:
+                value = minimax_value
+                best_col = col
+        return value, best_col
+
+"""def random_AI_chip_position(BOARD):
+    while True:
+        COL = random.randint(0, 6)
+        ROW = next_free_row(BOARD, COL)
+        print("player 2 row-col:", ROW, COL)
+        if BOARD[N_ROWS-1][COL] == 0:
+            break
+    return ROW, COL"""
 
 N_ROWS = 6
 N_COLUMNS = 7
@@ -212,24 +244,22 @@ while GAME_ACTIVE:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-        if event.type == pygame.MOUSEMOTION: # and TURN == 1:
+        if event.type == pygame.MOUSEMOTION:
             pygame.draw.rect(screen, black, (0, 0, WIDTH, SLOT_SIZE))
             posx = event.pos[0]
             if TURN == 1:
                 pygame.draw.circle(screen, red, (posx, int(SLOT_SIZE/2)), RADIUS)
-            # elif TURN == 2: # remove this since never reached?
-                # pygame.draw.circle(screen, yellow, (posx, int(SLOT_SIZE/2)), RADIUS)
         pygame.display.update()
         # Player 1, human
         if TURN == 1:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.draw.rect(screen, black, (0, 0, WIDTH, SLOT_SIZE))
-                if TURN == 1:
-                    posx = event.pos[0]
-                    COL = int(math.floor(posx/SLOT_SIZE))
-                    ROW = next_free_row(BOARD, COL)
-                    if BOARD[N_ROWS-1][COL] == 0:
-                        drop_chip(BOARD, ROW, COL, 1)
+                posx = event.pos[0]
+                COL = int(math.floor(posx/SLOT_SIZE))
+                ROW = next_free_row(BOARD, COL)
+                if BOARD[N_ROWS-1][COL] == 0:
+                    drop_chip(BOARD, ROW, COL, 1)
+                    CHIP_COUNT += 1
                 print_board(BOARD)
                 draw_board(BOARD)
                 GAME_ACTIVE = check_if_game_active(BOARD, 1)
@@ -238,19 +268,16 @@ while GAME_ACTIVE:
         # Player 2, AI
         elif TURN == 2:
             pygame.time.wait(1000)
-            COL = 0
-            # all_free_columns function should be used here
-            evaluate_position_value(BOARD)
-            while True:
-                COL = random.randint(0, 6)
-                ROW = next_free_row(BOARD, COL)
-                print("player 2 row-col:", ROW, COL)
-                if BOARD[N_ROWS-1][COL] == 0:
-                    drop_chip(BOARD, ROW, COL, 2)
-                    break
+            # ROW, COL = random_AI_chip_position(BOARD)  # random AI
+            minimax_value, best_col = minimax(BOARD, 3, True)  # minimax
+            drop_chip(BOARD, 0, best_col, 2) # this might cause errors
+            CHIP_COUNT += 1
             print_board(BOARD)
             draw_board(BOARD)
             GAME_ACTIVE = check_if_game_active(BOARD, 2)
             if not GAME_ACTIVE:
                 break
+            TURN = 1
+        if CHIP_COUNT == 42:
+            break
 print("game ended")

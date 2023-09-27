@@ -1,4 +1,4 @@
-# Testidokumentti
+# Testausdokumentti
 
 ## Yksikkötestaus
 Testauksessa on käytetty Pythonin unittest -työkalua.
