@@ -32,7 +32,7 @@
 25.09. |  5h  | Luento, pistelaskujärjestelmän runko, minimaxin kehittäminen |
 27.09. | 2,5h | Minimax -algoritmi on aktiivinen vaaka- ja pystyriveillä. Tekee toisinaan virheitä. |
 29.09. |  3h  | Lisää yksikkötestejä, toimivia nyt 21 kpl. Hieman muutoksia ohjelman rakenteessa. |
-30.09. |      |  |
+30.09. |  6h  | Alpha-beta lisätty Minimaxiin. Testejä nyt 30. Pistelaskujärjestelmää parannettu (ml. diagonaalirivit) |
 
 ## Yhteensä
 
@@ -41,6 +41,4 @@
     1   |  6,5h |
     2   | 10,0h |
     3   | 12,5h |
-    4   | 
-
-
+    4   | 16,5h |

@@ -20,12 +20,4 @@ Tämän jälkeen tekoäly valitsee oman sarakkeen. Peli jatkuu kunnes toinen on 
 * Ohjelmoinnin perus- ja jatkokurssi käyty myös Javalla.
 
 ## Lähteet
-* Siddhi Sawant. Ask Python. Connect Four Game in Python. https://www.askpython.com/python/examples/connect-four-game
-* Wikipedia. Minimax. https://en.wikipedia.org/wiki/Minimax
-* Python.org. Unit testing framework. https://docs.python.org/3/library/unittest.html
-* Anthony Shaw. Getting Started With Testing in Python. Real Python. https://realpython.com/python-testing/
-* Pylint 2.17.5. pypi.org. https://pypi.org/project/pylint/
-* PEP 257 – Docstring Conventions. python.org. https://peps.python.org/pep-0257/
-* Coverage.py. https://coverage.readthedocs.io/en/7.3.1/
-* Muhammed Ali. Code coverage vs. test coverage in Python. Honeybadger. https://www.honeybadger.io/blog/code-test-coverage-python/
-* numpy.zeros. Numpy.org. https://numpy.org/doc/stable/reference/generated/numpy.zeros.html
+* Löytyvät toteutusdokumentista

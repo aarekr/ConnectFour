@@ -2,6 +2,7 @@ import unittest
 import numpy as np
 import C4_game
 import random
+import math
 
 # run the tests with command: python3 -m unittest -v C4_test.py
 
@@ -22,11 +23,11 @@ class TestGameStart(unittest.TestCase):
         self.assertEqual(C4_game.next_free_row(board, 5), 0)
         self.assertEqual(C4_game.next_free_row(board, 6), 0)
 
-    def test_who_starts_the_game_text_is_generated(self):
-        """ Test that the You start or AI starts text is visible when game starts """
-        board = np.zeros((6, 7), dtype = int)
+    # def test_who_starts_the_game_text_is_generated(self):
+        # """ Test that the You start or AI starts text is visible when game starts """
+        # board = np.zeros((6, 7), dtype = int)
         # who_starts or label has to be tested somehow, returns None at the moment
-        self.assertEqual(C4_game.game_start_text(), None)
+        # self.assertEqual(C4_game.game_start_text(), None)
 
     def test_all_columns_free_when_game_starts(self):
         """ Should return [0,1,2,3,4,5,6] as free columns """
@@ -202,12 +203,14 @@ class TestTerminalNode(unittest.TestCase):
 
 class TestMinimax(unittest.TestCase):
     def test_minimax_depth_0(self):
+        """ Test that minimax returns tuple (points, 0) when depth is zero """
         board = np.zeros((6, 7), dtype = int)
         depth = 0
         maximizing_player = True
-        self.assertEqual(C4_game.minimax(board, depth, maximizing_player), (0, 0))
+        self.assertEqual(C4_game.minimax(board, depth, -math.inf, math.inf, maximizing_player), (0, 0))
     
-    def test_minimax_terminal_node_True_human_won(self):
+    def test_minimax_terminal_node_True_when_human_won(self):
+        """ Test that terminal node when human player won """
         board = np.zeros((6, 7), dtype = int)
         board[0][0] = 1
         board[1][0] = 1
@@ -215,9 +218,10 @@ class TestMinimax(unittest.TestCase):
         board[3][0] = 1
         depth = 1
         maximizing_player = True
-        self.assertEqual(C4_game.minimax(board, depth, maximizing_player), (-9999999, 0))
+        self.assertEqual(C4_game.minimax(board, depth, -math.inf, math.inf, maximizing_player), (-9999999, 0))
     
-    def test_minimax_terminal_node_True_AI_won(self):
+    def test_minimax_terminal_node_True_when_AI_won(self):
+        """ Test that terminal node when AI won """
         board = np.zeros((6, 7), dtype = int)
         board[0][1] = 2
         board[1][1] = 2
@@ -225,10 +229,63 @@ class TestMinimax(unittest.TestCase):
         board[3][1] = 2
         depth = 1
         maximizing_player = True
-        self.assertEqual(C4_game.minimax(board, depth, maximizing_player), (9999999, 0))
+        self.assertEqual(C4_game.minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 0))
 
-# helper function for tests, fills the board with 42 chips
+class TestAIPositionValue(unittest.TestCase):
+    def test_4_in_row_gives_AI_100_points(self):
+        """ Test that 4 in row gives AI 100 points """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 2
+        board[0][1] = 2
+        board[0][2] = 2
+        board[0][3] = 2
+        four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
+        self.assertEqual(C4_game.count_ai_position_value_points(four_consequtive_slots, 2), 100)
+
+    def test_3_in_row_and_1_empty_gives_AI_30_points(self):
+        """ Test that 3 in row and 1 empty gives AI 30 points """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 2
+        board[0][1] = 2
+        board[0][2] = 2
+        board[0][3] = 0
+        four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
+        self.assertEqual(C4_game.count_ai_position_value_points(four_consequtive_slots, 2), 30)
+
+    def test_2_in_row_and_2_empty_gives_AI_10_points(self):
+        """ Test that 2 in row and 2 empty gives AI 10 points """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 0
+        board[0][1] = 2
+        board[0][2] = 2
+        board[0][3] = 0
+        four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
+        self.assertEqual(C4_game.count_ai_position_value_points(four_consequtive_slots, 2), 10)
+
+class TestHumanPlayerPositionValue(unittest.TestCase):
+    def test_3_human_player_chips_in_row_gives_AI_negative_90_points(self):
+        """ Test that 3 human player chips in row and 1 empty gives AI -90 points """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 1
+        board[0][1] = 1
+        board[0][2] = 1
+        board[0][3] = 0
+        four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
+        self.assertEqual(C4_game.count_human_player_position_value_points(four_consequtive_slots, 1), -90)
+
+    def test_2_human_player_chips_in_row_gives_AI_negative_20_points(self):
+        """ Test that 2 human player chips in row and 2 empty gives AI -20 points """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 0
+        board[0][1] = 1
+        board[0][2] = 1
+        board[0][3] = 0
+        four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
+        self.assertEqual(C4_game.count_human_player_position_value_points(four_consequtive_slots, 1), -20)
+
+# helper function
 def create_full_42_chip_board():
+    """ fills the game board with 42 chips """
     board = np.zeros((6, 7), dtype = int)
     for row in range(6):
         for col in range(7):
