@@ -35,5 +35,5 @@ Muissa testeissä on sarakkeisiin tiputettu tarvittava määrä merkkejä ja tes
 ## Testien toistettavuus
 
 ## Empiirisen testauksen visuaalinen/graafinen muoto
-Raportti (23.9.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-09-23.JPG)
-Raportti (30.9.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-09-30.JPG)
+* Raportti (23.9.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-09-23.JPG)
+* Raportti (30.9.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-09-30.JPG)
