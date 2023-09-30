@@ -10,8 +10,8 @@ Tunnistaa osan pelaajan pysty- ja vaakariveissä olevat 3 merkkiä ja osaa bloka
 * Minimax -algoritmi on otettu käyttöön ja se osaa pelata vaaka- ja pystyrivejä.
 * Pistelaskujärjestelmä ei toimi aivan kuten pitäisi mutta on selvästi havaittavissa, että se osaa muodostaa neljän rivejä 
 ja myös blokata niistä osan. Vaikuttaa siltä, että depth 3 pelaa paremmin kuin depth 4. Depth 5 on hidas mutta pelaa hyvin.
-* Testejä nyt yhteensä 21 kpl ja pelin testikattavuus on 96%
-* Pylint score on 8,68/10
+* Testejä nyt yhteensä 25 kpl ja pelin testikattavuus on 95%
+* Pylint score on 8,75/10
 
 ## Mitä opittu
 * Minimax -algoritmin toiminta selvinnyt entistä paremmin.

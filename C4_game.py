@@ -13,7 +13,7 @@ yellow = (255, 255, 0)
 red = (255, 0, 0)
 
 TURN = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
-CHIP_COUNT = 0  # counting total number of chips players have dropped
+# CHIP_COUNT = 0  # counting total number of chips players have dropped
 
 def create_game_board(rows, columns):
     """ creating the game board """
@@ -33,6 +33,15 @@ def game_start_text():
 def print_board(board):
     """ printing slots and chips in console """
     print(np.flip(board, 0))
+
+def get_chip_count(board):
+    """ returning the number of chips players have dropped """
+    chip_count = 0
+    for row in board:  # refactor this
+        for item in row:
+            if item != 0:
+                chip_count += 1
+    return chip_count
 
 def draw_board(board):
     """ drawing the game board in a window """
@@ -58,7 +67,6 @@ def drop_chip(board, row, col, chip):
     """ player drops their chip and TURN is given to the other player """
     # global variables are causing pylint errors, so they should be replaced
     global TURN
-    global CHIP_COUNT
     row = next_free_row(board, col)
     board[row][col] = chip
     if TURN == 1:
@@ -145,7 +153,7 @@ def is_terminal_node(board):
     """ minimax helper function,
         returns False if game continues,
         returns tuple (True, draw(0)/winner(1 or 2)) if all chips used or one of the players won """
-    if CHIP_COUNT == 42:  # all chips used and draw (0)
+    if get_chip_count(board) == 42:  # all chips used and draw (0)
         return True, 0
     if not check_if_game_active(board, 1):  # human player won (1)
         return True, 1
@@ -230,7 +238,6 @@ while GAME_ACTIVE:
                 ROW = next_free_row(BOARD, COL)
                 if BOARD[N_ROWS-1][COL] == 0:
                     drop_chip(BOARD, ROW, COL, 1)
-                    CHIP_COUNT += 1
                 print_board(BOARD)
                 draw_board(BOARD)
                 GAME_ACTIVE = check_if_game_active(BOARD, 1)
@@ -240,16 +247,15 @@ while GAME_ACTIVE:
         elif TURN == 2:
             pygame.time.wait(1000)
             # ROW, COL = random_AI_chip_position(BOARD)  # random AI
-            minimax_value, best_col = minimax(BOARD, 4, True)  # minimax
+            minimax_value, best_col = minimax(BOARD, 3, True)  # minimax
             drop_chip(BOARD, 0, best_col, 2) # this might cause errors
-            CHIP_COUNT += 1
             print_board(BOARD)
             draw_board(BOARD)
             GAME_ACTIVE = check_if_game_active(BOARD, 2)
             if not GAME_ACTIVE:
                 break
             TURN = 1
-        if CHIP_COUNT == 42:
+        if get_chip_count(BOARD) == 42:
             print("all chips used, game ends")
             GAME_ACTIVE = False
             break

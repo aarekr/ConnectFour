@@ -1,6 +1,7 @@
 import unittest
 import numpy as np
 import C4_game
+import random
 
 # run the tests with command: python3 -m unittest -v C4_test.py
 
@@ -95,6 +96,26 @@ class TestTurnChanges(unittest.TestCase):
         board = np.zeros((6, 7), dtype = int)
         self.assertEqual(C4_game.drop_chip(board, 0, 0, 2), 1)
 
+class TestChipCount(unittest.TestCase):
+    def test_empty_board_returns_chip_count_zero(self):
+        """ Test that chip count is zero when board is empty """
+        board = np.zeros((6, 7), dtype = int)
+        self.assertEqual(C4_game.get_chip_count(board), 0)
+    
+    def test_chip_count_returns_4_when_both_players_have_dropped_2(self):
+        """ Test that chip count is 4 when both players have dropped 2 chips """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 1
+        board[1][0] = 1
+        board[0][3] = 2
+        board[1][3] = 2
+        self.assertEqual(C4_game.get_chip_count(board), 4)
+    
+    def test_chip_count_is_42_when_all_chips_dropped(self):
+        """ Test that chip count is 42 when the board is full """
+        board = create_full_42_chip_board()
+        self.assertEqual(C4_game.get_chip_count(board), 42)
+
 class TestFreeRows(unittest.TestCase):
     def test_row_3_is_free_when_3_chips_dropped(self):
         """ Test that row 3 is free when 3 chips dropped in that column """
@@ -140,9 +161,13 @@ class TestFreeColumns(unittest.TestCase):
         self.assertEqual(C4_game.all_free_columns(board), [0,1,2,3,4,5,6])
 
 class TestTerminalNode(unittest.TestCase):
-    # chip_count = 42 test has to be added
+    def test_terminal_node_when_board_is_full_of_chips(self):
+        """ Test that the node is terminal when all 42 chips dropped """
+        board = create_full_42_chip_board()
+        self.assertEqual(C4_game.is_terminal_node(board), (True, 0))
     
     def test_terminal_node_is_True_when_human_has_4_chips_in_row(self):
+        """ Test that the node is terminal when human player has 4 in row """
         board = np.zeros((6, 7), dtype = int)
         board[1][4] = 1
         board[2][4] = 1
@@ -154,6 +179,7 @@ class TestTerminalNode(unittest.TestCase):
         self.assertEqual(C4_game.is_terminal_node(board), (True, 1))
     
     def test_terminal_node_is_True_when_AI_has_4_chips_in_row(self):
+        """ Test that the node is terminal when AI has 4 in row """
         board = np.zeros((6, 7), dtype = int)
         board[2][2] = 2
         board[3][2] = 2
@@ -162,6 +188,7 @@ class TestTerminalNode(unittest.TestCase):
         self.assertEqual(C4_game.is_terminal_node(board), (True, 2))
     
     def test_terminal_node_is_False_when_neither_player_has_4_in_row(self):
+        """ Test that the node is not terminal when when both players have random 4 chips """
         board = np.zeros((6, 7), dtype = int)
         board[0][0] = 1
         board[1][0] = 1
@@ -199,6 +226,14 @@ class TestMinimax(unittest.TestCase):
         depth = 1
         maximizing_player = True
         self.assertEqual(C4_game.minimax(board, depth, maximizing_player), (9999999, 0))
+
+# helper function for tests, fills the board with 42 chips
+def create_full_42_chip_board():
+    board = np.zeros((6, 7), dtype = int)
+    for row in range(6):
+        for col in range(7):
+            board[row][col] = random.randint(1,2)
+    return board
 
 if __name__ == '__main__':
     unittest.main()
