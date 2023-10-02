@@ -29,6 +29,18 @@ def game_start_text():
     label = text_font.render(who_starts, 0, yellow)
     screen.blit(label, (250, 15))
 
+def game_end_text(winner):
+    """ printing the game result when game ends: winner or draw """
+    end_text = ""
+    if winner == 0:
+        end_text = "Draw"
+    elif winner == 1:
+        end_text = "YOU WON!!!"
+    elif winner == 2:
+        end_text = "AI won..."
+    label = text_font.render(end_text, 0, yellow)
+    screen.blit(label, (250, 15))
+
 def print_board(board):
     """ printing slots and chips in console """
     print(np.flip(board, 0))
@@ -92,7 +104,7 @@ def all_free_columns(board):
     return free_columns
 
 def check_if_game_active(board, player):
-    """ checking if the player has 4 chip in row/column/diagonal
+    """ checking if the player has 4 chips in row/column/diagonal
         returning False if game ends and True if stays active """
     # Rows
     for row in range(N_ROWS):
@@ -124,9 +136,7 @@ def check_if_game_active(board, player):
 def count_ai_position_value_points(four_consequtive_slots, player):
     """ counts the AI position value for 4 consequtive slots """
     position_value = 0
-    if four_consequtive_slots.count(player) == 4:
-        position_value += 100
-    elif four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
+    if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
         position_value += 30
     elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
         position_value += 10
@@ -143,7 +153,7 @@ def count_human_player_position_value_points(four_consequtive_slots, player):
     return position_value
 
 def get_position_value(board, player):
-    """ calcluates the optimal position value for the AI """
+    """ calculates the optimal position value for the AI """
     position_value = 0
 
     # Horizontal counting
@@ -162,19 +172,19 @@ def get_position_value(board, player):
             position_value += count_ai_position_value_points(four_consequtive_slots, player)
             position_value += count_human_player_position_value_points(four_consequtive_slots, 1)
 
-    # Negative diagonal counting
-    for col in range(N_COLUMNS-3):
-        for row in range(N_ROWS-3):
-            four_consequtive_slots = [board[N_ROWS-1-row-0][col], board[N_ROWS-1-row-1][col],
-                                      board[N_ROWS-1-row-2][col], board[N_ROWS-1-row-3][col]]
-            position_value += count_ai_position_value_points(four_consequtive_slots, player)
-            position_value += count_human_player_position_value_points(four_consequtive_slots, 1)
-
     # Positive diagonal counting
     for row in range(N_ROWS-3):
         for col in range(N_COLUMNS-3):
             four_consequtive_slots = [board[row][col], board[row+1][col+1],
                                       board[row+2][col+2], board[row+3][col+3]]
+            position_value += count_ai_position_value_points(four_consequtive_slots, player)
+            position_value += count_human_player_position_value_points(four_consequtive_slots, 1)
+
+    # Negative diagonal counting
+    for col in range(N_COLUMNS-3):
+        for row in range(N_ROWS-3):
+            four_consequtive_slots = [board[N_ROWS-1-row][col], board[N_ROWS-1-row-1][col+1],
+                                      board[N_ROWS-1-row-2][col+2], board[N_ROWS-1-row-3][col+2]]
             position_value += count_ai_position_value_points(four_consequtive_slots, player)
             position_value += count_human_player_position_value_points(four_consequtive_slots, 1)
 
@@ -200,9 +210,9 @@ def minimax(board, depth, alpha, beta, maximizing_player):
         if depth == 0:
             return get_position_value(board, maximizing_player), 0
         if terminal_node and winner == 1:
-            return -9999999, 0
+            return -9999999, 0  # this return value has should announce winner?
         if terminal_node and winner == 2:
-            return 9999999, 0
+            return 9999999, 0  # this return value has should announce winner?
     free_columns = all_free_columns(board)
     if maximizing_player:
         value = -math.inf
@@ -240,6 +250,7 @@ N_COLUMNS = 7
 BOARD = create_game_board(N_ROWS, N_COLUMNS)
 print_board(BOARD)
 GAME_ACTIVE = True
+winner = 0
 pygame.init()
 
 # creating the game window
@@ -279,6 +290,8 @@ while GAME_ACTIVE:
                 draw_board(BOARD)
                 GAME_ACTIVE = check_if_game_active(BOARD, 1)
                 if not GAME_ACTIVE:
+                    winner = 1
+                    game_end_text(winner)
                     break
         # Player 2, AI
         elif TURN == 2:
@@ -289,10 +302,20 @@ while GAME_ACTIVE:
             draw_board(BOARD)
             GAME_ACTIVE = check_if_game_active(BOARD, 2)
             if not GAME_ACTIVE:
+                winner = 2
+                game_end_text(winner)
+                draw_board(BOARD)
+                pygame.time.wait(3000)
                 break
             TURN = 1
         if get_chip_count(BOARD) == 42:
             print("all chips used, draw")
+            game_end_text(winner)
             GAME_ACTIVE = False
             break
 print("game ended")
+if winner == 1:
+    print("You won!")
+elif winner == 2:
+    print("AI won...")
+print_board(BOARD)

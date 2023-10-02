@@ -34,6 +34,12 @@
 29.09. |  3h  | Lisää yksikkötestejä, toimivia nyt 21 kpl. Hieman muutoksia ohjelman rakenteessa. |
 30.09. |  6h  | Alpha-beta lisätty Minimaxiin. Testejä nyt 30. Pistelaskujärjestelmää parannettu (ml. diagonaalirivit) |
 
+## Viikko 5
+
+ Pvm   | Aika | Aktiviteetti |
+-------|------|--------------|
+02.10. |  1h  | Pelin voittajan ilmoittaminen konsolissa ja peli-ikkunassa |
+
 ## Yhteensä
 
  Viikko | Aika  |
@@ -42,3 +48,4 @@
     2   | 10,0h |
     3   | 12,5h |
     4   | 16,5h |
+    5   |       |

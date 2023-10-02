@@ -3,12 +3,13 @@
 ## Ohjelman yleisrakenne
 Pelin alkaessa luodaan kuuden rivin ja seitsemän sarakkeen pelipöytä (game board). Alussa pelaaja näkee tyhjän pelipöydän ja 
 samalla yläreunassa oleva teksti ilmoittaa kumpi pelaajista tekee ensimmäisen siirron. Tämän jälkeen pelaajat tiputtavat 
-vuorotellen pelimerkkejä sarakkeisiin ja tätä toimintoa ylläpidetään while -silmukassa. Pelaajan ollessa vuorossa, Pythonin 
-pygame -moduulin toiminnoilla seurataan hiiren liikettä ja otetaan vastaan sarakevalinta (syöte) kun pelaaja klikkaa hiiren 
-nappia. Tekoäly valitsee oman sarakkeen käyttämällä Minimax -algoritmin ja pelin pistelaskujärjestelmän laskemaa optimaalista 
-tulosta. Pelitilanne näkyy sekä peli-ikkunassa että konsoliin tulostettavassa matriisissa. Molempien pelaajien tapauksessa 
-tarkistetaan, että valitussa sarakkeessa on vielä tilaa. Jokaisen siirron jälkeen tarkistetaan onko jompikumpi pelaajista 
-voittanut tai kaikki pelimerkit käytetty.
+vuorotellen pelimerkkejä sarakkeisiin ja tätä toimintoa ylläpidetään while -silmukassa (game_active:n arvo on True).
+Pelaajan ollessa vuorossa, Pythonin pygame -moduulin toiminnoilla seurataan hiiren liikettä ja otetaan vastaan 
+sarakevalinta (syöte) kun pelaaja klikkaa hiiren nappia. Tekoäly valitsee oman sarakkeen käyttämällä Minimax -algoritmin 
+ja pelin pistelaskujärjestelmän laskemaa optimaalista tulosta. Pelitilanne näkyy sekä peli-ikkunassa että konsoliin 
+tulostettavassa matriisissa. Molempien pelaajien tapauksessa tarkistetaan, että valitussa sarakkeessa on vielä tilaa. 
+Jokaisen siirron jälkeen tarkistetaan onko jompikumpi pelaajista voittanut tai kaikki pelimerkit käytetty. Jos peli 
+loppuu, game_active muuttujan tila vaihdetaan True:sta False:ksi.
 
 ## Aikavaativuudet
 Koodin aikavaativuudeltaan suurimmat osat ovat kaksi sisäkkäistä for-silmukkaa, joten O(n^2). 
