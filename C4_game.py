@@ -12,25 +12,30 @@ white = (255, 255, 255)
 yellow = (255, 255, 0)
 red = (255, 0, 0)
 
-TURN = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
-
 def create_game_board(rows, columns):
     """ creating the game board """
     board = np.zeros((rows, columns), dtype=int)
     return board
 
-def game_start_text():
+def initialize_random_turn():
+    TURN = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
+    return TURN
+
+def game_start_text(turn):
     """ printing who starts the game in top part of the game board window """
+    print("entering game_start_text, TURN:", turn)
+    text_font = pygame.font.SysFont("Comic Sans MS", 60)
     who_starts = ""
-    if TURN == 1:
+    if turn == 1:
         who_starts = "You start"
-    elif TURN == 2:
+    elif turn == 2:
         who_starts = "AI starts"
     label = text_font.render(who_starts, 0, yellow)
     screen.blit(label, (250, 15))
 
 def game_end_text(winner):
     """ printing the game result when game ends: winner or draw """
+    text_font = pygame.font.SysFont("Comic Sans MS", 60)
     end_text = ""
     if winner == 0:
         end_text = "Draw"
@@ -247,11 +252,7 @@ def minimax(board, depth, alpha, beta, maximizing_player):
 
 N_ROWS = 6
 N_COLUMNS = 7
-BOARD = create_game_board(N_ROWS, N_COLUMNS)
-print_board(BOARD)
-GAME_ACTIVE = True
-winner = 0
-pygame.init()
+TURN = 0
 
 # creating the game window
 SLOT_SIZE = 100
@@ -260,62 +261,75 @@ WIDTH = N_COLUMNS * SLOT_SIZE
 board_size = (HEIGHT, WIDTH)
 RADIUS = int(SLOT_SIZE/2 - 5)
 screen = pygame.display.set_mode(board_size)
-text_font = pygame.font.SysFont("Comic Sans MS", 60)
-game_start_text()
-draw_board(BOARD)
-pygame.display.update()
+# text_font = pygame.font.SysFont("Comic Sans MS", 60)
 
-print("game started")
-# game runs in this while loop until somebody wins or all 42 chips are used
-while GAME_ACTIVE:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-        if event.type == pygame.MOUSEMOTION:
-            pygame.draw.rect(screen, black, (0, 0, WIDTH, SLOT_SIZE))
-            posx = event.pos[0]
-            if TURN == 1:
-                pygame.draw.circle(screen, red, (posx, int(SLOT_SIZE/2)), RADIUS)
-        pygame.display.update()
-        # Player 1, human player
-        if TURN == 1:
-            if event.type == pygame.MOUSEBUTTONDOWN:
+def main():
+    # add an option here where player is asked who starts or let the game choose randomly in initialize_random_turn()
+    TURN = initialize_random_turn()
+    BOARD = create_game_board(N_ROWS, N_COLUMNS)
+    print_board(BOARD)
+    GAME_ACTIVE = True
+    winner = 0
+    pygame.init()
+    game_start_text(TURN)
+    draw_board(BOARD)
+    pygame.display.update()
+
+    print("game started")
+    # game runs in this while loop until somebody wins or all 42 chips are used
+    while GAME_ACTIVE:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEMOTION:
                 pygame.draw.rect(screen, black, (0, 0, WIDTH, SLOT_SIZE))
                 posx = event.pos[0]
-                COL = int(math.floor(posx/SLOT_SIZE))
-                ROW = next_free_row(BOARD, COL)
-                if BOARD[N_ROWS-1][COL] == 0:
-                    drop_chip(BOARD, ROW, COL, 1)
+                if TURN == 1:
+                    pygame.draw.circle(screen, red, (posx, int(SLOT_SIZE/2)), RADIUS)
+            pygame.display.update()
+            # Player 1, human player
+            if TURN == 1:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pygame.draw.rect(screen, black, (0, 0, WIDTH, SLOT_SIZE))
+                    posx = event.pos[0]
+                    COL = int(math.floor(posx/SLOT_SIZE))
+                    ROW = next_free_row(BOARD, COL)
+                    if BOARD[N_ROWS-1][COL] == 0:
+                        drop_chip(BOARD, ROW, COL, 1)
+                    print_board(BOARD)
+                    draw_board(BOARD)
+                    GAME_ACTIVE = check_if_game_active(BOARD, 1)
+                    if not GAME_ACTIVE:
+                        winner = 1
+                        game_end_text(winner)
+                        break
+                    TURN = 2
+            # Player 2, AI
+            elif TURN == 2:
+                # pygame.time.wait(1000)
+                MINIMAX_VALUE, BEST_COL = minimax(BOARD, 3, -math.inf, math.inf, True)
+                drop_chip(BOARD, 0, BEST_COL, 2)
                 print_board(BOARD)
                 draw_board(BOARD)
-                GAME_ACTIVE = check_if_game_active(BOARD, 1)
+                GAME_ACTIVE = check_if_game_active(BOARD, 2)
                 if not GAME_ACTIVE:
-                    winner = 1
+                    winner = 2
                     game_end_text(winner)
+                    draw_board(BOARD)
+                    pygame.time.wait(3000)
                     break
-        # Player 2, AI
-        elif TURN == 2:
-            # pygame.time.wait(1000)
-            MINIMAX_VALUE, BEST_COL = minimax(BOARD, 3, -math.inf, math.inf, True)
-            drop_chip(BOARD, 0, BEST_COL, 2)
-            print_board(BOARD)
-            draw_board(BOARD)
-            GAME_ACTIVE = check_if_game_active(BOARD, 2)
-            if not GAME_ACTIVE:
-                winner = 2
+                TURN = 1
+            if get_chip_count(BOARD) == 42:
+                print("all chips used, draw")
                 game_end_text(winner)
-                draw_board(BOARD)
-                pygame.time.wait(3000)
+                GAME_ACTIVE = False
                 break
-            TURN = 1
-        if get_chip_count(BOARD) == 42:
-            print("all chips used, draw")
-            game_end_text(winner)
-            GAME_ACTIVE = False
-            break
-print("game ended")
-if winner == 1:
-    print("You won!")
-elif winner == 2:
-    print("AI won...")
-print_board(BOARD)
+    print("game ended")
+    if winner == 1:
+        print("You won!")
+    elif winner == 2:
+        print("AI won...")
+    print_board(BOARD)
+
+if __name__ == "__main__":
+    main()

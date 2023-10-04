@@ -33,3 +33,4 @@ tekoäly ei osaa blokata joitakin pelaajan kolmen pelimerkin suoria.
 * Coverage.py. https://coverage.readthedocs.io/en/7.3.1/
 * Muhammed Ali. Code coverage vs. test coverage in Python. Honeybadger. https://www.honeybadger.io/blog/code-test-coverage-python/
 * numpy.zeros. Numpy.org. https://numpy.org/doc/stable/reference/generated/numpy.zeros.html
+* Defining Main Functions in Python. RealPython. https://realpython.com/python-main-function/
