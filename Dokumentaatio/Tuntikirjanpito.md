@@ -40,7 +40,7 @@
 -------|------|--------------|
 02.10. |  1h  | Pelin voittajan ilmoittaminen konsolissa ja peli-ikkunassa |
 04.10. |  1h  | Vertaispalaute luettu ja sen perusteella lisätty main-funktio. Vuoro arvotaan erillisessä funktiossa. |
-05.10. |      |  |
+06.10. | 4,5h | Vertaispalaute annettu. |
 
 ## Yhteensä
 

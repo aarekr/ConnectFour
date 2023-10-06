@@ -2,7 +2,8 @@
 
 ## Mitä tehty viikolla
 * Pelin lopputuloksen ilmoittaminen lisätty ohjelmaan
-* Vertaisarviointi luettu ja parannusehdotukset työn alla.
+* Vertaisarviointi luettu ja parannusehdotukset työn alla
+* Vertaisarviointi annettu
 
 ## Ohjelman edistyminen
 * Voittaja tai tasapeli ilmoitetaan pelin lopussa konsolissa ja peli-ikkunassa
