@@ -34,3 +34,5 @@ tekoäly ei osaa blokata joitakin pelaajan kolmen pelimerkin suoria.
 * Muhammed Ali. Code coverage vs. test coverage in Python. Honeybadger. https://www.honeybadger.io/blog/code-test-coverage-python/
 * numpy.zeros. Numpy.org. https://numpy.org/doc/stable/reference/generated/numpy.zeros.html
 * Defining Main Functions in Python. RealPython. https://realpython.com/python-main-function/
+* Ofer Dekel. Python Performance Testing: Quick Tutorial and Best Practices. granulate.io. (Luettu 7.10.2023) https://granulate.io/blog/python-performance-testing-quick-tutorial-and-best-practices/
+* Eric Goebelbecker. blog.sentry.io. (Luettu 7.10.2023) https://blog.sentry.io/python-performance-testing-a-comprehensive-guide/

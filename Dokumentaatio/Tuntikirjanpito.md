@@ -41,7 +41,8 @@
 02.10. |  1h  | Pelin voittajan ilmoittaminen konsolissa ja peli-ikkunassa |
 04.10. |  1h  | Vertaispalaute luettu ja sen perusteella lisätty main-funktio. Vuoro arvotaan erillisessä funktiossa. |
 06.10. | 4,5h | Vertaispalaute annettu. |
-07.10. |      | Ehtolauseiden refaktorointi. |
+07.10. |  5h  | Ehtolauseiden refaktorointi. Suorituskykytestaaminen yksikertaisille funktioille. Mainin ja käyttöliittymän erottelun parissa työskentely. |
+08.10  |      |  |
 
 ## Yhteensä
 

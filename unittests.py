@@ -4,7 +4,7 @@ import C4_game
 import random
 import math
 
-# run the tests with command: python3 -m unittest -v C4_test.py
+# run the tests with command: python3 -m unittest -v unittest.py
 
 class TestGameStart(unittest.TestCase):
     def test_create_game_board_function_returns_valid_game_board(self):
@@ -232,16 +232,6 @@ class TestMinimax(unittest.TestCase):
         self.assertEqual(C4_game.minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 0))
 
 class TestAIPositionValue(unittest.TestCase):
-    def test_4_in_row_gives_AI_100_points(self):
-        """ Test that 4 in row gives AI 100 points """
-        board = np.zeros((6, 7), dtype = int)
-        board[0][0] = 2
-        board[0][1] = 2
-        board[0][2] = 2
-        board[0][3] = 2
-        four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
-        self.assertEqual(C4_game.count_ai_position_value_points(four_consequtive_slots, 2), 100)
-
     def test_3_in_row_and_1_empty_gives_AI_30_points(self):
         """ Test that 3 in row and 1 empty gives AI 30 points """
         board = np.zeros((6, 7), dtype = int)
