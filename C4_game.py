@@ -18,8 +18,9 @@ def create_game_board(rows, columns):
     return board
 
 def initialize_random_turn():
-    TURN = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
-    return TURN
+    """ starting player chosen randomly """
+    turn = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
+    return turn
 
 def game_start_text(turn):
     """ printing who starts the game in top part of the game board window """
@@ -101,7 +102,7 @@ def next_free_row(board, col):
     return free_row
 
 def all_free_columns(board):
-    """ returning a list of columns that have at least of free slot/row """
+    """ returning a list of columns that have at least one free slot/row """
     free_columns = []
     for col in range(N_COLUMNS):
         if board[N_ROWS-1][col] == 0:  # at least top row in column is empty
@@ -114,27 +115,26 @@ def check_if_game_active(board, player):
     # Rows
     for row in range(N_ROWS):
         for col in range(N_COLUMNS-3):
-            if (board[row][col] == player and board[row][col+1] == player
-                    and board[row][col+2] == player and board[row][col+3] == player):
+            if (board[row][col] == board[row][col+1] ==
+                    board[row][col+2] == board[row][col+3] == player):
                 return False
     # Columns
     for col in range(N_COLUMNS):
         for row in range(N_ROWS-3):
-            if (board[row][col] == player and board[row+1][col] == player
-                    and board[row+2][col] == player and board[row+3][col] == player):
+            if (board[row][col] == board[row+1][col] ==
+                    board[row+2][col] == board[row+3][col] == player):
                 return False
     # Positive diagonals
     for row in range(N_ROWS-3):
         for col in range(N_COLUMNS-3):
-            if (board[row][col] == player and board[row+1][col+1] == player
-                    and board[row+2][col+2] == player and board[row+3][col+3] == player):
+            if (board[row][col] == board[row+1][col+1] ==
+                    board[row+2][col+2] == board[row+3][col+3] == player):
                 return False
     # Negative diagonals
     for col in range(N_COLUMNS-3):
         for row in range(N_ROWS-3):
-            if (board[N_ROWS-1-row][col] == player and board[N_ROWS-1-row-1][col+1] == player
-                    and board[N_ROWS-1-row-2][col+2] == player
-                    and board[N_ROWS-1-row-3][col+3] == player):
+            if (board[N_ROWS-1-row][col] == board[N_ROWS-1-row-1][col+1] ==
+                    board[N_ROWS-1-row-2][col+2] == board[N_ROWS-1-row-3][col+3] == player):
                 return False
     return True
 
@@ -264,7 +264,8 @@ screen = pygame.display.set_mode(board_size)
 # text_font = pygame.font.SysFont("Comic Sans MS", 60)
 
 def main():
-    # add an option here where player is asked who starts or let the game choose randomly in initialize_random_turn()
+    # add an option here where player is asked who starts
+    # or let the game choose randomly in initialize_random_turn()
     TURN = initialize_random_turn()
     BOARD = create_game_board(N_ROWS, N_COLUMNS)
     print_board(BOARD)
