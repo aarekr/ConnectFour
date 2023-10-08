@@ -44,6 +44,35 @@ def get_chip_count(board):
     return chip_count
 """
 
+test_check_if_game_active = """
+import numpy as np
+N_ROWS = 6
+N_COLUMNS = 7
+board = np.zeros((6, 7), dtype=int)
+def check_if_game_active(board, player):
+    for row in range(N_ROWS):
+        for col in range(N_COLUMNS-3):
+            if (board[row][col] == board[row][col+1] ==
+                    board[row][col+2] == board[row][col+3] == player):
+                return False
+    for col in range(N_COLUMNS):
+        for row in range(N_ROWS-3):
+            if (board[row][col] == board[row+1][col] ==
+                    board[row+2][col] == board[row+3][col] == player):
+                return False
+    for row in range(N_ROWS-3):
+        for col in range(N_COLUMNS-3):
+            if (board[row][col] == board[row+1][col+1] ==
+                    board[row+2][col+2] == board[row+3][col+3] == player):
+                return False
+    for col in range(N_COLUMNS-3):
+        for row in range(N_ROWS-3):
+            if (board[N_ROWS-1-row][col] == board[N_ROWS-1-row-1][col+1] ==
+                    board[N_ROWS-1-row-2][col+2] == board[N_ROWS-1-row-3][col+3] == player):
+                return False
+    return True
+"""
+
 # cProfile tests
 test_all_free_columns_cProfile = """
 import numpy as np
@@ -91,6 +120,36 @@ for i in range(10000000):
         return chip_count
 """
 
+test_check_if_game_active_cProfile = """
+import numpy as np
+N_ROWS = 6
+N_COLUMNS = 7
+board = np.zeros((6, 7), dtype=int)
+for i in range(10000000):
+    def check_if_game_active(board, player):
+        for row in range(N_ROWS):
+            for col in range(N_COLUMNS-3):
+                if (board[row][col] == board[row][col+1] ==
+                        board[row][col+2] == board[row][col+3] == player):
+                    return False
+        for col in range(N_COLUMNS):
+            for row in range(N_ROWS-3):
+                if (board[row][col] == board[row+1][col] ==
+                        board[row+2][col] == board[row+3][col] == player):
+                    return False
+        for row in range(N_ROWS-3):
+            for col in range(N_COLUMNS-3):
+                if (board[row][col] == board[row+1][col+1] ==
+                        board[row+2][col+2] == board[row+3][col+3] == player):
+                    return False
+        for col in range(N_COLUMNS-3):
+            for row in range(N_ROWS-3):
+                if (board[N_ROWS-1-row][col] == board[N_ROWS-1-row-1][col+1] ==
+                        board[N_ROWS-1-row-2][col+2] == board[N_ROWS-1-row-3][col+3] == player):
+                    return False
+        return True
+"""
+
 if __name__ == "__main__":
     print("Tests with timeit")
     time_all_free_columns = timeit.timeit(test_all_free_columns)
@@ -99,6 +158,8 @@ if __name__ == "__main__":
     print("  2. next_free_row   :", time_next_free_row)
     time_get_chip_count = timeit.timeit(test_get_chip_count)
     print("  3. get_chip_count  :", time_get_chip_count)
+    time_check_if_game_active = timeit.timeit(test_check_if_game_active)
+    print("  4. check_if_game_active:", time_check_if_game_active)
 
     print("\nTests with cProfile")
     print("  1. all_free_columns:")
@@ -107,3 +168,5 @@ if __name__ == "__main__":
     cProfile.run(test_next_free_row_cProfile)
     print("  3. get_chip_count:")
     cProfile.run(test_get_chip_count_cProfile)
+    print("  4. check_if_game_active:")
+    cProfile.run(test_check_if_game_active_cProfile)

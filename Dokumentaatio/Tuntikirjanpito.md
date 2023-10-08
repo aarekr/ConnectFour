@@ -42,7 +42,7 @@
 04.10. |  1h  | Vertaispalaute luettu ja sen perusteella lisätty main-funktio. Vuoro arvotaan erillisessä funktiossa. |
 06.10. | 4,5h | Vertaispalaute annettu. |
 07.10. |  5h  | Ehtolauseiden refaktorointi. Suorituskykytestaaminen yksikertaisille funktioille. Mainin ja käyttöliittymän erottelun parissa työskentely. |
-08.10  |      |  |
+08.10. |  1h  | Käyttöohjeen runko. Yksi suorituskykytesti lisää. Käyttöliittymä-luokan hahmottelu. |
 
 ## Yhteensä
 
@@ -52,4 +52,4 @@
     2   | 10,0h |
     3   | 12,5h |
     4   | 16,5h |
-    5   |       |
+    5   | 12,5h |

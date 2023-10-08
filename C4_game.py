@@ -215,9 +215,9 @@ def minimax(board, depth, alpha, beta, maximizing_player):
         if depth == 0:
             return get_position_value(board, maximizing_player), 0
         if terminal_node and winner == 1:
-            return -9999999, 0  # this return value has should announce winner?
+            return -9999999, 0  # this return value should announce winner?
         if terminal_node and winner == 2:
-            return 9999999, 0  # this return value has should announce winner?
+            return 9999999, 0  # this return value should announce winner?
     free_columns = all_free_columns(board)
     if maximizing_player:
         value = -math.inf
@@ -320,6 +320,7 @@ def main():
                     pygame.time.wait(3000)
                     break
                 TURN = 1
+            # checking if there are chips available
             if get_chip_count(BOARD) == 42:
                 print("all chips used, draw")
                 game_end_text(winner)
