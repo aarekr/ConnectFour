@@ -44,6 +44,12 @@
 07.10. |  5h  | Ehtolauseiden refaktorointi. Suorituskykytestaaminen yksikertaisille funktioille. Mainin ja käyttöliittymän erottelun parissa työskentely. |
 08.10. |  1h  | Käyttöohjeen runko. Yksi suorituskykytesti lisää. Käyttöliittymä-luokan hahmottelu. |
 
+## Viikko 6
+
+ Pvm   | Aika | Aktiviteetti |
+-------|------|--------------|
+09.10. |      | Käyttöliittymä erotettu mainista. Muuttujia nimetty uudelleen ja funktioihin tehty muutoksia pylintin ehdotusten mukaisesti. |
+
 ## Yhteensä
 
  Viikko | Aika  |
@@ -53,3 +59,4 @@
     3   | 12,5h |
     4   | 16,5h |
     5   | 12,5h |
+    6   |       |
