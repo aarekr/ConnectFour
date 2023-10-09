@@ -1,10 +1,9 @@
-""" Connect Four Game """
+""" Connect Four Game - User Interface """
 
 import sys
 import math
-import random
-import numpy as np
 import pygame
+import helper_functions as hp
 
 black = (0, 0, 0)
 blue = (0, 0, 255)
@@ -12,66 +11,22 @@ white = (255, 255, 255)
 yellow = (255, 255, 0)
 red = (255, 0, 0)
 
-def create_game_board(rows, columns):
-    """ creating the game board """
-    board = np.zeros((rows, columns), dtype=int)
-    return board
+SLOT_SIZE = 100
+RADIUS = int(SLOT_SIZE/2 - 5)
 
-def initialize_random_turn():
-    """ starting player chosen randomly """
-    turn = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
-    return turn
-
-def print_board(board):
-    """ printing slots and chips in console """
-    print(np.flip(board, 0))
-
-def get_chip_count(board):
-    """ returning the number of chips players have dropped """
-    chip_count = 0
-    for row in board:  # refactor this
-        for item in row:
-            if item != 0:
-                chip_count += 1
-    return chip_count
-
-def count_ai_position_value_points(four_consequtive_slots, player):
-    """ counts the AI position value for 4 consequtive slots """
-    position_value = 0
-    if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
-        position_value += 30
-    elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
-        position_value += 10
-    return position_value
-
-def count_human_position_value_points(four_consequtive_slots, player):
-    """ counts the human player position value for 4 consequtive slots
-        AI gets negative points for certain human player chip positions """
-    position_value = 0
-    if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
-        position_value -= 90
-    elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
-        position_value -= 20
-    return position_value
-
-class UI:  # class has too many instance attributes 12/7 and should be split
+class UI:  # class has too many instance attributes 8/7 (pylint), remove one of them
     """ User interface for the game """
 
     def __init__(self):
         self.n_rows = 6
         self.n_columns = 7
-        self.board = create_game_board(self.n_rows, self.n_columns)
-        self.turn = 0
+        self.board = hp.create_game_board(self.n_rows, self.n_columns)
         self.game_active = True
-        self.winner = 0
         # creating the game window
-        self.slot_size = 100
-        self.height = (self.n_rows + 1) * self.slot_size
-        self.width = self.n_columns * self.slot_size
+        self.height = (self.n_rows + 1) * SLOT_SIZE
+        self.width = self.n_columns * SLOT_SIZE
         self.board_size = (self.height, self.width)
-        self.radius = int(self.slot_size/2 - 5)
         self.screen = pygame.display.set_mode(self.board_size)
-        #self.text_font = pygame.font.SysFont("Comic Sans MS", 60)
 
     def game_start_text(self, turn):
         """ printing who starts the game in top part of the game board window """
@@ -102,26 +57,26 @@ class UI:  # class has too many instance attributes 12/7 and should be split
         # drawing the blue game board and white empty slots
         for col in range(self.n_columns):
             for row in range(self.n_rows):
-                pygame.draw.rect(self.screen, blue, (col*self.slot_size,
-                                                     row*self.slot_size+self.slot_size,
-                                                     self.slot_size, self.slot_size))
-                pygame.draw.circle(self.screen, white, (int(col*self.slot_size+self.slot_size/2),
-                                                        int(row*self.slot_size+self.slot_size+
-                                                            self.slot_size/2)), self.radius)
+                pygame.draw.rect(self.screen, blue, (col*SLOT_SIZE,
+                                                     row*SLOT_SIZE+SLOT_SIZE,
+                                                     SLOT_SIZE, SLOT_SIZE))
+                pygame.draw.circle(self.screen, white, (int(col*SLOT_SIZE+SLOT_SIZE/2),
+                                                        int(row*SLOT_SIZE+SLOT_SIZE+
+                                                            SLOT_SIZE/2)), RADIUS)
         # drawing players' red and yellow chips
         for col in range(self.n_columns):
             for row in range(self.n_rows):
                 if board[row][col] == 1:
-                    pygame.draw.circle(self.screen, red, (int(col*self.slot_size+self.slot_size/2),
+                    pygame.draw.circle(self.screen, red, (int(col*SLOT_SIZE+SLOT_SIZE/2),
                                                           self.height-
-                                                          int(row*self.slot_size+
-                                                              self.slot_size/2)), self.radius)
+                                                          int(row*SLOT_SIZE+
+                                                              SLOT_SIZE/2)), RADIUS)
                 elif board[row][col] == 2:
-                    pygame.draw.circle(self.screen, yellow, (int(col*self.slot_size+
-                                                                 self.slot_size/2),
+                    pygame.draw.circle(self.screen, yellow, (int(col*SLOT_SIZE+
+                                                                 SLOT_SIZE/2),
                                                              self.height-
-                                                             int(row*self.slot_size+
-                                                                 self.slot_size/2)), self.radius)
+                                                             int(row*SLOT_SIZE+
+                                                                 SLOT_SIZE/2)), RADIUS)
         pygame.display.update()
 
     def next_free_row(self, board, col):
@@ -141,16 +96,15 @@ class UI:  # class has too many instance attributes 12/7 and should be split
                 free_columns.append(col)
         return free_columns
 
-    def drop_chip(self, board, row, col, chip):
+    def drop_chip(self, board, row, col, turn):
         """ player drops their chip and TURN is given to the other player """
-        # this global variable causes a pylint error, so it should be replaced
         row = self.next_free_row(board, col)
-        board[row][col] = chip
-        if self.turn == 1:
-            self.turn = 2
-        elif self.turn == 2:
-            self.turn = 1
-        return self.turn
+        board[row][col] = turn
+        if turn == 1:
+            turn = 2
+        elif turn == 2:
+            turn = 1
+        return turn
 
     def check_if_game_active(self, board, player):
         """ checking if the player has 4 chips in row/column/diagonal
@@ -200,8 +154,8 @@ class UI:  # class has too many instance attributes 12/7 and should be split
                                           board[row][col+1],
                                           board[row][col+2],
                                           board[row][col+3]]
-                position_value += count_ai_position_value_points(four_consequtive_slots, player)
-                position_value += count_human_position_value_points(four_consequtive_slots, 1)
+                position_value += hp.count_ai_position_value_points(four_consequtive_slots, player)
+                position_value += hp.count_human_position_value_points(four_consequtive_slots, 1)
 
         # Vertical counting
         for col in range(self.n_columns):
@@ -210,8 +164,8 @@ class UI:  # class has too many instance attributes 12/7 and should be split
                                           board[row+1][col],
                                           board[row+2][col],
                                           board[row+3][col]]
-                position_value += count_ai_position_value_points(four_consequtive_slots, player)
-                position_value += count_human_position_value_points(four_consequtive_slots, 1)
+                position_value += hp.count_ai_position_value_points(four_consequtive_slots, player)
+                position_value += hp.count_human_position_value_points(four_consequtive_slots, 1)
 
         # Positive diagonal counting
         for row in range(self.n_rows-3):
@@ -220,8 +174,8 @@ class UI:  # class has too many instance attributes 12/7 and should be split
                                           board[row+1][col+1],
                                           board[row+2][col+2],
                                           board[row+3][col+3]]
-                position_value += count_ai_position_value_points(four_consequtive_slots, player)
-                position_value += count_human_position_value_points(four_consequtive_slots, 1)
+                position_value += hp.count_ai_position_value_points(four_consequtive_slots, player)
+                position_value += hp.count_human_position_value_points(four_consequtive_slots, 1)
 
         # Negative diagonal counting
         for col in range(self.n_columns-3):
@@ -230,8 +184,8 @@ class UI:  # class has too many instance attributes 12/7 and should be split
                                           board[self.n_rows-1-row-1][col+1],
                                           board[self.n_rows-1-row-2][col+2],
                                           board[self.n_rows-1-row-3][col+2]]
-                position_value += count_ai_position_value_points(four_consequtive_slots, player)
-                position_value += count_human_position_value_points(four_consequtive_slots, 1)
+                position_value += hp.count_ai_position_value_points(four_consequtive_slots, player)
+                position_value += hp.count_human_position_value_points(four_consequtive_slots, 1)
 
         return position_value
 
@@ -240,7 +194,7 @@ class UI:  # class has too many instance attributes 12/7 and should be split
             returns False if game continues,
             returns tuple (True, draw(0)/winner(1 or 2)) if all chips used or
             one of the players won """
-        if get_chip_count(board) == 42:  # all chips used and draw (0)
+        if hp.get_chip_count(board) == 42:  # all chips used and draw (0)
             return True, 0
         if not self.check_if_game_active(board, 1):  # human player won (1)
             return True, 1
@@ -248,7 +202,7 @@ class UI:  # class has too many instance attributes 12/7 and should be split
             return True, 2
         return False, -1  # game continues, no winner or draw
 
-    def minimax(self, board, depth, alpha, beta, maximizing_player):
+    def minimax(self, board, depth, alpha, beta, maximizing_player):  # Pylint: Too many arguments (6/5)
         """ minimax function that determins the best move for the AI """
         terminal_node, winner = self.is_terminal_node(board)
         if depth == 0 or terminal_node:  # recursion ends
@@ -291,23 +245,23 @@ class UI:  # class has too many instance attributes 12/7 and should be split
             beta = min(beta, value)
         return value, best_col
 
-    def handle_game_end_in_console(self):
+    def handle_game_end_in_console(self, winner):
         """ Prints game result in console """
         print("game ended")
-        if self.winner == 1:
+        if winner == 1:
             print("You won!")
-        elif self.winner == 2:
+        elif winner == 2:
             print("AI won...")
-        print_board(self.board)
+        hp.print_board(self.board)
 
     def game_loop(self):
         """ main function calls this function that starts the game """
         # add an option here where player is asked who starts
         # or let the game choose randomly in initialize_random_turn()
-        self.turn = initialize_random_turn()
-        print_board(self.board)
+        turn = hp.initialize_random_turn()
+        hp.print_board(self.board)
         pygame.init()
-        self.game_start_text(self.turn)
+        self.game_start_text(turn)
         self.draw_board(self.board)
         pygame.display.update()
 
@@ -318,47 +272,46 @@ class UI:  # class has too many instance attributes 12/7 and should be split
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEMOTION:
-                    pygame.draw.rect(self.screen, black, (0, 0, self.width, self.slot_size))
+                    pygame.draw.rect(self.screen, black, (0, 0, self.width, SLOT_SIZE))
                     posx = event.pos[0]
-                    if self.turn == 1:
-                        pygame.draw.circle(self.screen, red, (posx, int(self.slot_size/2)),
-                                           self.radius)
+                    if turn == 1:
+                        pygame.draw.circle(self.screen, red, (posx, int(SLOT_SIZE/2)), RADIUS)
                 pygame.display.update()
                 # Player 1, human player
-                if self.turn == 1:
+                if turn == 1:
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        pygame.draw.rect(self.screen, black, (0, 0, self.width, self.slot_size))
+                        pygame.draw.rect(self.screen, black, (0, 0, self.width, SLOT_SIZE))
                         posx = event.pos[0]
-                        col = int(math.floor(posx/self.slot_size))
+                        col = int(math.floor(posx/SLOT_SIZE))
                         row = self.next_free_row(self.board, col)
                         if self.board[self.n_rows-1][col] == 0:
                             self.drop_chip(self.board, row, col, 1)
-                        print_board(self.board)
+                        hp.print_board(self.board)
                         self.draw_board(self.board)
                         self.game_active = self.check_if_game_active(self.board, 1)
                         if not self.game_active:
-                            self.winner = 1
-                            self.game_end_text(self.winner)
+                            winner = 1
+                            self.game_end_text(winner)
                             break
-                        self.turn = 2
+                        turn = 2
                 # Player 2, AI
-                elif self.turn == 2:
+                elif turn == 2:
                     # pygame.time.wait(1000)
                     best_col = self.minimax(self.board, 3, -math.inf, math.inf, True)[1]
                     self.drop_chip(self.board, 0, best_col, 2)
-                    print_board(self.board)
+                    hp.print_board(self.board)
                     self.draw_board(self.board)
                     self.game_active = self.check_if_game_active(self.board, 2)
                     if not self.game_active:
-                        self.winner = 2
-                        self.game_end_text(self.winner)
+                        winner = 2
+                        self.game_end_text(winner)
                         self.draw_board(self.board)
                         pygame.time.wait(3000)
                         break
-                    self.turn = 1
+                    turn = 1
                 # checking if there are chips available
-                if get_chip_count(self.board) == 42:
-                    self.game_end_text(self.winner)
+                if hp.get_chip_count(self.board) == 42:
+                    self.game_end_text(winner)
                     self.game_active = False
                     break
-        self.handle_game_end_in_console()
+        self.handle_game_end_in_console(winner)
