@@ -48,15 +48,16 @@
 
  Pvm   | Aika | Aktiviteetti |
 -------|------|--------------|
-09.10. |      | Käyttöliittymä erotettu mainista. Muuttujia nimetty uudelleen ja funktioihin tehty muutoksia pylintin ehdotusten mukaisesti. |
+09.10. |  3h  | Käyttöliittymä erotettu mainista. Muuttujia nimetty uudelleen ja funktioihin tehty muutoksia pylintin ehdotusten mukaisesti. 6 apufunktiota nyt omassa moduulissa. |
+10.10. |  1h  | Yksikkötestit (30) korjattu ja päivitetty uuden rakenteen mukaisiksi. Koko projektin kattavuus nyt 75%. Pylint ui.py on 9.00/10. |
 
 ## Yhteensä
 
- Viikko | Aika  |
---------|-------|
-    1   |  6,5h |
-    2   | 10,0h |
-    3   | 12,5h |
-    4   | 16,5h |
-    5   | 12,5h |
-    6   |       |
+| Viikko | Aika  |
+|--------|-------|
+|    1   |  6,5h |
+|    2   | 10,0h |
+|    3   | 12,5h |
+|    4   | 16,5h |
+|    5   | 12,5h |
+|    6   |       |

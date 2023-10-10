@@ -12,3 +12,8 @@
 * Kattavuustestien raportti konsolissa: python3 -m coverage report -m
 * Kattavuustestien raportti html: python3 -m coverage html
 * Suorituskykytestaus: python3 performance_tests.py
+
+  Toiminto  | Komento           |
+------------|-------------------|
+Aloita peli | python3 game.py   | 
+Pylint -testit | python3 -m pylint ui.py |
