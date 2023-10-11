@@ -36,7 +36,7 @@ class UI:
         elif turn == 2:
             who_starts = "AI starts"
         label = text_font.render(who_starts, 0, YELLOW)
-        self.screen.blit(label, (250, 15))
+        return label
 
     def game_end_text(self, winner):
         """ printing the game result when game ends: winner or draw """
@@ -49,7 +49,7 @@ class UI:
         elif winner == 2:
             end_text = "AI won..."
         label = text_font.render(end_text, 0, YELLOW)
-        self.screen.blit(label, (250, 15))
+        return label
 
     def draw_board(self, board):
         """ drawing the game board in a window """
@@ -120,11 +120,13 @@ class UI:
     def handle_game_end_in_console(self, winner):
         """ Prints game result in console """
         print("game ended")
+        announcing_winner = ""
         if winner == 1:
-            print("You won!")
+            announcing_winner = "You won!"
         elif winner == 2:
-            print("AI won...")
+            announcing_winner = "AI won..."
         hf.print_board(self.board)
+        return announcing_winner
 
     def game_loop(self):
         """ main function calls this function that starts the game """
@@ -133,7 +135,7 @@ class UI:
         turn = hf.initialize_random_turn()
         hf.print_board(self.board)
         pygame.init()
-        self.game_start_text(turn)
+        self.screen.blit(self.game_start_text(turn), (250, 15))
         self.draw_board(self.board)
         pygame.display.update()
 
@@ -163,12 +165,12 @@ class UI:
                         self.game_active = hf.check_if_game_active(self.board, 1)
                         if not self.game_active:
                             winner = 1
-                            self.game_end_text(winner)
+                            self.screen.blit(self.game_end_text(winner), (250, 15))
                             break
                         turn = 2
                 # Player 2, AI
                 elif turn == 2:
-                    # pygame.time.wait(1000)
+                    # pygame.time.wait(1000)  # uncomment and give time value if delay wanted
                     best_col = self.minimax(self.board, 3, -math.inf, math.inf, True)[1]
                     hf.drop_chip(self.board, 0, best_col, 2)
                     hf.print_board(self.board)
@@ -176,14 +178,14 @@ class UI:
                     self.game_active = hf.check_if_game_active(self.board, 2)
                     if not self.game_active:
                         winner = 2
-                        self.game_end_text(winner)
+                        self.screen.blit(self.game_end_text(winner), (250, 15))
                         self.draw_board(self.board)
                         pygame.time.wait(3000)
                         break
                     turn = 1
                 # checking if there are chips available
                 if hf.get_chip_count(self.board) == 42:
-                    self.game_end_text(winner)
+                    self.screen.blit(self.game_end_text(winner), (250, 15))
                     self.game_active = False
                     break
-        self.handle_game_end_in_console(winner)
+        print(self.handle_game_end_in_console(winner))

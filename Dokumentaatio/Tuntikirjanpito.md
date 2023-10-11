@@ -50,7 +50,8 @@
 -------|------|--------------|
 09.10. |  3h  | Käyttöliittymä erotettu mainista. Muuttujia nimetty uudelleen ja funktioihin tehty muutoksia pylintin ehdotusten mukaisesti. 6 apufunktiota nyt omassa moduulissa. |
 10.10. |  1h  | Yksikkötestit (30) korjattu ja päivitetty uuden rakenteen mukaisiksi. Koko projektin kattavuus nyt 75%. Pylint ui.py on 9.00/10. |
-11.10. |      | Lisää muuttujia ja funktioita siirretty käyttöliittymän ulkopuolelle.
+11.10. |  3h  | Lisää muuttujia ja funktioita siirretty käyttöliittymän ulkopuolelle. 2 strategiatestiä Minimaxille. Yksikkötestien kattavuus 86%. |
+12.10. |      |  |
 
 ## Yhteensä
 
