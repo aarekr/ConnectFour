@@ -16,13 +16,13 @@ class TestGameStart(unittest.TestCase):
     def test_bottom_row_is_all_zeros_when_game_starts(self):
         """ Test that the bottom row has all zeros when game starts """
         board = np.zeros((6, 7), dtype = int)
-        self.assertEqual(game.UI().next_free_row(board, 0), 0)
-        self.assertEqual(game.UI().next_free_row(board, 1), 0)
-        self.assertEqual(game.UI().next_free_row(board, 2), 0)
-        self.assertEqual(game.UI().next_free_row(board, 3), 0)
-        self.assertEqual(game.UI().next_free_row(board, 4), 0)
-        self.assertEqual(game.UI().next_free_row(board, 5), 0)
-        self.assertEqual(game.UI().next_free_row(board, 6), 0)
+        self.assertEqual(hf.next_free_row(board, 0), 0)
+        self.assertEqual(hf.next_free_row(board, 1), 0)
+        self.assertEqual(hf.next_free_row(board, 2), 0)
+        self.assertEqual(hf.next_free_row(board, 3), 0)
+        self.assertEqual(hf.next_free_row(board, 4), 0)
+        self.assertEqual(hf.next_free_row(board, 5), 0)
+        self.assertEqual(hf.next_free_row(board, 6), 0)
 
     # def test_who_starts_the_game_text_is_generated(self):
         # """ Test that the You start or AI starts text is visible when game starts """
@@ -33,7 +33,7 @@ class TestGameStart(unittest.TestCase):
     def test_all_columns_free_when_game_starts(self):
         """ Should return [0,1,2,3,4,5,6] as free columns """
         board = np.zeros((6, 7), dtype = int)
-        self.assertEqual(game.UI().all_free_columns(board), [0,1,2,3,4,5,6])
+        self.assertEqual(hf.all_free_columns(board), [0,1,2,3,4,5,6])
     
     def test_print_board_functionality(self):
         """ Testing that print_board() function exists and responds.
@@ -49,7 +49,7 @@ class TestFourInRow(unittest.TestCase):  # new structure updated
         board[0][1] = 1
         board[0][2] = 1
         board[0][3] = 1
-        self.assertFalse(game.UI().check_if_game_active(board, 1), False)
+        self.assertFalse(hf.check_if_game_active(board, 1), False)
 
     def test_four_chips_in_column_ends_the_game(self):
         """ Test that 4 chips in column ends the game """
@@ -58,7 +58,7 @@ class TestFourInRow(unittest.TestCase):  # new structure updated
         board[1][1] = 1
         board[2][1] = 1
         board[3][1] = 1
-        self.assertFalse(game.UI().check_if_game_active(board, 1), False)
+        self.assertFalse(hf.check_if_game_active(board, 1), False)
 
     def test_four_chips_in_positive_diagonal_ends_the_game(self):
         """ Test that 4 chips in positive diagonal ends the game """
@@ -67,7 +67,7 @@ class TestFourInRow(unittest.TestCase):  # new structure updated
         board[1][1] = 1
         board[2][2] = 1
         board[3][3] = 1
-        self.assertFalse(game.UI().check_if_game_active(board, 1), False)
+        self.assertFalse(hf.check_if_game_active(board, 1), False)
 
     def test_four_chips_in_negative_diagonal_ends_the_game(self):
         """ Test that 4 chips in negative diagonal ends the game """
@@ -76,7 +76,7 @@ class TestFourInRow(unittest.TestCase):  # new structure updated
         board[4][1] = 1
         board[3][2] = 1
         board[2][3] = 1
-        self.assertFalse(game.UI().check_if_game_active(board, 1), False)
+        self.assertFalse(hf.check_if_game_active(board, 1), False)
 
     def test_four_chips_of_both_players_in_row_does_not_end_the_game(self):
         """ Test that 4 chips of both players in a row continues the game """
@@ -85,18 +85,18 @@ class TestFourInRow(unittest.TestCase):  # new structure updated
         board[0][1] = 2  # this chip breaks the row
         board[0][2] = 1
         board[0][3] = 1
-        self.assertTrue(game.UI().check_if_game_active(board, 1), True)
+        self.assertTrue(hf.check_if_game_active(board, 1), True)
 
 class TestTurnChanges(unittest.TestCase):  # new structure updated
     def test_turn_changes_from_1_to_2(self):
         """ Test that turn changes from human(1) to AI(2) """
         board = np.zeros((6, 7), dtype = int)
-        self.assertEqual(game.UI().drop_chip(board, 0, 0, 1), 2)
+        self.assertEqual(hf.drop_chip(board, 0, 0, 1), 2)
 
     def test_turn_changes_from_2_to_1(self):
         """ Test that turn changes from AI(2) to human(1) """
         board = np.zeros((6, 7), dtype = int)
-        self.assertEqual(game.UI().drop_chip(board, 0, 0, 2), 1)
+        self.assertEqual(hf.drop_chip(board, 0, 0, 2), 1)
 
     def test_random_turn_generated(self):
         """ Test that turn 1 or 2 is generated """
@@ -133,7 +133,7 @@ class TestFreeRows(unittest.TestCase):  # new structure updated
         board[0][5] = 1
         board[1][5] = 2
         board[2][5] = 1
-        self.assertEqual(game.UI().next_free_row(board, 5), 3)
+        self.assertEqual(hf.next_free_row(board, 5), 3)
     
     def test_no_free_rows_when_column_full(self):
         """ Test that no free rows when all 6 slots full in that column """
@@ -144,7 +144,7 @@ class TestFreeRows(unittest.TestCase):  # new structure updated
         board[3][6] = 2
         board[4][6] = 1
         board[5][6] = 2
-        self.assertEqual(game.UI().next_free_row(board, 6), -1)
+        self.assertEqual(hf.next_free_row(board, 6), -1)
 
 class TestFreeColumns(unittest.TestCase):  # new structure updated
     def test_should_show_6_free_columns(self):
@@ -156,7 +156,7 @@ class TestFreeColumns(unittest.TestCase):  # new structure updated
         board[3][2] = 2
         board[4][2] = 1
         board[5][2] = 2
-        self.assertEqual(game.UI().all_free_columns(board), [0,1,3,4,5,6])
+        self.assertEqual(hf.all_free_columns(board), [0,1,3,4,5,6])
     
     def test_free_columns_when_1_row_is_full(self):
         """ Test that all columns are free when row 0 is full """
@@ -168,13 +168,13 @@ class TestFreeColumns(unittest.TestCase):  # new structure updated
         board[0][4] = 1
         board[0][5] = 2
         board[0][6] = 1
-        self.assertEqual(game.UI().all_free_columns(board), [0,1,2,3,4,5,6])
+        self.assertEqual(hf.all_free_columns(board), [0,1,2,3,4,5,6])
 
 class TestTerminalNode(unittest.TestCase):  # new structure updated
     def test_terminal_node_when_board_is_full_of_chips(self):
         """ Test that the node is terminal when all 42 chips dropped """
         board = create_full_42_chip_board()
-        self.assertEqual(game.UI().is_terminal_node(board), (True, 0))
+        self.assertEqual(hf.is_terminal_node(board), (True, 0))
     
     def test_terminal_node_is_True_when_human_has_4_chips_in_row(self):
         """ Test that the node is terminal when human player has 4 in row """
@@ -186,7 +186,7 @@ class TestTerminalNode(unittest.TestCase):  # new structure updated
         board[1][3] = 1
         board[1][5] = 1
         board[1][6] = 1
-        self.assertEqual(game.UI().is_terminal_node(board), (True, 1))
+        self.assertEqual(hf.is_terminal_node(board), (True, 1))
     
     def test_terminal_node_is_True_when_AI_has_4_chips_in_row(self):
         """ Test that the node is terminal when AI has 4 in row """
@@ -195,7 +195,7 @@ class TestTerminalNode(unittest.TestCase):  # new structure updated
         board[3][2] = 2
         board[4][2] = 2
         board[5][2] = 2
-        self.assertEqual(game.UI().is_terminal_node(board), (True, 2))
+        self.assertEqual(hf.is_terminal_node(board), (True, 2))
     
     def test_terminal_node_is_False_when_neither_player_has_4_in_row(self):
         """ Test that the node is not terminal when when both players have random 4 chips """
@@ -208,7 +208,7 @@ class TestTerminalNode(unittest.TestCase):  # new structure updated
         board[1][4] = 1
         board[0][3] = 2
         board[1][3] = 2
-        self.assertEqual(game.UI().is_terminal_node(board), (False, -1))
+        self.assertEqual(hf.is_terminal_node(board), (False, -1))
 
 class TestMinimax(unittest.TestCase):  # new structure updated
     def test_minimax_depth_0(self):
