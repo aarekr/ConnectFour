@@ -43,11 +43,25 @@ class TestGameStart(unittest.TestCase):
         board = np.zeros((6, 7), dtype = int)
         self.assertEqual(ui.UI().draw_board(board), None)
 
-    # def test_who_starts_the_game_text_is_generated(self):  # testing who_starts string possible?
-        # """ Test that the You start or AI starts text is visible when game starts """
-        # text_font = pygame.font.SysFont("Comic Sans MS", 60)
-        # correct_label = text_font.render("You start", 0, YELLOW)
-        # self.assertEqual(ui.UI().game_start_text(1), 1)
+    def test_human_starts_the_game_text_is_generated(self):
+        """ Test that the 'You start' text is visible when game starts and human player moves first """
+        pygame.font.init()
+        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+        correct_label = text_font.render("You start", 0, YELLOW)
+        print("\n  ---> ", correct_label.get_size())      # (260, 60)
+        print("\n  ---> ", correct_label.get_colorkey())  # (0, 0, 255, 255) i.e. YELLOW
+        print("\n  ---> ", correct_label.get_clip())      # <rect(0, 0, 178, 41)>
+        print("\n  ---> ", correct_label.get_height())    # 60
+        self.assertEqual(hf.game_start_text(1).get_size()[1], correct_label.get_size()[1])
+        self.assertEqual(hf.game_start_text(1).get_colorkey(), correct_label.get_colorkey())
+
+    def test_ai_starts_the_game_text_is_generated(self):
+        """ Test that the 'AI starts' text is visible when game starts and AI moves first """
+        pygame.font.init()
+        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+        correct_label = text_font.render("AI starts", 0, YELLOW)
+        self.assertEqual(hf.game_start_text(2).get_size()[1], correct_label.get_size()[1])
+        self.assertEqual(hf.game_start_text(2).get_colorkey(), correct_label.get_colorkey())
 
 class TestFourInRow(unittest.TestCase):
     def test_four_chips_in_row_ends_the_game(self):
@@ -268,6 +282,31 @@ class TestMinimaxStrategies(unittest.TestCase):
         depth = 3
         maximizing_player = True
         self.assertEqual(ui.UI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 3))
+
+    """def test_ai_wins_with_2_moves_when_row_has_0002200_and_human_drops_1_chip(self):
+        #Test that AI builds 3 chips in row, responds to human chip drop and wins with 2 moves 
+        board = np.zeros((6, 7), dtype = int)
+        board[0][3] = 2
+        board[0][4] = 2
+        depth = 2
+        maximizing_player = False
+        print("\n\nboard, starting   :", board[0])
+        ai_1st_move = ui.UI().minimax(board, depth, -math.inf, math.inf, maximizing_player)[1]
+        print("AI 1st_move:", ai_1st_move)
+        board[0][ai_1st_move] = 2
+        print("board, AI 1st move:", board[0])
+        if ai_1st_move == 5:    # ai choses column 4
+            board[0][6] = 1  # human counters with column 5
+            print("board, human moves:", board[0])
+            ai_2nd_move = ui.UI().minimax(board, depth, -math.inf, math.inf, maximizing_player)[1]  # error: AI choses 1 but should choose 2
+            print("AI 2nd_move:", ai_2nd_move)
+            board[0][ai_2nd_move] = 2
+            print("board, AI 2nd move:", board[0])
+            #self.assertEqual(ui.UI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 2))
+        elif ai_1st_move == 2:  # ai choses column 1
+            board[0][1] = 1  # human counters with column 2
+            print("board, human moves:", board[0])
+            self.assertEqual(ui.UI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 5))"""
 
 class TestAIPositionValue(unittest.TestCase):
     def test_3_in_row_and_1_empty_gives_AI_30_points(self):

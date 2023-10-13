@@ -27,30 +27,6 @@ class UI:
         self.game_active = True
         self.screen = pygame.display.set_mode(BOARD_SIZE)
 
-    def game_start_text(self, turn):
-        """ printing who starts the game in top part of the game board window """
-        text_font = pygame.font.SysFont("Comic Sans MS", 60)
-        who_starts = ""
-        if turn == 1:
-            who_starts = "You start"
-        elif turn == 2:
-            who_starts = "AI starts"
-        label = text_font.render(who_starts, 0, YELLOW)
-        return label
-
-    def game_end_text(self, winner):
-        """ printing the game result when game ends: winner or draw """
-        text_font = pygame.font.SysFont("Comic Sans MS", 60)
-        end_text = ""
-        if winner == 0:
-            end_text = "Draw"
-        elif winner == 1:
-            end_text = "YOU WON!!!"
-        elif winner == 2:
-            end_text = "AI won..."
-        label = text_font.render(end_text, 0, YELLOW)
-        return label
-
     def draw_board(self, board):
         """ drawing the game board in a window """
         # drawing the blue game board and white empty slots
@@ -135,7 +111,7 @@ class UI:
         turn = hf.initialize_random_turn()
         hf.print_board(self.board)
         pygame.init()
-        self.screen.blit(self.game_start_text(turn), (250, 15))
+        self.screen.blit(hf.game_start_text(turn), (250, 15))
         self.draw_board(self.board)
         pygame.display.update()
 
@@ -165,7 +141,7 @@ class UI:
                         self.game_active = hf.check_if_game_active(self.board, 1)
                         if not self.game_active:
                             winner = 1
-                            self.screen.blit(self.game_end_text(winner), (250, 15))
+                            self.screen.blit(hf.game_end_text(winner), (250, 15))
                             break
                         turn = 2
                 # Player 2, AI
@@ -178,14 +154,14 @@ class UI:
                     self.game_active = hf.check_if_game_active(self.board, 2)
                     if not self.game_active:
                         winner = 2
-                        self.screen.blit(self.game_end_text(winner), (250, 15))
+                        self.screen.blit(hf.game_end_text(winner), (250, 15))
                         self.draw_board(self.board)
                         pygame.time.wait(3000)
                         break
                     turn = 1
-                # checking if there are chips available
+                # checking if all chips are dropped
                 if hf.get_chip_count(self.board) == 42:
-                    self.screen.blit(self.game_end_text(winner), (250, 15))
+                    self.screen.blit(hf.game_end_text(winner), (250, 15))
                     self.game_active = False
                     break
         print(self.handle_game_end_in_console(winner))

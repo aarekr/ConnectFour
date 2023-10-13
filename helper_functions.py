@@ -1,10 +1,12 @@
 """ Connect Four Game - helper functions for User Interface """
 
+import pygame
 import random
 import numpy as np
 
 N_ROWS = 6
 N_COLUMNS = 7
+YELLOW = (255, 255, 0)
 
 def create_game_board(rows, columns):
     """ creating the game board """
@@ -19,6 +21,34 @@ def initialize_random_turn():
     """ starting player chosen randomly """
     turn = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
     return turn
+
+def game_start_text(turn):
+    """ printing who starts the game in top part of the game board window """
+    #text_font = pygame.font.SysFont("Comic Sans MS", 60)
+    #text_font = pygame.font.SysFont(pygame.font.get_default_font(), 60)  # size = 41
+    #text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+    text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+    #print(pygame.font.get_fonts()[7])
+    who_starts = ""
+    if turn == 1:
+        who_starts = "You start"
+    elif turn == 2:
+        who_starts = "AI starts"
+    label = text_font.render(who_starts, 0, YELLOW)
+    return label
+
+def game_end_text(winner):
+    """ printing the game result when game ends: winner or draw """
+    text_font = pygame.font.SysFont("Comic Sans MS", 60)
+    end_text = ""
+    if winner == 0:
+        end_text = "Draw"
+    elif winner == 1:
+        end_text = "YOU WON!!!"
+    elif winner == 2:
+        end_text = "AI won..."
+    label = text_font.render(end_text, 0, YELLOW)
+    return label
 
 def get_chip_count(board):
     """ returning the number of chips players have dropped """
