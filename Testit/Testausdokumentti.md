@@ -25,8 +25,13 @@ Testauksessa on käytetty Pythonin unittest -työkalua.
 * Minimax: kun päätöspuun syvyys on 0, minimax palauttaa peliposition arvon
 * Minimax: kun ihminen voittaa (terminal node), minimax palauttaa heuristisen arvon
 * Minimax: kun tekoäly voittaa (terminal node), minimax palauttaa heuristisen arvon
-* Tekoälyn neljän, kolmen ja kahden pelimerkin suorat saavat pelipositioina arvot
+* Tekoälyn kolmen ja kahden pelimerkin suorat saavat pelipositioina arvot
 * Ihmispelaajan kolmen ja kahden merkin suorat huonontavat tekoälyn peliposition arvoa
+* Tekoäly pyrkii laittamaan pelimerkkejä keskimmäisiin sarakkeisiin
+* Tekoäly voittaa yhdellä siirrolla kun sillä on 3 peräkkäistä merkkiä sarakkeessa ja 1 tyhjä
+* Tekoäly voittaa yhdellä siirrolla kun sillä on 3 peräkkäistä merkkiä rivissä ja 1 tyhjä
+* Testataan pelin lopussa, että pelaajan voitto ilmoitetaan konsolissa
+* Testataan pelin lopussa, että tekoälyn voitto ilmoitetaan konsolissa
 
 ## Testauksessa käytetyt syötteet
 * Testauksessa luodaan aina uusi peli. Pelin alkutilannetta testaavissa testeissä merkkejä ei ole tiputettu. 
@@ -38,3 +43,4 @@ Muissa testeissä on sarakkeisiin tiputettu tarvittava määrä merkkejä ja tes
 * Raportti (23.9.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-09-23.JPG)
 * Raportti (30.9.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-09-30.JPG)
 * Raportti (7.10.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-10-07.JPG)
+* Raportti (14.10.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-10-14.JPG)

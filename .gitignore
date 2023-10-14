@@ -2,8 +2,14 @@
 __pycache__
 __pycache__/
 
+/Testit/__pycache__
+/Testit/__pycache__/
+
 .pytest_cache
 .pytest_cache/
+
+/Testit/.coverage
+/Testit/.coverage/
 
 .coverage
 .coverage/

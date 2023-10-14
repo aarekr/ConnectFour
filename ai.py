@@ -1,54 +1,17 @@
-""" Connect Four Game - helper functions for User Interface """
+""" Connect Four Game - Artificial Intelligence """
 
-import pygame
+import math
 import random
-import numpy as np
 
 N_ROWS = 6
 N_COLUMNS = 7
 YELLOW = (255, 255, 0)
-
-def create_game_board(rows, columns):
-    """ creating the game board """
-    board = np.zeros((rows, columns), dtype=int)
-    return board
-
-def print_board(board):
-    """ printing slots and chips in console """
-    print(np.flip(board, 0))
+OPTIMAL_ORDER = [3, 2, 4, 1, 5, 0, 6]  # preferred/optimal order of handling columns in minimax
 
 def initialize_random_turn():
     """ starting player chosen randomly """
     turn = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
     return turn
-
-def game_start_text(turn):
-    """ printing who starts the game in top part of the game board window """
-    #text_font = pygame.font.SysFont("Comic Sans MS", 60)
-    #text_font = pygame.font.SysFont(pygame.font.get_default_font(), 60)  # size = 41
-    #text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
-    text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
-    #print(pygame.font.get_fonts()[7])
-    who_starts = ""
-    if turn == 1:
-        who_starts = "You start"
-    elif turn == 2:
-        who_starts = "AI starts"
-    label = text_font.render(who_starts, 0, YELLOW)
-    return label
-
-def game_end_text(winner):
-    """ printing the game result when game ends: winner or draw """
-    text_font = pygame.font.SysFont("Comic Sans MS", 60)
-    end_text = ""
-    if winner == 0:
-        end_text = "Draw"
-    elif winner == 1:
-        end_text = "YOU WON!!!"
-    elif winner == 2:
-        end_text = "AI won..."
-    label = text_font.render(end_text, 0, YELLOW)
-    return label
 
 def get_chip_count(board):
     """ returning the number of chips players have dropped """
@@ -76,6 +39,14 @@ def all_free_columns(board):
             free_columns.append(col)
     return free_columns
 
+def optimal_column_traversing_order(free_columns):
+    """ returns the optimal traversing order of columns """
+    actual_order = []  # order used for going through all options
+    for item in OPTIMAL_ORDER:
+        if item in free_columns:
+            actual_order.append(item)
+    return actual_order
+
 def drop_chip(board, row, col, turn):
     """ player drops their chip and TURN is given to the other player """
     row = next_free_row(board, col)
@@ -85,25 +56,6 @@ def drop_chip(board, row, col, turn):
     elif turn == 2:
         turn = 1
     return turn
-
-def count_ai_position_value_points(four_consequtive_slots, player):
-    """ counts the AI position value for 4 consequtive slots """
-    position_value = 0
-    if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
-        position_value += 30
-    elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
-        position_value += 10
-    return position_value
-
-def count_human_position_value_points(four_consequtive_slots, player):
-    """ counts the human player position value for 4 consequtive slots
-        AI gets negative points for certain human player chip positions """
-    position_value = 0
-    if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
-        position_value -= 90
-    elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
-        position_value -= 20
-    return position_value
 
 def check_if_game_active(board, player):
     """ checking if the player has 4 chips in row/column/diagonal
@@ -141,6 +93,38 @@ def check_if_game_active(board, player):
                     board[N_ROWS-1-row-3][col+3] == player):
                 return False
     return True
+
+def is_terminal_node(board):
+    """ minimax helper function,
+        returns False if game continues,
+        returns tuple (True, draw(0)/winner(1 or 2)) if all chips used or
+        one of the players won """
+    if get_chip_count(board) == 42:  # all chips used and draw (0)
+        return True, 0
+    if not check_if_game_active(board, 1):  # human player won (1)
+        return True, 1
+    if not check_if_game_active(board, 2):  # AI won (2)
+        return True, 2
+    return False, -1  # game continues, no winner or draw
+
+def count_ai_position_value_points(four_consequtive_slots, player):
+    """ counts the AI position value for 4 consequtive slots """
+    position_value = 0
+    if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
+        position_value += 30
+    elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
+        position_value += 10
+    return position_value
+
+def count_human_position_value_points(four_consequtive_slots, player):
+    """ counts the human player position value for 4 consequtive slots
+        AI gets negative points for certain human player chip positions """
+    position_value = 0
+    if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
+        position_value -= 90
+    elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
+        position_value -= 20
+    return position_value
 
 def get_position_value(board, player):
     """ calculates the optimal position value for the AI """
@@ -188,15 +172,51 @@ def get_position_value(board, player):
 
     return position_value
 
-def is_terminal_node(board):
-    """ minimax helper function,
-        returns False if game continues,
-        returns tuple (True, draw(0)/winner(1 or 2)) if all chips used or
-        one of the players won """
-    if get_chip_count(board) == 42:  # all chips used and draw (0)
-        return True, 0
-    if not check_if_game_active(board, 1):  # human player won (1)
-        return True, 1
-    if not check_if_game_active(board, 2):  # AI won (2)
-        return True, 2
-    return False, -1  # game continues, no winner or draw
+class AI:
+    """ This class handles the AI logic """
+
+    def __init__(self):
+        self.winner = 0
+
+    def minimax(self, board, depth, alpha, beta, maximizing_player):  # Too many arguments (6/5)
+        """ minimax function that determins the best move for the AI """
+        terminal_node, self.winner = is_terminal_node(board)
+        if depth == 0 or terminal_node:  # recursion ends
+            # return the heuristic value of node
+            if terminal_node and self.winner == 1:
+                return -9999999, 0  # high negative value equals human won
+            if terminal_node and self.winner == 2:
+                return 9999999, 0   # high positive value equals AI won
+            if depth == 0:
+                return get_position_value(board, maximizing_player), 0
+        free_columns = all_free_columns(board)
+        if maximizing_player:
+            value = -math.inf
+            best_col = -1
+            for col in optimal_column_traversing_order(free_columns):
+                row = next_free_row(board, col)
+                minimax_board = board.copy()
+                drop_chip(minimax_board, row, col, 2)  # dropping AI chip
+                minimax_value = self.minimax(minimax_board, depth-1, alpha, beta, False)[0]
+                if minimax_value > value:
+                    value = minimax_value
+                    best_col = col
+                if value > beta:
+                    break
+                alpha = max(alpha, value)
+            return value, best_col
+        # else: minimizing player - pylint recommended removing else
+        value = math.inf
+        best_col = -1
+        for col in optimal_column_traversing_order(free_columns):
+            row = next_free_row(board, col)
+            minimax_board = board.copy()
+            drop_chip(minimax_board, row, col, 1)  # dropping human player chip
+            minimax_value = self.minimax(minimax_board, depth-1, alpha, beta, True)[0]
+            if minimax_value < value:
+                value = minimax_value
+                best_col = col
+            if value < alpha:
+                break
+            beta = min(beta, value)
+        return value, best_col
