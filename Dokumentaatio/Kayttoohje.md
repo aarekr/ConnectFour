@@ -1,8 +1,11 @@
 # Käyttöohje
 
 ## Pelin asentaminen
-* Asenna pygame -moduuli: pip install pygame
-* Asenna numpy -moduuli: pip install numpy
+
+| Toiminto                             | Komento                 |
+|--------------------------------------|-------------------------|
+| Asenna pygame -moduuli               | pip install pygame      |
+| Asenna numpy -moduuli                | pip install numpy       |
 
 ## Komennot
 

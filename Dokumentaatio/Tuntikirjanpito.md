@@ -52,7 +52,7 @@
 10.10. |  1h  | Yksikkötestit (30) korjattu ja päivitetty uuden rakenteen mukaisiksi. Koko projektin kattavuus nyt 75%. Pylint ui.py on 9.00/10. |
 11.10. |  3h  | Lisää muuttujia ja funktioita siirretty käyttöliittymän ulkopuolelle. 2 strategiatestiä Minimaxille. Yksikkötestien kattavuus 86%. |
 13.10. |  4h  | Optimointiin tutustuminen. Hieman korjauksia ja strategiatestien kehittämistä. Zoom -tapaaminen ohjaajan kanssa. |
-14.10. |      |  |
+14.10. |      | Vertaispalaute. Minimaxin syvyysvirhe korjattu. Sarakkeiden läpikäyntijärjestys muutettu (nyt 3,2,4,1,5,0,6). |
 
 ## Yhteensä
 

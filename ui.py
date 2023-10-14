@@ -55,12 +55,12 @@ class UI:
         terminal_node, winner = hf.is_terminal_node(board)
         if depth == 0 or terminal_node:  # recursion ends
             # return the heuristic value of node
+            if terminal_node and winner == 1:
+                return -9999999, 0  # high negative value equals human won
+            if terminal_node and winner == 2:
+                return 9999999, 0  # high positive value equals AI won
             if depth == 0:
                 return hf.get_position_value(board, maximizing_player), 0
-            if terminal_node and winner == 1:
-                return -9999999, 0  # this return value should announce winner?
-            if terminal_node and winner == 2:
-                return 9999999, 0  # this return value should announce winner?
         free_columns = hf.all_free_columns(board)
         if maximizing_player:
             value = -math.inf
@@ -80,7 +80,12 @@ class UI:
         # else: minimizing player - pylint recommended removing else
         value = math.inf
         best_col = -1
-        for col in free_columns:
+        optimal_order = [3,2,4,1,5,0,6]  # preferred/optimal order of handling columns
+        actual_order = []  # order used for going through all options
+        for item in optimal_order:
+            if item in free_columns:
+                actual_order.append(item)  # constructing the optimal order
+        for col in actual_order:
             row = hf.next_free_row(board, col)
             minimax_board = board.copy()
             hf.drop_chip(minimax_board, row, col, 1)  # dropping human player chip

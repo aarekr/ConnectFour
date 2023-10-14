@@ -6,6 +6,9 @@
 * 7 muuttujaa siirretty käyttöliittymän ulkopuolelle
 * 2 testiä testaavat nyt osaako Minimax täyttää neljännen pelimerkin kun 3 jo sarakkeessa / rivissä
 * Apufunktioiden siirtäminen ui.py:stä helper_functions -moduuliin alentaa pylint ratingia
+* Zoom-tapaaminen ohjaajan kanssa.
+* Minimaxin syvyysvirhe korjattu.
+* Sarakkeiden läpikäyntijärjestys muutettu optimaaliseksi ts. aloitetaan keskeltä ja edetään reunoihin.
 
 ## Ohjelman edistyminen
 * Käyttöliittymä erotettu main -funktiosta
