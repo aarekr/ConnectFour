@@ -53,6 +53,13 @@
 11.10. |  3h  | Lisää muuttujia ja funktioita siirretty käyttöliittymän ulkopuolelle. 2 strategiatestiä Minimaxille. Yksikkötestien kattavuus 86%. |
 13.10. |  4h  | Optimointiin tutustuminen. Hieman korjauksia ja strategiatestien kehittämistä. Zoom -tapaaminen ohjaajan kanssa. |
 14.10. |  5h  | Vertaispalaute. Minimaxin syvyysvirhe korjattu. Sarakkeiden läpikäyntijärjestys muutettu (nyt 3,2,4,1,5,0,6). Tekoäly-luokka luotu. |
+15.10. |  2h  | Vertaisarviot: lukeminen ja kirjoittaminen. |
+
+## Viikko 7
+
+ Pvm   | Aika | Aktiviteetti |
+-------|------|--------------|
+16.10. |  2h  | Pelistrategioista lukeminen. Käyttöliittymän "kuka voitti"-osa korjattu. |
 
 ## Yhteensä
 
@@ -63,4 +70,5 @@
 |    3   | 12,5h |
 |    4   | 16,5h |
 |    5   | 12,5h |
-|    6   |       |
+|    6   | 18,0h |
+|    7   |       |

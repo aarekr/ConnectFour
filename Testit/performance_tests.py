@@ -1,7 +1,7 @@
 import timeit
 import cProfile
 
-# timeit test
+# timeit tests
 test_all_free_columns = """
 import numpy as np
 N_ROWS = 6
@@ -30,7 +30,7 @@ def next_free_row(board, col):
     return free_row
 """
 
-test_get_chip_count = """
+test_get_chip_count_2_for_loops = """
 import numpy as np
 N_ROWS = 6
 N_COLUMNS = 7
@@ -42,6 +42,16 @@ def get_chip_count(board):
             if item != 0:
                 chip_count += 1
     return chip_count
+"""
+
+test_get_chip_count_list_comprehension = """
+import numpy as np
+N_ROWS = 6
+N_COLUMNS = 7
+board = np.zeros((6, 7), dtype=int)
+def get_chip_count_list_comprehension(board):
+    value = len([item for row in board for item in row if item != 0])
+    return value
 """
 
 test_check_if_game_active = """
@@ -156,8 +166,10 @@ if __name__ == "__main__":
     print("  1. all_free_columns:", time_all_free_columns)
     time_next_free_row = timeit.timeit(test_next_free_row)
     print("  2. next_free_row   :", time_next_free_row)
-    time_get_chip_count = timeit.timeit(test_get_chip_count)
-    print("  3. get_chip_count  :", time_get_chip_count)
+    time_get_chip_count_2_for_loops = timeit.timeit(test_get_chip_count_2_for_loops)
+    print("  3a. get_chip_count_2_for_loops       :", time_get_chip_count_2_for_loops)
+    time_get_chip_count_list_comprehension = timeit.timeit(test_get_chip_count_list_comprehension)
+    print("  3b. get_chip_count_list_comprehension:", test_get_chip_count_list_comprehension)
     time_check_if_game_active = timeit.timeit(test_check_if_game_active)
     print("  4. check_if_game_active:", time_check_if_game_active)
 

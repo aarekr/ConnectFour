@@ -86,9 +86,11 @@ class UI:
 
     def handle_game_end_in_console(self, winner):
         """ Prints game result in console """
-        print("game ended")
+        print("Game ended")
         announcing_winner = ""
-        if winner == 1:
+        if winner == 0:
+            announcing_winner = "Draw"
+        elif winner == 1:
             announcing_winner = "You won!"
         elif winner == 2:
             announcing_winner = "AI won..."
@@ -106,7 +108,7 @@ class UI:
         self.draw_board(self.board)
         pygame.display.update()
 
-        print("game started")
+        print("Game started")
         # game runs in this while loop until somebody wins or all 42 chips are used
         while self.game_active:
             for event in pygame.event.get():
@@ -133,6 +135,8 @@ class UI:
                         if not self.game_active:
                             winner = 1
                             self.screen.blit(game_end_text(winner), (250, 15))
+                            self.draw_board(self.board)
+                            pygame.time.wait(3000)
                             break
                         turn = 2
                 # Player 2, AI
@@ -152,7 +156,10 @@ class UI:
                     turn = 1
                 # checking if all chips are dropped
                 if ai.get_chip_count(self.board) == 42:
+                    winner = 0
                     self.screen.blit(game_end_text(winner), (250, 15))
+                    self.draw_board(self.board)
+                    pygame.time.wait(3000)
                     self.game_active = False
                     break
         print(self.handle_game_end_in_console(winner))

@@ -15,12 +15,13 @@ def initialize_random_turn():
 
 def get_chip_count(board):
     """ returning the number of chips players have dropped """
-    chip_count = 0
+    """chip_count = 0
     for row in board:  # refactor this
         for item in row:
             if item != 0:
                 chip_count += 1
-    return chip_count
+    return chip_count"""
+    return len([item for row in board for item in row if item != 0])
 
 def next_free_row(board, col):
     """ returning the lowest free row in the given column """
@@ -176,7 +177,7 @@ class AI:
     """ This class handles the AI logic """
 
     def __init__(self):
-        self.winner = 0
+        self.winner = 0  # in ui.py this is local variable, change it
 
     def minimax(self, board, depth, alpha, beta, maximizing_player):  # Too many arguments (6/5)
         """ minimax function that determins the best move for the AI """
