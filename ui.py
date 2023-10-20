@@ -27,10 +27,10 @@ def create_game_board(rows, columns):
 
 def print_board(board):
     """ printing slots and chips in console """
-    print(np.flip(board, 0))
+    print(np.flip(board, 0), "\n")
 
 def game_start_text(turn):
-    """ printing who starts the game in top part of the game board window """
+    """ displaying who starts the game in top part of the game board window """
     text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
     who_starts = ""
     if turn == 1:
@@ -41,8 +41,8 @@ def game_start_text(turn):
     return label
 
 def game_end_text(winner):
-    """ printing the game result when game ends: winner or draw """
-    text_font = pygame.font.SysFont("Comic Sans MS", 60)
+    """ displaying the game result when game ends: winner or draw """
+    text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
     end_text = ""
     if winner == 0:
         end_text = "Draw"
@@ -85,7 +85,7 @@ class UI:
         pygame.display.update()
 
     def handle_game_end_in_console(self, winner):
-        """ Prints game result in console """
+        """ prints game result in console """
         print("Game ended")
         announcing_winner = ""
         if winner == 0:
@@ -96,6 +96,13 @@ class UI:
             announcing_winner = "AI won..."
         print_board(self.board)
         return announcing_winner
+
+    def handle_game_end_in_window(self, board, winner):
+        """ shows game result in the game window """
+        self.screen.blit(game_end_text(winner), (250, 15))
+        self.draw_board(board)
+        pygame.time.wait(3000)
+        self.game_active = False
 
     def game_loop(self):
         """ main function calls this function that starts the game """
@@ -134,9 +141,7 @@ class UI:
                         self.game_active = ai.check_if_game_active(self.board, 1)
                         if not self.game_active:
                             winner = 1
-                            self.screen.blit(game_end_text(winner), (250, 15))
-                            self.draw_board(self.board)
-                            pygame.time.wait(3000)
+                            self.handle_game_end_in_window(self.board, winner)
                             break
                         turn = 2
                 # Player 2, AI
@@ -149,17 +154,12 @@ class UI:
                     self.game_active = ai.check_if_game_active(self.board, 2)
                     if not self.game_active:
                         winner = 2
-                        self.screen.blit(game_end_text(winner), (250, 15))
-                        self.draw_board(self.board)
-                        pygame.time.wait(3000)
+                        self.handle_game_end_in_window(self.board, winner)
                         break
                     turn = 1
                 # checking if all chips are dropped
                 if ai.get_chip_count(self.board) == 42:
                     winner = 0
-                    self.screen.blit(game_end_text(winner), (250, 15))
-                    self.draw_board(self.board)
-                    pygame.time.wait(3000)
-                    self.game_active = False
+                    self.handle_game_end_in_window(self.board, winner)
                     break
         print(self.handle_game_end_in_console(winner))

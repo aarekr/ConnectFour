@@ -65,6 +65,30 @@ class TestGameStart(unittest.TestCase):
         self.assertEqual(ui.game_start_text(2).get_size()[1], correct_label.get_size()[1])
         self.assertEqual(ui.game_start_text(2).get_colorkey(), correct_label.get_colorkey())
 
+    def test_draw_text_is_generated_when_game_ends_in_draw(self):
+        """ Test that 'Draw' text is visible when neither wins """
+        pygame.font.init()
+        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+        correct_label = text_font.render("Draw", 0, YELLOW)
+        self.assertEqual(ui.game_end_text(1).get_size()[1], correct_label.get_size()[1])
+        self.assertEqual(ui.game_end_text(2).get_colorkey(), correct_label.get_colorkey())
+
+    def test_human_won_text_is_generated_when_human_wins(self):
+        """ Test that when human wins, 'YOU WON!!!' text is visible """
+        pygame.font.init()
+        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+        correct_label = text_font.render("YOU WON!!!", 0, YELLOW)
+        self.assertEqual(ui.game_end_text(1).get_size()[1], correct_label.get_size()[1])
+        self.assertEqual(ui.game_end_text(1).get_colorkey(), correct_label.get_colorkey())
+
+    def test_ai_won_text_is_generated_when_human_wins(self):
+        """ Test that when AI wins, 'AI won...' text is visible """
+        pygame.font.init()
+        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+        correct_label = text_font.render("AI won...", 0, YELLOW)
+        self.assertEqual(ui.game_end_text(2).get_size()[1], correct_label.get_size()[1])
+        self.assertEqual(ui.game_end_text(2).get_colorkey(), correct_label.get_colorkey())
+
 class TestFourInRow(unittest.TestCase):
     def test_four_chips_in_row_ends_the_game(self):
         """ Test that 4 chips in row ends the game """
