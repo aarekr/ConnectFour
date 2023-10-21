@@ -98,17 +98,43 @@ class UI:
         return announcing_winner
 
     def handle_game_end_in_window(self, board, winner):
-        """ shows game result in the game window """
+        """ shows game end result in the game window """
         self.screen.blit(game_end_text(winner), (250, 15))
         self.draw_board(board)
         pygame.time.wait(3000)
-        self.game_active = False
 
-    def game_loop(self):
-        """ main function calls this function that starts the game """
-        # add an option here where player is asked who starts
-        # or let the game choose randomly in initialize_random_turn()
-        turn = ai.initialize_random_turn()
+    def who_starts(self):
+        pygame.init()
+        text_font = pygame.font.Font(pygame.font.get_default_font(), 25)
+        who_starts_text = "Who starts the game?"
+        starter_options_text = "r = random, h = human, a = AI, e = end"
+        upper_text = text_font.render(who_starts_text, 0, YELLOW)
+        lower_text = text_font.render(starter_options_text, 0, YELLOW)
+        self.screen.blit(upper_text, (100, 15))
+        self.screen.blit(lower_text, (100, 50))
+        self.draw_board(self.board)
+        pygame.time.wait(3000)
+        who_starts = -1
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                print("player chose:", event.key)  # r = 114, h = 104, a = 97, e = 101
+                if event.key == pygame.K_r:    # random starter
+                    who_starts = ai.initialize_random_turn()
+                elif event.key == pygame.K_h:  # human starts
+                    who_starts = 1
+                elif event.key == pygame.K_a:  # AI starts
+                    who_starts = 2
+                elif event.key == pygame.K_e:  # game ends
+                    who_starts = None
+            if who_starts != -1:
+                break
+        pygame.draw.rect(self.screen, BLACK, (0, 0, WIDTH, SLOT_SIZE))
+        print("who_starts:", who_starts)
+        self.game_loop(who_starts)
+
+    def game_loop(self, who_starts):
+        """ who_starts function calls this function that starts the game """
+        turn = who_starts
         print_board(self.board)
         pygame.init()
         self.screen.blit(game_start_text(turn), (250, 15))

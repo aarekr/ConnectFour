@@ -60,8 +60,8 @@
  Pvm   | Aika | Aktiviteetti |
 -------|------|--------------|
 16.10. |  2h  | Pelistrategioista lukeminen. Käyttöliittymän "kuka voitti"-osa korjattu. |
-20.10. |  2h  | Testit pelin lopputuloksen ilmoittamiselle. Pelin lopetusteksteille yksi yhteinen funktio. |
-21.10. |      |  |
+20.10. |  2h  | Testit pelin lopputuloksen ilmoittamiselle. Pelin lopetusteksteille yksi yhteinen funktio. Kuka aloittaa pelin-toiminnon kehittäminen. |
+21.10. |  3h  | Pelin alussa saa nyt valita aloittajan tai aloittaja arvotaan. |
 
 ## Yhteensä
 
