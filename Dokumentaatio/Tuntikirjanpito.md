@@ -62,6 +62,7 @@
 16.10. |  2h  | Pelistrategioista lukeminen. Käyttöliittymän "kuka voitti"-osa korjattu. |
 20.10. |  2h  | Testit pelin lopputuloksen ilmoittamiselle. Pelin lopetusteksteille yksi yhteinen funktio. Kuka aloittaa pelin-toiminnon kehittäminen. |
 21.10. |  3h  | Pelin alussa saa nyt valita aloittajan tai aloittaja arvotaan. |
+22.10. |  3h  | Pelin loppuessa voi aloittaa uuden pelin. Täysi sarake-bugi korjattu. Lisää testejä Minimaxille. |
 
 ## Yhteensä
 
@@ -73,4 +74,5 @@
 |    4   | 16,5h |
 |    5   | 12,5h |
 |    6   | 18,0h |
-|    7   |       |
+|    7   | 10,0h |
+|    8   |       |

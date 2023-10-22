@@ -94,6 +94,7 @@ class UI:
             announcing_winner = "You won!"
         elif winner == 2:
             announcing_winner = "AI won..."
+        announcing_winner += "\n"
         print_board(self.board)
         return announcing_winner
 
@@ -104,37 +105,43 @@ class UI:
         pygame.time.wait(3000)
 
     def who_starts(self):
-        pygame.init()
-        text_font = pygame.font.Font(pygame.font.get_default_font(), 25)
-        who_starts_text = "Who starts the game?"
-        starter_options_text = "r = random, h = human, a = AI, e = end"
-        upper_text = text_font.render(who_starts_text, 0, YELLOW)
-        lower_text = text_font.render(starter_options_text, 0, YELLOW)
-        self.screen.blit(upper_text, (100, 15))
-        self.screen.blit(lower_text, (100, 50))
-        self.draw_board(self.board)
-        pygame.time.wait(3000)
-        who_starts = -1
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                print("player chose:", event.key)  # r = 114, h = 104, a = 97, e = 101
-                if event.key == pygame.K_r:    # random starter
-                    who_starts = ai.initialize_random_turn()
-                elif event.key == pygame.K_h:  # human starts
-                    who_starts = 1
-                elif event.key == pygame.K_a:  # AI starts
-                    who_starts = 2
-                elif event.key == pygame.K_e:  # game ends
-                    who_starts = None
-            if who_starts != -1:
+        while True:
+            pygame.init()
+            pygame.draw.rect(self.screen, BLACK, (0, 0, WIDTH, SLOT_SIZE))
+            text_font = pygame.font.Font(pygame.font.get_default_font(), 25)
+            who_starts_text = "Who starts the game?"
+            starter_options_text = "r = random, h = human, a = AI, e = end"
+            upper_text = text_font.render(who_starts_text, 0, YELLOW)
+            lower_text = text_font.render(starter_options_text, 0, YELLOW)
+            self.screen.blit(upper_text, (100, 15))
+            self.screen.blit(lower_text, (100, 50))
+            self.draw_board(self.board)
+            pygame.time.wait(3000)
+            who_starts = ai.initialize_random_turn()
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    print("player chose:", event.key, " (r=114, h=104, a=97, e=101)")
+                    if event.key == pygame.K_r:    # random starter
+                        pass
+                    elif event.key == pygame.K_h:  # human starts
+                        who_starts = 1
+                    elif event.key == pygame.K_a:  # AI starts
+                        who_starts = 2
+                    elif event.key == pygame.K_e:  # game ends
+                        who_starts = None
+            if who_starts == None:
                 break
-        pygame.draw.rect(self.screen, BLACK, (0, 0, WIDTH, SLOT_SIZE))
-        print("who_starts:", who_starts)
-        self.game_loop(who_starts)
+            pygame.draw.rect(self.screen, BLACK, (0, 0, WIDTH, SLOT_SIZE))
+            print("who_starts:", who_starts)
+            self.board = create_game_board(N_ROWS, N_COLUMNS)
+            self.game_active = True
+            self.screen = pygame.display.set_mode(BOARD_SIZE)
+            self.game_loop(who_starts)
 
-    def game_loop(self, who_starts):
+    def game_loop(self, who_starts = ai.initialize_random_turn()):  # random starter if not chosen
         """ who_starts function calls this function that starts the game """
         turn = who_starts
+        winner = 0
         print_board(self.board)
         pygame.init()
         self.screen.blit(game_start_text(turn), (250, 15))
@@ -162,6 +169,8 @@ class UI:
                         row = ai.next_free_row(self.board, col)
                         if self.board[N_ROWS-1][col] == 0:
                             ai.drop_chip(self.board, row, col, 1)
+                        else:  # column is full, can't drop the chip here
+                            continue
                         print_board(self.board)
                         self.draw_board(self.board)
                         self.game_active = ai.check_if_game_active(self.board, 1)

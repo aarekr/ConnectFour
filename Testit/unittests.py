@@ -305,50 +305,163 @@ class TestMinimaxBasicFunctionalities(unittest.TestCase):
         self.assertEqual(ai.optimal_column_traversing_order(free_columns), [])
 
 class TestMinimaxStrategies(unittest.TestCase):
-    def test_minimax_ai_wins_with_1_move_when_3_consequtive_chips_in_column(self):
+    def test_minimax_ai_wins_with_1_move_when_3_consequtive_chips_in_column(self):  # depth = 1
         """ Test that AI wins with one move when 3 consequtive chips in column """
         board = np.zeros((6, 7), dtype = int)
         board[0][5] = 2
         board[1][5] = 2
         board[2][5] = 2
-        depth = 3
+        depth = 1
         maximizing_player = True
         self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 5))
 
-    def test_minimax_ai_wins_with_1_move_when_3_consequtive_chips_in_row(self):
+        board = np.zeros((6, 7), dtype = int)
+        board[0][4] = 1
+        board[1][4] = 2
+        board[2][4] = 2
+        board[3][4] = 2
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 4))
+
+        board = np.zeros((6, 7), dtype = int)
+        board[0][3] = 1
+        board[1][3] = 1
+        board[2][3] = 2
+        board[3][3] = 2
+        board[4][3] = 2
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 3))
+
+    def test_minimax_ai_wins_with_1_move_when_3_consequtive_chips_in_row(self):  # depth = 1
         """ Test that AI wins with one move when 3 consequtive chips in row """
+        # chip lands in row 0
         board = np.zeros((6, 7), dtype = int)
         board[0][0] = 2
         board[0][1] = 2
         board[0][2] = 2
-        depth = 3
+        depth = 1
         maximizing_player = True
         self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 3))
 
-    """def test_ai_wins_with_2_moves_when_row_has_0002200_and_human_drops_1_chip(self):
-        #Test that AI builds 3 chips in row, responds to human chip drop and wins with 2 moves 
+        board = np.zeros((6, 7), dtype = int)
+        board[0][1] = 2
+        board[0][2] = 2
+        board[0][3] = 2
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 4))
+
+        board = np.zeros((6, 7), dtype = int)
+        board[0][2] = 2
+        board[0][3] = 2
+        board[0][4] = 2
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 1))
+
         board = np.zeros((6, 7), dtype = int)
         board[0][3] = 2
         board[0][4] = 2
-        depth = 2
-        maximizing_player = False
-        print("\n\nboard, starting   :", board[0])
-        ai_1st_move = ui.UI().minimax(board, depth, -math.inf, math.inf, maximizing_player)[1]
-        print("AI 1st_move:", ai_1st_move)
-        board[0][ai_1st_move] = 2
-        print("board, AI 1st move:", board[0])
-        if ai_1st_move == 5:    # ai choses column 4
-            board[0][6] = 1  # human counters with column 5
-            print("board, human moves:", board[0])
-            ai_2nd_move = ui.UI().minimax(board, depth, -math.inf, math.inf, maximizing_player)[1]  # error: AI choses 1 but should choose 2
-            print("AI 2nd_move:", ai_2nd_move)
-            board[0][ai_2nd_move] = 2
-            print("board, AI 2nd move:", board[0])
-            #self.assertEqual(ui.UI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 2))
-        elif ai_1st_move == 2:  # ai choses column 1
-            board[0][1] = 1  # human counters with column 2
-            print("board, human moves:", board[0])
-            self.assertEqual(ui.UI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 5))"""
+        board[0][5] = 2
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 2))
+
+        board = np.zeros((6, 7), dtype = int)
+        board[0][4] = 2
+        board[0][5] = 2
+        board[0][6] = 2
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 3))
+
+        # chip lands in row 1
+        board = np.zeros((6, 7), dtype = int)
+        board[0][1] = 1
+        board[1][1] = 1
+        board[1][2] = 2
+        board[1][3] = 2
+        board[1][4] = 2
+        board[0][5] = 1  # should drop the chip on top of this
+        board[0][6] = 1
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 5))
+
+        # chip lands in row 2
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 1
+        board[1][0] = 1
+        board[0][1] = 2
+        board[1][1] = 2
+        board[0][2] = 2
+        board[1][2] = 2
+        board[0][3] = 1
+        board[1][3] = 2
+        board[0][4] = 1  # should drop the chip on top of this
+        board[0][5] = 1
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 4))
+
+    # depth = 3
+    def test_minimax_has_2_in_row_builds_3_and_wins_with_total_of_2_moves(self):
+        """ Test Minimax has 0002200 in bottom row, fills col 2 and wins with next move """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][3] = 2
+        board[1][3] = 1
+        board[0][4] = 2
+        board[1][4] = 1
+        depth = 3  # gameplay: 1) AI: col 2, 2) human: col 1 or 5, 3) AI wins with 1 or 5
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 2))
+
+    def test_minimax_blocks_human_2_chip_row(self):
+        """ Test human has 0002200 in bottom row, AI should block 1 side """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][2] = 1
+        board[0][3] = 1
+        board[1][3] = 2
+        depth = 3  # gameplay: AI: col 4, which gives best play value 30 + 10 = 40
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (40, 4))
+
+    def test_minimax_builds_cross_diagonals_of_3_chips_and_wins_with_total_of_2_moves(self):
+        """ Test Minimax drops to col 2 and has 2 diagonal win options with next move """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 2
+        board[0][1] = 1
+        board[0][2] = 1
+        board[0][3] = 1
+        board[0][4] = 2
+        board[1][1] = 2
+        board[1][2] = 1
+        board[1][3] = 2
+        board[1][4] = 1
+        board[2][1] = 2
+        board[2][3] = 1
+        depth = 3
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 2))
+
+    def test_minimax_blocks_4_in_row_twice_when_human_counters(self):
+        """ Test AI should block 4 in row with col 1, human counters with 4, AI counters with 5 """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 1
+        board[1][1] = 2
+        board[0][2] = 1
+        board[0][3] = 1
+        board[1][3] = 2
+        depth = 3
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (60, 1))
+        board[0][1] = 2  # 1) AI: col 1
+        board[0][4] = 1  # 2) human: col 4 and has now 3 in row
+        depth = 3        # 3) AI should counter with col 5
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (80, 5))
 
 class TestAIPositionValue(unittest.TestCase):
     def test_3_in_row_and_1_empty_gives_AI_30_points(self):
@@ -393,13 +506,17 @@ class TestHumanPlayerPositionValue(unittest.TestCase):
         self.assertEqual(ai.count_human_position_value_points(four_consequtive_slots, 1), -20)
 
 class TestGameEnd(unittest.TestCase):
+    def test_draw_announced_in_console(self):
+        """ Test that when game ends in draw, console text is Draw """
+        self.assertEqual(ui.UI().handle_game_end_in_console(0), "Draw\n")
+
     def test_human_won_accounced_in_console(self):
         """ Test that when human wins, console text is You won! """
-        self.assertEqual(ui.UI().handle_game_end_in_console(1), "You won!")
+        self.assertEqual(ui.UI().handle_game_end_in_console(1), "You won!\n")
 
     def test_ai_won_accounced_in_console(self):
         """ Test that when AI wins, console text is AI won... """
-        self.assertEqual(ui.UI().handle_game_end_in_console(2), "AI won...")
+        self.assertEqual(ui.UI().handle_game_end_in_console(2), "AI won...\n")
 
 # helper function
 def create_full_42_chip_board():
