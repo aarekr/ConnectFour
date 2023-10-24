@@ -61,8 +61,13 @@
 -------|------|--------------|
 16.10. |  2h  | Pelistrategioista lukeminen. Käyttöliittymän "kuka voitti"-osa korjattu. |
 20.10. |  2h  | Testit pelin lopputuloksen ilmoittamiselle. Pelin lopetusteksteille yksi yhteinen funktio. Kuka aloittaa pelin-toiminnon kehittäminen. |
-21.10. |  3h  | Pelin alussa saa nyt valita aloittajan tai aloittaja arvotaan. |
+21.10. |  3h  | Pelin alussa voi nyt valita aloittajan tai aloittaja arvotaan. |
 22.10. |  3h  | Pelin loppuessa voi aloittaa uuden pelin. Täysi sarake-bugi korjattu. Lisää testejä Minimaxille. |
+
+## Viikko 8
+ Pvm   | Aika | Aktiviteetti |
+-------|------|--------------|
+24.10. |  2h  | Virheen tutkimista ja korjausta: Tekoäly reagoi väärin rivin (0)222(0)-suoriin - ei voita yhdellä siirrolla. Pelitilanteita vastaavat testit menevät kuitenkin läpi. Pistejärjestelmän pistemääriä muutettu. Minimaxissa pelattu depth = 5. |
 
 ## Yhteensä
 

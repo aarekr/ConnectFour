@@ -89,12 +89,12 @@ class UI:
         print("Game ended")
         announcing_winner = ""
         if winner == 0:
-            announcing_winner = "Draw"
+            announcing_winner = "Draw\n"
         elif winner == 1:
-            announcing_winner = "You won!"
+            announcing_winner = "You won!\n"
         elif winner == 2:
-            announcing_winner = "AI won..."
-        announcing_winner += "\n"
+            announcing_winner = "AI won...\n"
+        #announcing_winner += "\n"
         print_board(self.board)
         return announcing_winner
 
@@ -105,12 +105,13 @@ class UI:
         pygame.time.wait(3000)
 
     def who_starts(self):
+        """ game.py calls this function where game starter is chosen """
         while True:
             pygame.init()
             pygame.draw.rect(self.screen, BLACK, (0, 0, WIDTH, SLOT_SIZE))
             text_font = pygame.font.Font(pygame.font.get_default_font(), 25)
             who_starts_text = "Who starts the game?"
-            starter_options_text = "r = random, h = human, a = AI, e = end"
+            starter_options_text = "R = Random, H = Human, A = AI, E = End"
             upper_text = text_font.render(who_starts_text, 0, YELLOW)
             lower_text = text_font.render(starter_options_text, 0, YELLOW)
             self.screen.blit(upper_text, (100, 15))
@@ -120,7 +121,7 @@ class UI:
             who_starts = ai.initialize_random_turn()
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    print("player chose:", event.key, " (r=114, h=104, a=97, e=101)")
+                    print("player chose:", event.key, " (R=114, H=104, A=97, E=101)")
                     if event.key == pygame.K_r:    # random starter
                         pass
                     elif event.key == pygame.K_h:  # human starts
@@ -138,7 +139,7 @@ class UI:
             self.screen = pygame.display.set_mode(BOARD_SIZE)
             self.game_loop(who_starts)
 
-    def game_loop(self, who_starts = ai.initialize_random_turn()):  # random starter if not chosen
+    def game_loop(self, who_starts):
         """ who_starts function calls this function that starts the game """
         turn = who_starts
         winner = 0
@@ -182,8 +183,9 @@ class UI:
                 # Player 2, AI
                 elif turn == 2:
                     # pygame.time.wait(1000)  # uncomment and give time value if delay wanted
-                    best_col = ai.AI().minimax(self.board, 3, -math.inf, math.inf, True)[1]
+                    best_col = ai.AI().minimax(self.board, 5, -math.inf, math.inf, True)[1]
                     ai.drop_chip(self.board, 0, best_col, 2)
+                    print("AI chip dropped in column:", best_col)
                     print_board(self.board)
                     self.draw_board(self.board)
                     self.game_active = ai.check_if_game_active(self.board, 2)

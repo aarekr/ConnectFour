@@ -463,6 +463,39 @@ class TestMinimaxStrategies(unittest.TestCase):
         maximizing_player = True
         self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (80, 5))
 
+class TestMinimaxStrategiesFromActualGames(unittest.TestCase):
+    # these situations are from actual games where AI played incorrectly
+    def test_ai_wins_with_one_move_when_3_in_row_and_6_chips_on_board(self):
+        """ Test that AI drops to col 1 or 5 when 3 in row and 6 chips dropped """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 1
+        board[0][2] = 2
+        board[0][3] = 2
+        board[0][4] = 2
+        board[1][3] = 1
+        board[1][4] = 1
+        board[2][3] = 1
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 1))
+
+    def test_ai_wins_when_3_chips_in_row_1_and_10_chips_on_board(self):
+        """ Test that AI drops to col 0 when row 1 has 3 chips in row """
+        board = np.zeros((6, 7), dtype = int)
+        board[0][0] = 1
+        board[0][1] = 1
+        board[0][2] = 1
+        board[0][3] = 2
+        board[1][1] = 2
+        board[1][2] = 2
+        board[1][3] = 2
+        board[2][2] = 1
+        board[2][3] = 2
+        board[3][3] = 1
+        depth = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (9999999, 0))
+
 class TestAIPositionValue(unittest.TestCase):
     def test_3_in_row_and_1_empty_gives_AI_30_points(self):
         """ Test that 3 in row and 1 empty gives AI 30 points """

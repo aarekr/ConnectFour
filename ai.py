@@ -106,9 +106,9 @@ def count_ai_position_value_points(four_consequtive_slots, player):
     """ counts the AI position value for 4 consequtive slots """
     position_value = 0
     if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
-        position_value += 30
+        position_value += 50  # 30
     elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
-        position_value += 10
+        position_value += 20  # 10
     return position_value
 
 def count_human_position_value_points(four_consequtive_slots, player):
@@ -116,9 +116,9 @@ def count_human_position_value_points(four_consequtive_slots, player):
         AI gets negative points for certain human player chip positions """
     position_value = 0
     if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
-        position_value -= 90
+        position_value -= 50  # -90
     elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
-        position_value -= 20
+        position_value -= 20  # -20
     return position_value
 
 def get_position_value(board, player):

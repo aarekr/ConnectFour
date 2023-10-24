@@ -24,5 +24,6 @@ Aineopintojen harjoitustyö: Algoritmit ja tekoäly (periodi 1) 2023
 * [Viikko 5](https://github.com/aarekr/ConnectFour/blob/main/Dokumentaatio/Viikkoraportti_5.md)
 * [Viikko 6](https://github.com/aarekr/ConnectFour/blob/main/Dokumentaatio/Viikkoraportti_6.md)
 * [Viikko 7](https://github.com/aarekr/ConnectFour/blob/main/Dokumentaatio/Viikkoraportti_7.md)
+* [Viikko 8](https://github.com/aarekr/ConnectFour/blob/main/Dokumentaatio/Viikkoraportti_8.md)
 
 ### [Tuntikirjanpito](https://github.com/aarekr/ConnectFour/blob/main/Dokumentaatio/Tuntikirjanpito.md)
