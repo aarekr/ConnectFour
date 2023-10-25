@@ -28,19 +28,11 @@ def next_free_row(board, col):
 
 def all_free_columns(board):
     """ returning a list of columns that have at least one free slot/row """
-    free_columns = []
-    for col in range(N_COLUMNS):
-        if board[N_ROWS-1][col] == 0:  # at least top row in column is empty
-            free_columns.append(col)
-    return free_columns
+    return [col for col in range(N_COLUMNS) if board[N_ROWS-1][col] == 0]
 
 def optimal_column_traversing_order(free_columns):
     """ returns the optimal traversing order of columns """
-    actual_order = []  # order used for going through all options
-    for item in OPTIMAL_ORDER:
-        if item in free_columns:
-            actual_order.append(item)
-    return actual_order
+    return [item for item in OPTIMAL_ORDER if item in free_columns]
 
 def drop_chip(board, row, col, turn):
     """ player drops their chip and TURN is given to the other player """
@@ -95,12 +87,12 @@ def is_terminal_node(board):
         returns tuple (True, draw(0)/winner(1 or 2)) if all chips used or
         one of the players won """
     if get_chip_count(board) == 42:  # all chips used and draw (0)
-        return True, 0
+        return (True, 0)
     if not check_if_game_active(board, 1):  # human player won (1)
-        return True, 1
+        return (True, 1)
     if not check_if_game_active(board, 2):  # AI won (2)
-        return True, 2
-    return False, -1  # game continues, no winner or draw
+        return (True, 2)
+    return (False, -1)  # game continues, no winner or draw
 
 def count_ai_position_value_points(four_consequtive_slots, player):
     """ counts the AI position value for 4 consequtive slots """
@@ -161,7 +153,7 @@ def get_position_value(board, player):
             four_consequtive_slots = [board[N_ROWS-1-row][col],
                                       board[N_ROWS-1-row-1][col+1],
                                       board[N_ROWS-1-row-2][col+2],
-                                      board[N_ROWS-1-row-3][col+2]]
+                                      board[N_ROWS-1-row-3][col+3]]
             position_value += count_ai_position_value_points(four_consequtive_slots, player)
             position_value += count_human_position_value_points(four_consequtive_slots, 1)
 
@@ -179,11 +171,11 @@ class AI:
         if depth == 0 or terminal_node:  # recursion ends
             # return the heuristic value of node
             if terminal_node and self.winner == 1:
-                return -9999999, 0  # high negative value equals human won
+                return (-9999999, 1)  # high negative value equals human won
             if terminal_node and self.winner == 2:
-                return 9999999, 0   # high positive value equals AI won
+                return (9999999, 2)   # high positive value equals AI won
             if depth == 0:
-                return get_position_value(board, maximizing_player), 0
+                return (get_position_value(board, 2), 0)
         free_columns = all_free_columns(board)
         if maximizing_player:
             value = -math.inf
@@ -199,7 +191,7 @@ class AI:
                 if value > beta:
                     break
                 alpha = max(alpha, value)
-            return value, best_col
+            return (value, best_col)
         # else: minimizing player - pylint recommended removing else
         value = math.inf
         best_col = -1
@@ -214,4 +206,4 @@ class AI:
             if value < alpha:
                 break
             beta = min(beta, value)
-        return value, best_col
+        return (value, best_col)

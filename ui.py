@@ -183,7 +183,9 @@ class UI:
                 # Player 2, AI
                 elif turn == 2:
                     # pygame.time.wait(1000)  # uncomment and give time value if delay wanted
-                    best_col = ai.AI().minimax(self.board, 5, -math.inf, math.inf, True)[1]
+                    print("Entering minimax")
+                    minimax_value, best_col = ai.AI().minimax(self.board, 5, -math.inf, math.inf, True)
+                    print("UI, minimax_value:", minimax_value, ", best_col:", best_col)
                     ai.drop_chip(self.board, 0, best_col, 2)
                     print("AI chip dropped in column:", best_col)
                     print_board(self.board)
