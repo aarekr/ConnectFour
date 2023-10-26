@@ -45,3 +45,4 @@ Muissa testeissä on sarakkeisiin tiputettu tarvittava määrä merkkejä ja tes
 * Raportti (7.10.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-10-07.JPG)
 * Raportti (14.10.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-10-14.JPG)
 * Raportti (22.10.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-10-22.JPG)
+* Raportti (26.10.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-10-26.JPG)

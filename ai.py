@@ -159,27 +159,6 @@ def get_position_value(board):
 
     return position_value
 
-def pre_minimax(board):
-    """ checking 1 move wins to cut down processing time """
-    free_columns = all_free_columns(board)
-    # check id AI has 1 move wins
-    for col in free_columns:
-        row = next_free_row(board, col)
-        board[row][col] = 2
-        if not check_if_game_active(board, 2):
-            board[row][col] = 0
-            return (True, col)
-        board[row][col] = 0
-    # check id human has 1 move wins
-    for col in free_columns:
-        row = next_free_row(board, col)
-        board[row][col] = 1
-        if not check_if_game_active(board, 1):
-            board[row][col] = 0
-            return (True, col)
-        board[row][col] = 0
-    return (False, -1)  # no 1 move wins found
-
 class AI:
     """ This class handles the AI logic """
 
@@ -192,9 +171,9 @@ class AI:
         if depth == 0 or terminal_node:  # recursion ends
             # return the heuristic value of node
             if terminal_node and self.winner == 1:
-                return (-9999999, 1)  # high negative value equals human won
+                return (-9999999, None)  # high negative value equals human won
             if terminal_node and self.winner == 2:
-                return (9999999, 2)   # high positive value equals AI won
+                return (9999999, None)   # high positive value equals AI won
             if depth == 0:
                 return (get_position_value(board), 0)
         free_columns = all_free_columns(board)

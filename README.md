@@ -13,7 +13,7 @@ Aineopintojen harjoitustyö: Algoritmit ja tekoäly (periodi 1) 2023
 
 ### [Testausdokumentti](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testausdokumentti.md)
 
-### [Testikattavuus](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-10-22.JPG) (22.10.2023)
+### [Testikattavuus](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-10-26.JPG) (26.10.2023)
 
 ### Viikkoraportit
 

@@ -111,7 +111,7 @@ class UI:
             text_font_question = pygame.font.Font(pygame.font.get_default_font(), 30)
             text_font_options = pygame.font.Font(pygame.font.get_default_font(), 25)
             who_starts_text = "Who starts the game?"
-            starter_options_text = "R = Random, H = Human, A = AI, E = End"
+            starter_options_text = "R = Random, Y = You, A = AI, E = End"
             text_question = text_font_question.render(who_starts_text, 0, YELLOW)
             text_options = text_font_options.render(starter_options_text, 0, YELLOW)
             self.screen.blit(text_question, (100, 15))
@@ -124,7 +124,7 @@ class UI:
                     print("Player chose:", event.key, " (R=114, H=104, A=97, E=101)")
                     if event.key == pygame.K_r:    # random starter
                         who_starts = ai.initialize_random_turn()
-                    elif event.key == pygame.K_h:  # human starts
+                    elif event.key == pygame.K_y:  # human starts
                         who_starts = 1
                     elif event.key == pygame.K_a:  # AI starts
                         who_starts = 2
@@ -132,7 +132,7 @@ class UI:
                         who_starts = "end game"
             if who_starts == None:
                 continue
-            elif who_starts == "end game":
+            if who_starts == "end game":
                 break
             pygame.draw.rect(self.screen, BLACK, (0, 0, WIDTH, SLOT_SIZE))
             print("who_starts:", who_starts)
@@ -188,11 +188,14 @@ class UI:
                 elif turn == 2:
                     # pygame.time.wait(1000)  # uncomment and give time value if delay wanted
                     print("Entering minimax")
-                    move_found, best_col = ai.pre_minimax(self.board)
-                    print("pre_minimax move:", move_found, best_col)
-                    if not move_found:
-                        minimax_value, best_col = ai.AI().minimax(self.board, 7, -math.inf, math.inf, True)
-                    print("UI, minimax_value:", minimax_value, ", best_col:", best_col)
+                    for depth in [0, 1, 2, 3, 4, 5, 7]:
+                        if depth%2 == 0:
+                            minimax_value, best_col = ai.AI().minimax(self.board, depth, -math.inf, math.inf, False)
+                        elif depth%2 == 1:
+                            minimax_value, best_col = ai.AI().minimax(self.board, depth, -math.inf, math.inf, True)
+                        print("- depth: " + str(depth) + ", col: " + str(best_col) + ", value: " + str(minimax_value))
+                        if minimax_value < -99999 or minimax_value > 99999:
+                            break
                     ai.drop_chip(self.board, 0, best_col, 2)
                     print("AI chip dropped in column:", best_col)
                     print_board(self.board)
