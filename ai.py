@@ -84,8 +84,8 @@ def check_if_game_active(board, player):
 def is_terminal_node(board):
     """ minimax helper function,
         returns False if game continues,
-        returns tuple (True, draw(0)/winner(1 or 2)) if all chips used or
-        one of the players won """
+        returns tuple (True, 0) if all chips used and draw,
+        returns tuple (True, 1 or 2) ifone of the players won """
     if get_chip_count(board) == 42:  # all chips used and draw (0)
         return (True, 0)
     if not check_if_game_active(board, 1):  # human player won (1)
@@ -113,7 +113,7 @@ def count_human_position_value_points(four_consequtive_slots, player):
         position_value -= 20  # -20
     return position_value
 
-def get_position_value(board, player):
+def get_position_value(board):
     """ calculates the optimal position value for the AI """
     position_value = 0
 
@@ -124,7 +124,7 @@ def get_position_value(board, player):
                                       board[row][col+1],
                                       board[row][col+2],
                                       board[row][col+3]]
-            position_value += count_ai_position_value_points(four_consequtive_slots, player)
+            position_value += count_ai_position_value_points(four_consequtive_slots, 2)
             position_value += count_human_position_value_points(four_consequtive_slots, 1)
 
     # Vertical counting
@@ -134,7 +134,7 @@ def get_position_value(board, player):
                                       board[row+1][col],
                                       board[row+2][col],
                                       board[row+3][col]]
-            position_value += count_ai_position_value_points(four_consequtive_slots, player)
+            position_value += count_ai_position_value_points(four_consequtive_slots, 2)
             position_value += count_human_position_value_points(four_consequtive_slots, 1)
 
     # Positive diagonal counting
@@ -144,7 +144,7 @@ def get_position_value(board, player):
                                       board[row+1][col+1],
                                       board[row+2][col+2],
                                       board[row+3][col+3]]
-            position_value += count_ai_position_value_points(four_consequtive_slots, player)
+            position_value += count_ai_position_value_points(four_consequtive_slots, 2)
             position_value += count_human_position_value_points(four_consequtive_slots, 1)
 
     # Negative diagonal counting
@@ -154,10 +154,31 @@ def get_position_value(board, player):
                                       board[N_ROWS-1-row-1][col+1],
                                       board[N_ROWS-1-row-2][col+2],
                                       board[N_ROWS-1-row-3][col+3]]
-            position_value += count_ai_position_value_points(four_consequtive_slots, player)
+            position_value += count_ai_position_value_points(four_consequtive_slots, 2)
             position_value += count_human_position_value_points(four_consequtive_slots, 1)
 
     return position_value
+
+def pre_minimax(board):
+    """ checking 1 move wins to cut down processing time """
+    free_columns = all_free_columns(board)
+    # check id AI has 1 move wins
+    for col in free_columns:
+        row = next_free_row(board, col)
+        board[row][col] = 2
+        if not check_if_game_active(board, 2):
+            board[row][col] = 0
+            return (True, col)
+        board[row][col] = 0
+    # check id human has 1 move wins
+    for col in free_columns:
+        row = next_free_row(board, col)
+        board[row][col] = 1
+        if not check_if_game_active(board, 1):
+            board[row][col] = 0
+            return (True, col)
+        board[row][col] = 0
+    return (False, -1)  # no 1 move wins found
 
 class AI:
     """ This class handles the AI logic """
@@ -175,7 +196,7 @@ class AI:
             if terminal_node and self.winner == 2:
                 return (9999999, 2)   # high positive value equals AI won
             if depth == 0:
-                return (get_position_value(board, 2), 0)
+                return (get_position_value(board), 0)
         free_columns = all_free_columns(board)
         if maximizing_player:
             value = -math.inf
@@ -188,9 +209,10 @@ class AI:
                 if minimax_value > value:
                     value = minimax_value
                     best_col = col
+                alpha = max(alpha, value)
                 if value > beta:
                     break
-                alpha = max(alpha, value)
+                #alpha = max(alpha, value)
             return (value, best_col)
         # else: minimizing player - pylint recommended removing else
         value = math.inf
@@ -203,7 +225,8 @@ class AI:
             if minimax_value < value:
                 value = minimax_value
                 best_col = col
+            beta = min(beta, value)
             if value < alpha:
                 break
-            beta = min(beta, value)
+            #beta = min(beta, value)
         return (value, best_col)

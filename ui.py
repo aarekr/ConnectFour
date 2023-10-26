@@ -94,7 +94,6 @@ class UI:
             announcing_winner = "You won!\n"
         elif winner == 2:
             announcing_winner = "AI won...\n"
-        #announcing_winner += "\n"
         print_board(self.board)
         return announcing_winner
 
@@ -109,28 +108,31 @@ class UI:
         while True:
             pygame.init()
             pygame.draw.rect(self.screen, BLACK, (0, 0, WIDTH, SLOT_SIZE))
-            text_font = pygame.font.Font(pygame.font.get_default_font(), 25)
+            text_font_question = pygame.font.Font(pygame.font.get_default_font(), 30)
+            text_font_options = pygame.font.Font(pygame.font.get_default_font(), 25)
             who_starts_text = "Who starts the game?"
             starter_options_text = "R = Random, H = Human, A = AI, E = End"
-            upper_text = text_font.render(who_starts_text, 0, YELLOW)
-            lower_text = text_font.render(starter_options_text, 0, YELLOW)
-            self.screen.blit(upper_text, (100, 15))
-            self.screen.blit(lower_text, (100, 50))
+            text_question = text_font_question.render(who_starts_text, 0, YELLOW)
+            text_options = text_font_options.render(starter_options_text, 0, YELLOW)
+            self.screen.blit(text_question, (100, 15))
+            self.screen.blit(text_options, (100, 60))
             self.draw_board(self.board)
             pygame.time.wait(3000)
-            who_starts = ai.initialize_random_turn()
+            who_starts = None
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    print("player chose:", event.key, " (R=114, H=104, A=97, E=101)")
+                    print("Player chose:", event.key, " (R=114, H=104, A=97, E=101)")
                     if event.key == pygame.K_r:    # random starter
-                        pass
+                        who_starts = ai.initialize_random_turn()
                     elif event.key == pygame.K_h:  # human starts
                         who_starts = 1
                     elif event.key == pygame.K_a:  # AI starts
                         who_starts = 2
                     elif event.key == pygame.K_e:  # game ends
-                        who_starts = None
+                        who_starts = "end game"
             if who_starts == None:
+                continue
+            elif who_starts == "end game":
                 break
             pygame.draw.rect(self.screen, BLACK, (0, 0, WIDTH, SLOT_SIZE))
             print("who_starts:", who_starts)
@@ -140,7 +142,7 @@ class UI:
             self.game_loop(who_starts)
 
     def game_loop(self, who_starts):
-        """ who_starts function calls this function that starts the game """
+        """ who_starts function calls this function and game starts """
         turn = who_starts
         winner = 0
         print_board(self.board)
@@ -161,6 +163,7 @@ class UI:
                     if turn == 1:
                         pygame.draw.circle(self.screen, RED, (posx, int(SLOT_SIZE/2)), RADIUS)
                 pygame.display.update()
+
                 # Player 1, human player
                 if turn == 1:
                     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -180,11 +183,15 @@ class UI:
                             self.handle_game_end_in_window(self.board, winner)
                             break
                         turn = 2
+
                 # Player 2, AI
                 elif turn == 2:
                     # pygame.time.wait(1000)  # uncomment and give time value if delay wanted
                     print("Entering minimax")
-                    minimax_value, best_col = ai.AI().minimax(self.board, 5, -math.inf, math.inf, True)
+                    move_found, best_col = ai.pre_minimax(self.board)
+                    print("pre_minimax move:", move_found, best_col)
+                    if not move_found:
+                        minimax_value, best_col = ai.AI().minimax(self.board, 7, -math.inf, math.inf, True)
                     print("UI, minimax_value:", minimax_value, ", best_col:", best_col)
                     ai.drop_chip(self.board, 0, best_col, 2)
                     print("AI chip dropped in column:", best_col)
@@ -196,6 +203,7 @@ class UI:
                         self.handle_game_end_in_window(self.board, winner)
                         break
                     turn = 1
+
                 # checking if all chips are dropped
                 if ai.get_chip_count(self.board) == 42:
                     winner = 0
