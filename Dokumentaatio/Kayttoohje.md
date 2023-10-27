@@ -1,5 +1,15 @@
 # Käyttöohje
 
+## Pelaaminen
+Käynnistä peli konsolissa komennolla python3 game.py
+Pelinäytössä voi pelin alussa valita kumpi aloittaa. Vaihtoehtoina ovat R = aloittaja arvotaan, 
+Y = sinä aloitat, A = tietokone aloittaa. Jos haluat lopettaa pelin, valitse E.
+Tiputa pelimerkkejä sarakkeisiin ja pyri luomaan neljän peräkkäisen pelimerkin suora joko 
+vaakasuunnassa, pystysuunnassa tai vinoittain. Pyri samalla estämään vastustajaa saamasta neljä 
+pelimerkkiä peräkkäin. Ensimmäiseksi neljän suoran saanut voittaa pelin. Jos kaikki 42 
+pelimerkkiä on tiputettu eikä kumpikaan voita, on peli päättynyt tasapeliin. Pelin loppuessa, 
+voita pelata uudestaan tai lopettaa pelaamisen.
+
 ## Pelin asentaminen
 
 | Toiminto                             | Komento                 |

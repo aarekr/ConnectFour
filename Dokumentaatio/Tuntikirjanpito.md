@@ -70,7 +70,7 @@
 24.10. |  2h  | Virheen tutkimista ja korjausta: Tekoäly reagoi väärin rivin (0)222(0)-suoriin - ei voita yhdellä siirrolla. Pelitilanteita vastaavat testit menevät kuitenkin läpi. Pistejärjestelmän pistemääriä muutettu. Minimaxissa pelattu depth = 5. |
 25.10. |  8h  | Eilinen ongelmanratkaisu jatkui. Minimax ei tunnista 0222 ja 2220 rivejä. Rivin 1110 blokkaamiseen menee liikaa aikaa. |
 26.10. |  7h  | Syvyyden läpikäynti 0,1,2,3,4,5,7 ratkaisi kolmen suoran ongelman. Testit päivitetty. Demotilaisuus. |
-27.10. |      | Pisteiden laskeminen yhdistetty yhteen funktioon. |
+27.10. |  5h  | Pisteiden laskeminen yhdistetty yhteen funktioon. Muutos heuristiikan arvoissa. Koodi refaktorointia. |
 
 ## Yhteensä
 

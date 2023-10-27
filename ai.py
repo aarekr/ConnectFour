@@ -2,6 +2,7 @@
 
 import math
 import random
+import time
 
 N_ROWS = 6
 N_COLUMNS = 7
@@ -94,16 +95,16 @@ def is_terminal_node(board):
         return (True, 2)
     return (False, -1)  # game continues, no winner or draw
 
-def count_position_value_points(four_consequtive_slots):
+def count_position_value(four_consecutive_slots):
     """ counts position value points for 4 consequtive slots """
     position_value = 0
-    if four_consequtive_slots.count(2) == 3 and four_consequtive_slots.count(0) == 1:
+    if four_consecutive_slots.count(2) == 3 and four_consecutive_slots.count(0) == 1:
         position_value += 50
-    elif four_consequtive_slots.count(2) == 2 and four_consequtive_slots.count(0) == 2:
+    elif four_consecutive_slots.count(2) == 2 and four_consecutive_slots.count(0) == 2:
         position_value += 20
-    if four_consequtive_slots.count(1) == 3 and four_consequtive_slots.count(0) == 1:
+    if four_consecutive_slots.count(1) == 3 and four_consecutive_slots.count(0) == 1:
         position_value -= 50
-    elif four_consequtive_slots.count(1) == 2 and four_consequtive_slots.count(0) == 2:
+    elif four_consecutive_slots.count(1) == 2 and four_consecutive_slots.count(0) == 2:
         position_value -= 20
     return position_value
 
@@ -114,62 +115,52 @@ def get_position_value(board):
     # Horizontal counting
     for row in range(N_ROWS):
         for col in range(N_COLUMNS-3):
-            four_consequtive_slots = [board[row][col],
-                                      board[row][col+1],
-                                      board[row][col+2],
-                                      board[row][col+3]]
-            position_value += count_position_value_points(four_consequtive_slots)
-
+            position_value += count_position_value([board[row][col],
+                                                    board[row][col+1],
+                                                    board[row][col+2],
+                                                    board[row][col+3]])
     # Vertical counting
     for col in range(N_COLUMNS):
         for row in range(N_ROWS-3):
-            four_consequtive_slots = [board[row][col],
-                                      board[row+1][col],
-                                      board[row+2][col],
-                                      board[row+3][col]]
-            position_value += count_position_value_points(four_consequtive_slots)
-
+            position_value += count_position_value([board[row][col],
+                                                    board[row+1][col],
+                                                    board[row+2][col],
+                                                    board[row+3][col]])
     # Positive diagonal counting
     for row in range(N_ROWS-3):
         for col in range(N_COLUMNS-3):
-            four_consequtive_slots = [board[row][col],
-                                      board[row+1][col+1],
-                                      board[row+2][col+2],
-                                      board[row+3][col+3]]
-            position_value += count_position_value_points(four_consequtive_slots)
-
+            position_value += count_position_value([board[row][col],
+                                                    board[row+1][col+1],
+                                                    board[row+2][col+2],
+                                                    board[row+3][col+3]])
     # Negative diagonal counting
     for col in range(N_COLUMNS-3):
         for row in range(N_ROWS-3):
-            four_consequtive_slots = [board[N_ROWS-1-row][col],
-                                      board[N_ROWS-1-row-1][col+1],
-                                      board[N_ROWS-1-row-2][col+2],
-                                      board[N_ROWS-1-row-3][col+3]]
-            position_value += count_position_value_points(four_consequtive_slots)
-
+            position_value += count_position_value([board[N_ROWS-1-row][col],
+                                                    board[N_ROWS-1-row-1][col+1],
+                                                    board[N_ROWS-1-row-2][col+2],
+                                                    board[N_ROWS-1-row-3][col+3]])
     return position_value
 
 class AI:
     """ This class handles the AI logic """
 
     def __init__(self):
-        self.winner = 0  # in ui.py this is local variable, change it
+        self.winner = 0
 
     def minimax(self, board, depth, alpha, beta, maximizing_player):  # Too many arguments (6/5)
         """ minimax function that determins the best move for the AI """
         terminal_node, self.winner = is_terminal_node(board)
-        if depth == 0 or terminal_node:  # recursion ends
-            # return the heuristic value of node
-            if terminal_node and self.winner == 1:
-                return (-9999999, None)  # high negative value equals human won
-            if terminal_node and self.winner == 2:
-                return (9999999, None)   # high positive value equals AI won
-            if depth == 0:
-                return (get_position_value(board), 0)
+        if terminal_node and self.winner == 1:
+            return (-math.inf, None)  # -math.inf equals human won
+        if terminal_node and self.winner == 2:
+            return (math.inf, None)   # math.inf equals AI won
+        if depth == 0:
+            return (get_position_value(board), None)
         free_columns = all_free_columns(board)
         if maximizing_player:
             value = -math.inf
-            best_col = -1
+            best_col = 3
             for col in optimal_column_traversing_order(free_columns):
                 row = next_free_row(board, col)
                 minimax_board = board.copy()
@@ -178,13 +169,14 @@ class AI:
                 if minimax_value > value:
                     value = minimax_value
                     best_col = col
-                if value > beta:
+                alpha = max(alpha, value)  # fail-soft
+                if alpha > beta:
                     break
-                alpha = max(alpha, value)
+                #alpha = max(alpha, value)  # fail-hard
             return (value, best_col)
         # else: minimizing player - pylint recommended removing else
         value = math.inf
-        best_col = -1
+        best_col = 3
         for col in optimal_column_traversing_order(free_columns):
             row = next_free_row(board, col)
             minimax_board = board.copy()
@@ -193,7 +185,8 @@ class AI:
             if minimax_value < value:
                 value = minimax_value
                 best_col = col
-            if value < alpha:
+            beta = min(beta, value)  # fail-soft
+            if beta < alpha:
                 break
-            beta = min(beta, value)
+            #beta = min(beta, value)  # fail-hard
         return (value, best_col)

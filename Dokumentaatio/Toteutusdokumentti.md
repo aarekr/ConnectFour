@@ -11,6 +11,24 @@ tulostettavassa matriisissa. Molempien pelaajien tapauksessa tarkistetaan, että
 Jokaisen siirron jälkeen tarkistetaan onko jompikumpi pelaajista voittanut tai kaikki pelimerkit käytetty. Jos peli 
 loppuu, game_active muuttujan tila vaihdetaan True:sta False:ksi.
 
+## Pistelaskujärjestelmä
+Pistelaskujärjestelmä laskee halutuille pelipositioille arvot, jotka kuvaavat positioiden hyvyyttä ja näitä arvoja verrataan 
+keskenään parhaan siirron valitsemiseksi. Tarkasteltavana on kerrallaan aina neljä peräkkäistä paikkaa esim. alarivin (rivi 0)
+sarakkeet 2,3,4,5. Pisteitä annetaan kahdessa tilanteessa: 1. pelaajalla on kolme pelimerkkiä ja yksi tyhjä paikka (50 pistettä) 
+ja 2. pelaajalla on kaksi pelimerkkiä ja kaksi tyhjää paikkaa (20 pistettä). Tekoälyn pelimerkeistä annetaan positiiviset arvot 
+ja pelaajan pelimerkeistä negatiiviset.
+
+## Pelin heuristiikka
+Minimax -algoritmi palauttaa arvon, joka ilmoittaa pelitilanteen hyvyyden tekoälyn kannalta. Kun tekoälyn pelipositio on parempi 
+kuin vastustajan, on peliposition arvo positiivinen ja vastaavasti kun pelaajan pelipositio on parempi kuin tekoälyn, on 
+peliposition arvo negatiivinen. Lisäksi on kaksi ääriarvoa, jotka kuvaavat toisen varmaa voittoa - tekoälyn varma voitto on 
+ääretön (math.inf) ja pelaajan miinus ääretön (-math.inf). Heurististen arvojen paremmusjärjestys on math.inf, -math.inf, väli
+[pistelaskujärjestelmän antama korkein positiivinen arvo, ..., alhaisin negatiivinen arvo]. Tekoäly pyrkii toisin sanoen aina 
+ensisijaisesti voittamaan (valitsemalla math.inf), toissijaisesti estämään häviön (valitsemalla -math.inf) ja mikäli 
+edellä olevia tilanteita ei ole, maksimoimaan oman peliposition arvon (mahdollisimman korkea peliposition arvo). Esim. jos 
+ollaan tilanteessa, jossa molemmilla on kolmen suora, tekoäly pyrkii voittamaan koska vastustajan blokkaaminen on 
+toissijainen.
+
 ## Aikavaativuudet
 Koodin aikavaativuudeltaan suurimmat osat ovat kaksi sisäkkäistä for-silmukkaa, joten O(n^2). 
 Käsiteltävä tietomäärä on kuitenkin pieni - 6 toisessa silmukassa ja 7 toisessa eli n*m = 42.
@@ -24,6 +42,7 @@ tekoäly ei osaa blokata joitakin pelaajan kolmen pelimerkin suoria.
 
 ## Lähteet
 * Siddhi Sawant. Ask Python. Connect Four Game in Python. https://www.askpython.com/python/examples/connect-four-game
+* Python crash course. Eric Matthes. No Starch Press (2019).
 * Minimax. Wikipedia. https://en.wikipedia.org/wiki/Minimax
 * Alpha–beta pruning. Wikipedia. https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
 * Heuristic (computer science). Wikipedia. https://en.wikipedia.org/wiki/Heuristic_(computer_science)
