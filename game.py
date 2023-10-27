@@ -3,7 +3,7 @@
 from ui import UI
 
 def main():
-    """ This function calls the game_loop method in UI class that starts the game """
+    """ This function calls the who_starts method in UI class that starts the game """
     UI().who_starts()
 
 if __name__ == "__main__":

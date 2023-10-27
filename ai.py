@@ -94,23 +94,17 @@ def is_terminal_node(board):
         return (True, 2)
     return (False, -1)  # game continues, no winner or draw
 
-def count_ai_position_value_points(four_consequtive_slots, player):
-    """ counts the AI position value for 4 consequtive slots """
+def count_position_value_points(four_consequtive_slots):
+    """ counts position value points for 4 consequtive slots """
     position_value = 0
-    if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
-        position_value += 50  # 30
-    elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
-        position_value += 20  # 10
-    return position_value
-
-def count_human_position_value_points(four_consequtive_slots, player):
-    """ counts the human player position value for 4 consequtive slots
-        AI gets negative points for certain human player chip positions """
-    position_value = 0
-    if four_consequtive_slots.count(player) == 3 and four_consequtive_slots.count(0) == 1:
-        position_value -= 50  # -90
-    elif four_consequtive_slots.count(player) == 2 and four_consequtive_slots.count(0) == 2:
-        position_value -= 20  # -20
+    if four_consequtive_slots.count(2) == 3 and four_consequtive_slots.count(0) == 1:
+        position_value += 50
+    elif four_consequtive_slots.count(2) == 2 and four_consequtive_slots.count(0) == 2:
+        position_value += 20
+    if four_consequtive_slots.count(1) == 3 and four_consequtive_slots.count(0) == 1:
+        position_value -= 50
+    elif four_consequtive_slots.count(1) == 2 and four_consequtive_slots.count(0) == 2:
+        position_value -= 20
     return position_value
 
 def get_position_value(board):
@@ -124,8 +118,7 @@ def get_position_value(board):
                                       board[row][col+1],
                                       board[row][col+2],
                                       board[row][col+3]]
-            position_value += count_ai_position_value_points(four_consequtive_slots, 2)
-            position_value += count_human_position_value_points(four_consequtive_slots, 1)
+            position_value += count_position_value_points(four_consequtive_slots)
 
     # Vertical counting
     for col in range(N_COLUMNS):
@@ -134,8 +127,7 @@ def get_position_value(board):
                                       board[row+1][col],
                                       board[row+2][col],
                                       board[row+3][col]]
-            position_value += count_ai_position_value_points(four_consequtive_slots, 2)
-            position_value += count_human_position_value_points(four_consequtive_slots, 1)
+            position_value += count_position_value_points(four_consequtive_slots)
 
     # Positive diagonal counting
     for row in range(N_ROWS-3):
@@ -144,8 +136,7 @@ def get_position_value(board):
                                       board[row+1][col+1],
                                       board[row+2][col+2],
                                       board[row+3][col+3]]
-            position_value += count_ai_position_value_points(four_consequtive_slots, 2)
-            position_value += count_human_position_value_points(four_consequtive_slots, 1)
+            position_value += count_position_value_points(four_consequtive_slots)
 
     # Negative diagonal counting
     for col in range(N_COLUMNS-3):
@@ -154,8 +145,7 @@ def get_position_value(board):
                                       board[N_ROWS-1-row-1][col+1],
                                       board[N_ROWS-1-row-2][col+2],
                                       board[N_ROWS-1-row-3][col+3]]
-            position_value += count_ai_position_value_points(four_consequtive_slots, 2)
-            position_value += count_human_position_value_points(four_consequtive_slots, 1)
+            position_value += count_position_value_points(four_consequtive_slots)
 
     return position_value
 
@@ -188,10 +178,9 @@ class AI:
                 if minimax_value > value:
                     value = minimax_value
                     best_col = col
-                alpha = max(alpha, value)
                 if value > beta:
                     break
-                #alpha = max(alpha, value)
+                alpha = max(alpha, value)
             return (value, best_col)
         # else: minimizing player - pylint recommended removing else
         value = math.inf
@@ -204,8 +193,7 @@ class AI:
             if minimax_value < value:
                 value = minimax_value
                 best_col = col
-            beta = min(beta, value)
             if value < alpha:
                 break
-            #beta = min(beta, value)
+            beta = min(beta, value)
         return (value, best_col)

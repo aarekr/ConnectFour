@@ -24,8 +24,9 @@ tekoäly ei osaa blokata joitakin pelaajan kolmen pelimerkin suoria.
 
 ## Lähteet
 * Siddhi Sawant. Ask Python. Connect Four Game in Python. https://www.askpython.com/python/examples/connect-four-game
-* Wikipedia. Minimax. https://en.wikipedia.org/wiki/Minimax
-* Wikipedia. Alpha–beta pruning. https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+* Minimax. Wikipedia. https://en.wikipedia.org/wiki/Minimax
+* Alpha–beta pruning. Wikipedia. https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+* Heuristic (computer science). Wikipedia. https://en.wikipedia.org/wiki/Heuristic_(computer_science)
 * Python.org. Unit testing framework. https://docs.python.org/3/library/unittest.html
 * Anthony Shaw. Getting Started With Testing in Python. Real Python. https://realpython.com/python-testing/
 * Pylint 2.17.5. pypi.org. https://pypi.org/project/pylint/

@@ -101,7 +101,7 @@ class UI:
         """ shows game end result in the game window """
         self.screen.blit(game_end_text(winner), (250, 15))
         self.draw_board(board)
-        pygame.time.wait(3000)
+        pygame.time.wait(4000)
 
     def who_starts(self):
         """ game.py calls this function where game starter is chosen """
