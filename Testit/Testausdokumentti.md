@@ -1,7 +1,8 @@
 # Testausdokumentti
 
 ## Yksikkötestaus
-Testauksessa on käytetty Pythonin unittest -työkalua.
+* Testauksessa on käytetty Pythonin unittest -työkalua.
+* Minimaxin syvyyden 3, 5 ja 7 testien kirjoittamisessa käytetty apuna https://connect4.gamesolver.org -sivua
 
 ## Testauksessa käytetyt syötteet
 * Testauksessa luodaan aina uusi peli. Pelin alkutilannetta testaavissa testeissä merkkejä ei ole tiputettu. 
@@ -64,8 +65,8 @@ Muissa testeissä on sarakkeisiin tiputettu tarvittava määrä merkkejä ja tes
 * Sarakkeita ei käsitellä kun kaikki täynnä
 
 #### Minimax -algoritmin yhden siirron pelistrategian testaaminen (syvyys 1) (TestMinimaxStrategiesDepthOne)
-* Kun sarakkeessa on 3 tekoälyn merkkiä peräkkäin, tekoäly voittaa yhdellä siirrolla
-* Kun rivissä on 3 tekoälyn merkkiä peräkkäin, tekoäly voittaa yhdellä siirrolla
+* Kun sarakkeessa on 3 tekoälyn merkkiä peräkkäin ja yksi tyhjä, tekoäly voittaa yhdellä siirrolla
+* Kun rivissä on 3 tekoälyn merkkiä peräkkäin ja yksi tyhjä, tekoäly voittaa yhdellä siirrolla
 
 #### Minimax -algoritmin kahden siirron pelistrategian testaaminen (syvyys 3) (TestMinimaxStrategiesDepthThree)
 * Tilanteessa 0002200 (rivi 1), tekoäly tiputtaa pelimerkin sarakkeeseen 3 ja voittaa seuraavalla siirrolla
@@ -97,14 +98,6 @@ Muissa testeissä on sarakkeisiin tiputettu tarvittava määrä merkkejä ja tes
 * Pelin lopussa konsolissa ilmoitetaan tasapeli
 * Pelin lopussa konsolissa ilmoitetaan pelaajan voittaneen
 * Pelin lopussa konsolissa ilmoitetaan tekoälyn voittaneen
-
-
-* Jokaisen siirron jälkeen, konsoliin tulisi tulostua pelimatriisi
-
-
-* Tekoäly pyrkii laittamaan pelimerkkejä keskimmäisiin sarakkeisiin
-
-
 
 ## Testien toistettavuus
 

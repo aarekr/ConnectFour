@@ -71,7 +71,8 @@
 25.10. |  8h  | Eilinen ongelmanratkaisu jatkui. Minimax ei tunnista 0222 ja 2220 rivejä. Rivin 1110 blokkaamiseen menee liikaa aikaa. |
 26.10. |  7h  | Syvyyden läpikäynti 0,1,2,3,4,5,7. Kolmen suoran ongelman ratkesi. Testit päivitetty. Demotilaisuus. |
 27.10. |  5h  | Pisteiden laskeminen yhdistetty yhteen funktioon. Muutos heuristiikan arvoissa. Koodin refaktorointia. |
-28.10. |      | Yksikkötestejä lisää ja testausdokumentaation kirjoittamista. |
+28.10. |  7h  | Testausdokumentaation kirjoittamista, syvyys 3 testejä lisää ja 5 testiä syvyydelle 5. |
+29.10. |      |  |
 
 ## Yhteensä
 

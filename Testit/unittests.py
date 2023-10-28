@@ -470,7 +470,6 @@ class TestMinimaxStrategiesDepthOne(unittest.TestCase):
         self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (math.inf, 4))
 
 class TestMinimaxStrategiesDepthThree(unittest.TestCase):
-    # DEPTH 3
     def test_minimax_has_2_in_row_builds_3_and_wins_with_total_of_2_moves(self):
         """ Test Minimax, AI has 0002200 in bottom row, fills col 2 and wins with next move """
         board = np.zeros((6, 7), dtype = int)
@@ -527,9 +526,198 @@ class TestMinimaxStrategiesDepthThree(unittest.TestCase):
         maximizing_player = True
         self.assertEqual(ai.AI().minimax(board, depth, -math.inf, math.inf, maximizing_player), (70, 5))
 
-#class TestMinimaxStrategiesDepthFive(unittest.TestCase):
-    # DEPTH 5
-#    def test_minimax_wins_with_3_moves(self):
+class TestMinimaxStrategiesDepthFive(unittest.TestCase):
+    def test_1_minimax_ai_wins_in_3_moves(self):
+        """ Test AI wins in 3 moves when board is 
+            0000000
+            0000000
+            0000000
+            0122200
+            0112100
+            0211120 """
+        board = np.zeros((6, 7), dtype = int)
+        board[2][1] = 1
+        board[2][2] = 2
+        board[2][3] = 2
+        board[2][4] = 2
+        board[1][1] = 1
+        board[1][2] = 1
+        board[1][3] = 2
+        board[1][4] = 1
+        board[0][1] = 2
+        board[0][2] = 1
+        board[0][3] = 1
+        board[0][4] = 1
+        board[0][5] = 2
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, 5, -math.inf, math.inf, maximizing_player), (math.inf, 3))
+        board[3][3] = 2
+        board[4][3] = 1
+        self.assertEqual(ai.AI().minimax(board, 3, -math.inf, math.inf, maximizing_player), (math.inf, 5))
+        board[1][5] = 2
+        board[2][5] = 1
+        self.assertEqual(ai.AI().minimax(board, 1, -math.inf, math.inf, maximizing_player), (math.inf, 6))
+
+    def test_2_minimax_ai_wins_in_3_moves(self):
+        """ Test AI wins in 3 moves when board is 
+            1100000
+            2200000
+            2200200
+            2201100
+            1102100
+            1211120
+        """
+        board = np.zeros((6, 7), dtype = int)
+        board[5][0] = 1
+        board[5][1] = 1
+        board[4][0] = 2
+        board[4][1] = 2
+        board[3][0] = 2
+        board[3][1] = 2
+        board[3][4] = 2
+        board[2][0] = 2
+        board[2][1] = 2
+        board[2][3] = 1
+        board[2][4] = 1
+        board[1][0] = 1
+        board[1][1] = 1
+        board[1][3] = 2
+        board[1][4] = 1
+        board[0][0] = 1
+        board[0][1] = 2
+        board[0][2] = 1
+        board[0][3] = 1
+        board[0][4] = 1
+        board[0][5] = 2
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, 5, -math.inf, math.inf, maximizing_player), (math.inf, 3))
+        board[3][3] = 2
+        board[0][6] = 1
+        self.assertEqual(ai.AI().minimax(board, 3, -math.inf, math.inf, maximizing_player), (math.inf, 2))
+        board[1][2] = 2
+        board[2][2] = 1
+        self.assertEqual(ai.AI().minimax(board, 1, -math.inf, math.inf, maximizing_player), (math.inf, 2))
+
+    def test_3_minimax_ai_wins_in_3_moves(self):
+        """ Test AI wins in 3 moves when board is 
+            0000000
+            0000000
+            2000000
+            1010000
+            1020200
+            1012210
+        """
+        board = np.zeros((6, 7), dtype = int)
+        board[3][0] = 2
+        board[2][0] = 1
+        board[2][2] = 1
+        board[1][0] = 1
+        board[1][2] = 2
+        board[1][4] = 2
+        board[0][0] = 1
+        board[0][2] = 1
+        board[0][3] = 2
+        board[0][4] = 2
+        board[0][5] = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, 5, -math.inf, math.inf, maximizing_player), (math.inf, 3))
+        board[1][3] = 2
+        board[1][5] = 1
+        self.assertEqual(ai.AI().minimax(board, 3, -math.inf, math.inf, maximizing_player), (math.inf, 1))
+        board[0][1] = 2
+        board[1][1] = 1
+        self.assertEqual(ai.AI().minimax(board, 1, -math.inf, math.inf, maximizing_player), (math.inf, 1))
+
+    def test_4_minimax_ai_wins_in_3_moves(self):
+        """ Test AI wins in 3 moves when board is 
+            0000001
+            0002001
+            0022021
+            0021012
+            0012011
+            2012121
+        """
+        board = np.zeros((6, 7), dtype = int)
+        board[5][6] = 1
+        board[4][3] = 2
+        board[4][6] = 1
+        board[3][2] = 2
+        board[3][3] = 2
+        board[3][5] = 2
+        board[3][6] = 1
+        board[2][2] = 2
+        board[2][3] = 1
+        board[2][5] = 1
+        board[2][6] = 2
+        board[1][2] = 1
+        board[1][3] = 2
+        board[1][5] = 1
+        board[1][6] = 1
+        board[0][0] = 2
+        board[0][2] = 1
+        board[0][3] = 2
+        board[0][4] = 1
+        board[0][5] = 2
+        board[0][6] = 1
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, 5, -math.inf, math.inf, maximizing_player), (math.inf, 0))
+        board[1][0] = 2
+        board[2][0] = 1
+        self.assertEqual(ai.AI().minimax(board, 3, -math.inf, math.inf, maximizing_player), (math.inf, 1))
+        board[0][1] = 2
+        board[1][1] = 1
+        self.assertEqual(ai.AI().minimax(board, 1, -math.inf, math.inf, maximizing_player), (math.inf, 1))
+
+    def test_5_minimax_ai_wins_in_3_moves(self):
+        """ Test AI wins in 3 moves when board is 
+            0202220
+            0101110
+            0102220
+            1202110
+            2112121
+            1121122
+        """
+        board = np.zeros((6, 7), dtype = int)
+        board[5][1] = 2
+        board[5][3] = 2
+        board[5][4] = 2
+        board[5][5] = 2
+        board[4][1] = 1
+        board[4][3] = 1
+        board[4][4] = 1
+        board[4][5] = 1
+        board[3][1] = 1
+        board[3][3] = 2
+        board[3][4] = 2
+        board[3][5] = 2
+        board[2][0] = 1
+        board[2][1] = 2
+        board[2][3] = 2
+        board[2][4] = 1
+        board[2][5] = 1
+        board[1][0] = 2
+        board[1][1] = 1
+        board[1][2] = 1
+        board[1][3] = 2
+        board[1][4] = 1
+        board[1][5] = 2
+        board[1][6] = 1
+        board[0][0] = 1
+        board[0][1] = 1
+        board[0][2] = 2
+        board[0][3] = 1
+        board[0][4] = 1
+        board[0][5] = 2
+        board[0][6] = 2
+        maximizing_player = True
+        self.assertEqual(ai.AI().minimax(board, 5, -math.inf, math.inf, maximizing_player), (math.inf, 0))
+        board[3][0] = 2
+        board[4][0] = 1
+        self.assertEqual(ai.AI().minimax(board, 3, -math.inf, math.inf, maximizing_player), (math.inf, 0))
+        board[5][0] = 2
+        board[2][2] = 1
+        self.assertEqual(ai.AI().minimax(board, 1, -math.inf, math.inf, maximizing_player), (math.inf, 2))
+
 
     # DEPTH 7
 

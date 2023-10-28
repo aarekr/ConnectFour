@@ -57,3 +57,4 @@ tekoäly ei osaa blokata joitakin pelaajan kolmen pelimerkin suoria.
 * Ofer Dekel. Python Performance Testing: Quick Tutorial and Best Practices. granulate.io. (Luettu 7.10.2023) https://granulate.io/blog/python-performance-testing-quick-tutorial-and-best-practices/
 * Eric Goebelbecker. blog.sentry.io. (Luettu 7.10.2023) https://blog.sentry.io/python-performance-testing-a-comprehensive-guide/
 * Importing files from different folder. stackoverflow.com.  https://stackoverflow.com/questions/4383571/importing-files-from-different-folder
+* connect4.gamesolver.org. https://connect4.gamesolver.org
