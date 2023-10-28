@@ -190,15 +190,15 @@ class UI:
                     # pygame.time.wait(1000)  # uncomment and give time value if delay wanted
                     print("Entering minimax")
                     time_start = time.time()
-                    for depth in [0, 1, 2, 3, 4, 5, 7]:
+                    for depth in [1, 2, 3, 4, 5, 7]:
                         if depth%2 == 1:
                             minimax_value, best_col = ai.AI().minimax(self.board, depth, -math.inf, math.inf, True)
                         else:
                             minimax_value, best_col = ai.AI().minimax(self.board, depth, -math.inf, math.inf, False)
-                        print("- depth: " + str(depth) + ", col: " + str(best_col) + ", value: " + str(minimax_value))
+                        #print("- depth: " + str(depth) + ", col: " + str(best_col) + ", value: " + str(minimax_value))
                         if minimax_value < -99999 or minimax_value > 99999:  # i.e. certain win for human or AI
                             break
-                    # best_col = ai.AI().minimax(self.board, 7, -math.inf, math.inf, True)  # without for loop
+                    #best_col = ai.AI().minimax(self.board, 7, -math.inf, math.inf, True)[1]  # without for loop
                     time_end = time.time()
                     print("time spent:", time_end - time_start)
                     ai.drop_chip(self.board, 0, best_col, 2)

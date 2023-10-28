@@ -111,7 +111,6 @@ def count_position_value(four_consecutive_slots):
 def get_position_value(board):
     """ calculates the optimal position value for the AI """
     position_value = 0
-
     # Horizontal counting
     for row in range(N_ROWS):
         for col in range(N_COLUMNS-3):
@@ -148,7 +147,7 @@ class AI:
     def __init__(self):
         self.winner = 0
 
-    def minimax(self, board, depth, alpha, beta, maximizing_player):  # Too many arguments (6/5)
+    def minimax(self, board, depth, alpha, beta, maximizing_player):
         """ minimax function that determins the best move for the AI """
         terminal_node, self.winner = is_terminal_node(board)
         if terminal_node and self.winner == 1:
@@ -159,34 +158,34 @@ class AI:
             return (get_position_value(board), None)
         free_columns = all_free_columns(board)
         if maximizing_player:
-            value = -math.inf
+            best_value = -math.inf
             best_col = 3
             for col in optimal_column_traversing_order(free_columns):
                 row = next_free_row(board, col)
                 minimax_board = board.copy()
                 drop_chip(minimax_board, row, col, 2)  # dropping AI chip
                 minimax_value = self.minimax(minimax_board, depth-1, alpha, beta, False)[0]
-                if minimax_value > value:
-                    value = minimax_value
+                if minimax_value > best_value:
+                    best_value = minimax_value
                     best_col = col
-                alpha = max(alpha, value)  # fail-soft
+                alpha = max(alpha, best_value)  # fail-soft
                 if alpha > beta:
                     break
-                #alpha = max(alpha, value)  # fail-hard
-            return (value, best_col)
-        # else: minimizing player - pylint recommended removing else
-        value = math.inf
-        best_col = 3
-        for col in optimal_column_traversing_order(free_columns):
-            row = next_free_row(board, col)
-            minimax_board = board.copy()
-            drop_chip(minimax_board, row, col, 1)  # dropping human player chip
-            minimax_value = self.minimax(minimax_board, depth-1, alpha, beta, True)[0]
-            if minimax_value < value:
-                value = minimax_value
-                best_col = col
-            beta = min(beta, value)  # fail-soft
-            if beta < alpha:
-                break
-            #beta = min(beta, value)  # fail-hard
-        return (value, best_col)
+                #alpha = max(alpha, best_value)  # fail-hard
+            return (best_value, best_col)
+        else:  # minimizing player
+            best_value = math.inf
+            best_col = 3
+            for col in optimal_column_traversing_order(free_columns):
+                row = next_free_row(board, col)
+                minimax_board = board.copy()
+                drop_chip(minimax_board, row, col, 1)  # dropping human player chip
+                minimax_value = self.minimax(minimax_board, depth-1, alpha, beta, True)[0]
+                if minimax_value < best_value:
+                    best_value = minimax_value
+                    best_col = col
+                beta = min(beta, best_value)  # fail-soft
+                if beta <= alpha:
+                    break
+                #beta = min(beta, best_value)  # fail-hard
+        return (best_value, best_col)

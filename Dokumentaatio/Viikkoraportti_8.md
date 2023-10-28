@@ -7,10 +7,11 @@
 * Kolmen suoran ongelmaan ratkesi käymällä läpi syvyyksiä 0,1,2,3,4,5,7
 * Heuristiikassa pieni muutos ehtolauseissa ja arvoissa
 * Koodin refaktorointi ja lyhentäminen
+* Testejä kirjoitettu lisää ja testausdokumentaatiota täydennetty
 
-* ToDo: Alku- ja lopputekstejä testaavien testien pitäisi tarkistaa merkkijonot
+
 * ToDo: Minimaxin syvyys tasolle 7 ja sille testit
-* ToDo: Demo ja työn palautus
+* ToDo: Työn palautus
 
 ## Ohjelman edistyminen
 * 

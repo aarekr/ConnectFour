@@ -3,43 +3,112 @@
 ## Yksikkötestaus
 Testauksessa on käytetty Pythonin unittest -työkalua.
 
-## Mitä testattu ja miten
-* Pelin alussa oikeanmuotoinen (6*7) pelimatriisi muodostuu
-* Pelin alussa alarivin tulisi olla tyhjä ts. kaikissa soluissa on 0
-* Pelin alussa pelaajalle ilmoitetaan kumpi aloittaa
-* Pelin alussa kaikkien sarakkeiden tulisi olla pelattavissa
-* Jokaisen siirron jälkeen, konsoliin tulisi tulostua pelimatriisi
-* Neljä pelaajan peräkkäistä pelimerkkiä rivissä johtaa pelin loppumiseen
-* Neljä pelaajan peräkkäistä pelimerkkiä sarakkeessa johtaa pelin loppumiseen
-* Neljä pelaajan merkkiä viistosti (molemmat suunnat) johtaa pelin loppumiseen
-* Neljä molempien pelaajien pelimerkkiä samassa rivissä eivät lopeta peliä
-* Vuoro vaihtuu pelaajalta tekoälylle
-* Vuoro vaihtuu tekoälyltä pelaajalle
-* Rivi 4 on vapaa kun sarakkeeseen on tiputettu 3 pelimerkkiä
-* Kun sarake on täynnä pelimerkkejä, siihen ei voi enää tiputtaa uusia merkkejä
-* Kun sarake on täynnä pelimerkkejä, sarake ei ole vapaiden sarakkeiden listalla
-* Kun rivi 0 on täynnä, kaikki sarakkeet ovat edelleen pelattavissa
-* Kun pelaajalla on neljän pelimerkin suora, kyseessä on terminal node
-* Kun tekoälyllä on neljän pelimerkin suora, kyseessä on terminal node
-* Kun molemman pelaajan merkkejä on 4 peräkkäin, kyseessä ei ole terminal node
-* Minimax: kun päätöspuun syvyys on 0, minimax palauttaa peliposition arvon
-* Minimax: kun ihminen voittaa (terminal node), minimax palauttaa heuristisen arvon
-* Minimax: kun tekoäly voittaa (terminal node), minimax palauttaa heuristisen arvon
-* Tekoälyn kolmen ja kahden pelimerkin suorat saavat pelipositioina arvot
-* Ihmispelaajan kolmen ja kahden merkin suorat huonontavat tekoälyn peliposition arvoa
-* Tekoäly pyrkii laittamaan pelimerkkejä keskimmäisiin sarakkeisiin
-* Tekoäly voittaa yhdellä siirrolla kun sillä on 3 peräkkäistä merkkiä sarakkeessa ja 1 tyhjä
-* Tekoäly voittaa yhdellä siirrolla kun sillä on 3 peräkkäistä merkkiä rivissä ja 1 tyhjä
-* Testataan pelin lopussa, että pelaajan voitto ilmoitetaan konsolissa
-* Testataan pelin lopussa, että tekoälyn voitto ilmoitetaan konsolissa
-
 ## Testauksessa käytetyt syötteet
 * Testauksessa luodaan aina uusi peli. Pelin alkutilannetta testaavissa testeissä merkkejä ei ole tiputettu. 
 Muissa testeissä on sarakkeisiin tiputettu tarvittava määrä merkkejä ja testattu peliä tämän jälkeen.
 
+## Mitä testattu ja miten
+#### Pelin aloittamiseen liittyvät perustoiminnot (TestGameStart)
+* Pelin alussa muodostetaan oikeanmuotoinen (6*7) pelimatriisi
+* Pelin alussa alarivin tulisi olla tyhjä ts. merkkejä ei ole tiputettu
+* Pelin alussa kaikkien sarakkeiden tulisi olla pelattavissa
+* Tarkistetaan, että pelilaudan konsoliin tulostava funktio olemassa
+* Tarkistetaan, että pelilaudan peli-ikkunaan tulostava funktio olemassa
+* Pelin alussa pelaajalle ilmoitetaan, että hän aloittaa
+* Pelin alussa pelaajalle ilmoitetaan, että tekoäly aloittaa
+* Peli lopussa ilmoitetaan, että peli päättyi tasapeliin
+* Peli lopussa ilmoitetaan, että pelaaja voitti
+* Peli lopussa ilmoitetaan, että tekoäly voitti
+
+#### Neljän peräkkäisen pelimerkin suora käsitellään oikein (TestFourInRow)
+* Neljä pelaajan/tekoälyn peräkkäistä pelimerkkiä rivissä johtaa pelin loppumiseen
+* Neljä pelaajan/tekoälyn peräkkäistä pelimerkkiä sarakkeessa johtaa pelin loppumiseen
+* Neljä pelaajan/tekoälyn peräkkäistä merkkiä viistosti ylöspäin johtaa pelin loppumiseen
+* Neljä pelaajan/tekoälyn peräkkäistä merkkiä viistosti alaspäin johtaa pelin loppumiseen
+* Neljä molempien pelaajien peräkkäistä pelimerkkiä samassa rivissä eivät lopeta peliä
+
+#### Vuoro vaihtuminen ja arpominen (TestTurnChanges)
+* Vuoro vaihtuu pelaajalta tekoälylle kun pelimerkki tiputettu
+* Vuoro vaihtuu tekoälyltä pelaajalle kun pelimerkki tiputettu
+* Pelin aloittajaksi arvotaan joko pelaaja tai tekoäly
+
+#### Pelimerkkien määrä pelikehikossa on oikea (TestChipCount)
+* Pelin alussa pelimerkkien määrä on nolla
+* Pelimerkkien määrä on 4 kun molemmat pelaajat ovat tiputtaneet 2
+* Pelimerkkien määrä on 7 kun pelaajat ovat tiputtaneet 3 ja 4
+* Pelimerkkien määrä on 42 kun kaikki pelimerkit on tiputettu
+
+#### Alin vapaa (pelattavissa oleva) rivi sarakkeessa on oikein (TestFreeRows)
+* Rivi 1 on vapaa, jos sarakkeeseen ei ole tiputettu pelimerkkejä
+* Rivi 4 on vapaa kun sarakkeessa on 3 pelimerkkiä
+* Sarakkeessa ei ole vapaita rivejä, jos 6 pelimerkkiä tiputettu
+
+#### Vapaat sarakkeet ilmoitetaan oikein (TestFreeColumns)
+* Kun sarake on täynnä pelimerkkejä, siihen ei voi enää tiputtaa uusia merkkejä
+* Kun kaikki 42 pelimerkkiä on tiputettu, vapaita sarakkeita ei enää ole
+* Kun rivi 1 on täynnä, kaikki sarakkeet ovat edelleen pelattavissa
+
+#### Uusien siirtojen mahdollisuus ja pelin loppuminen (TestTerminalNode)
+* Kun kaikki 42 pelimerkkiä on tiputettu, peli on loppunut
+* Kun pelaajalla on neljän pelimerkin suora, peli on loppunut
+* Kun tekoälyllä on neljän pelimerkin suora, peli on loppunut
+* Kun molemmat tiputtaneet 4 pelimerkkiä eikä suoria, peli jatkuu
+* Kun molemman pelaajan merkkejä on 4 peräkkäin, peli jatkuu
+
+#### Minimax -algoritmin perustoiminnot oikein (TestMinimaxBasicFunctionalities)
+* Kun päätöspuun syvyys on 0 ja pelimerkkejä ei tiputettu, Minimax palauttaa peliposition arvon 0
+* Kun pelaaja voittaa, Minimax palauttaa heuristisen arvon miinus ääretön
+* Kun tekoäly voittaa, Minimax palauttaa heuristisen arvon ääretön
+* Sarakkeiden käsittelyjärjestys on optimi kun kaikki sarakkeet vapaita
+* Optimaalisesta sarakkeiden käsittelyjärjestyksestä puuttuvat 2 täynnä olevaa saraketta
+* Sarakkeita ei käsitellä kun kaikki täynnä
+
+#### Minimax -algoritmin yhden siirron pelistrategian testaaminen (syvyys 1) (TestMinimaxStrategiesDepthOne)
+* Kun sarakkeessa on 3 tekoälyn merkkiä peräkkäin, tekoäly voittaa yhdellä siirrolla
+* Kun rivissä on 3 tekoälyn merkkiä peräkkäin, tekoäly voittaa yhdellä siirrolla
+
+#### Minimax -algoritmin kahden siirron pelistrategian testaaminen (syvyys 3) (TestMinimaxStrategiesDepthThree)
+* Tilanteessa 0002200 (rivi 1), tekoäly tiputtaa pelimerkin sarakkeeseen 3 ja voittaa seuraavalla siirrolla
+* Tilanteessa 0011000 (rivi 1), tekoäly tiputtaa pelimerkin sarakkeeseen 5 ja estää pelaajan varman voiton
+* Minimax rakentaa risteävät diagonaalit ja voittaa varmasti seuraavalla siirrolla
+* Tilanteessa 1011000 (rivi 1), tekoäly blokkaa (2), pelaaja (5) ja tekoäly blokkaa (6)
+
+#### Minimax -algoritmin kolmen siirron pelistratedioita (syvyys 5) (TestMinimaxStrategiesDepthFive)
+* Pelitilanteet ovat monimutkaisempia ja esitelty testitiedostossa
+
+#### Minimax -algoritmin viiden siirron pelistratedioita (syvyys 7) (TestMinimaxStrategiesDepthSeven)
+* Pelitilanteet ovat monimutkaisempia ja esitelty testitiedostossa
+
+#### Tekoälyn peliposition arvon testaaminen (TestAIPositionValue)
+* Pelitilanne 3 rivissä 2220 antaa tekoälylle pistemäärän 50
+* Pelitilanne 3 rivissä 2221 antaa tekoälylle pistemäärän 0
+* Pelitilanteet 0220 ja 2020 antavat tekoälylle pistemäärän 20
+* Pelitilanne 1220 antaa tekoälylle pistemäärän 0
+* Pelitilanne 0020 antaa tekoälylle pistemäärän 0
+
+#### Pelaajan peliposition arvon testaaminen (TestHumanPositionValue)
+* Pelitilanne 1110 antaa tekoälylle pistemäärän -50
+* Pelitilanne 1112 antaa tekoälylle pistemäärän 0
+* Pelitilanteet 0110 ja 1010 antavat tekoälylle pistemäärän -20
+* Pelitilanne 2110 antaa tekoälylle pistemäärän 0
+* Pelitilanne 0010 antaa tekoälylle pistemäärän 0
+
+#### Pelin loppu konsolissa (TestGameEnd)
+* Pelin lopussa konsolissa ilmoitetaan tasapeli
+* Pelin lopussa konsolissa ilmoitetaan pelaajan voittaneen
+* Pelin lopussa konsolissa ilmoitetaan tekoälyn voittaneen
+
+
+* Jokaisen siirron jälkeen, konsoliin tulisi tulostua pelimatriisi
+
+
+* Tekoäly pyrkii laittamaan pelimerkkejä keskimmäisiin sarakkeisiin
+
+
+
 ## Testien toistettavuus
 
-## Empiirisen testauksen visuaalinen/graafinen muoto
+## Testausraportit
 * Raportti (23.9.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-09-23.JPG)
 * Raportti (30.9.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-09-30.JPG)
 * Raportti (7.10.) löytyy [täältä](https://github.com/aarekr/ConnectFour/blob/main/Testit/Testikattavuus_2023-10-07.JPG)
