@@ -2,10 +2,10 @@
 
 import math
 import random
-import time
 
 N_ROWS = 6
 N_COLUMNS = 7
+INF = math.inf
 YELLOW = (255, 255, 0)
 OPTIMAL_ORDER = [3, 2, 4, 1, 5, 0, 6]  # preferred/optimal order of handling columns in minimax
 
@@ -151,14 +151,14 @@ class AI:
         """ minimax function that determins the best move for the AI """
         terminal_node, self.winner = is_terminal_node(board)
         if terminal_node and self.winner == 1:
-            return (-math.inf, None)  # -math.inf equals human won
+            return (-INF, None)  # -math.inf equals human won
         if terminal_node and self.winner == 2:
-            return (math.inf, None)   # math.inf equals AI won
+            return (INF, None)   # math.inf equals AI won
         if depth == 0:
             return (get_position_value(board), None)
         free_columns = all_free_columns(board)
         if maximizing_player:
-            best_value = -math.inf
+            best_value = -INF
             best_col = 3
             for col in optimal_column_traversing_order(free_columns):
                 row = next_free_row(board, col)
@@ -174,7 +174,7 @@ class AI:
                 #alpha = max(alpha, best_value)  # fail-hard
             return (best_value, best_col)
         else:  # minimizing player
-            best_value = math.inf
+            best_value = INF
             best_col = 3
             for col in optimal_column_traversing_order(free_columns):
                 row = next_free_row(board, col)

@@ -75,10 +75,10 @@ Muissa testeissä on sarakkeisiin tiputettu tarvittava määrä merkkejä ja tes
 * Tilanteessa 1011000 (rivi 1), tekoäly blokkaa (2), pelaaja (5) ja tekoäly blokkaa (6)
 
 #### Minimax -algoritmin kolmen siirron pelistratedioita (syvyys 5) (TestMinimaxStrategiesDepthFive)
-* Pelitilanteet ovat monimutkaisempia ja esitelty testitiedostossa
+* Pelitilanteet ovat monimutkaisempia ja esitelty testitiedostossa. Testejä on 5 kpl.
 
 #### Minimax -algoritmin viiden siirron pelistratedioita (syvyys 7) (TestMinimaxStrategiesDepthSeven)
-* Pelitilanteet ovat monimutkaisempia ja esitelty testitiedostossa
+* Pelitilanteet ovat monimutkaisempia ja esitelty testitiedostossa. Testejä on 5 kpl.
 
 #### Tekoälyn peliposition arvon testaaminen (TestAIPositionValue)
 * Pelitilanne 3 rivissä 2220 antaa tekoälylle pistemäärän 50
@@ -96,8 +96,8 @@ Muissa testeissä on sarakkeisiin tiputettu tarvittava määrä merkkejä ja tes
 
 #### Pelin loppu konsolissa (TestGameEnd)
 * Pelin lopussa konsolissa ilmoitetaan tasapeli
-* Pelin lopussa konsolissa ilmoitetaan pelaajan voittaneen
-* Pelin lopussa konsolissa ilmoitetaan tekoälyn voittaneen
+* Pelin lopussa konsolissa ilmoitetaan pelaajan voitto
+* Pelin lopussa konsolissa ilmoitetaan tekoälyn voitto
 
 ## Testien toistettavuus
 
