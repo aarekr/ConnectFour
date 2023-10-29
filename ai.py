@@ -5,21 +5,21 @@ import random
 
 N_ROWS = 6
 N_COLUMNS = 7
-INF = math.inf
 YELLOW = (255, 255, 0)
 OPTIMAL_ORDER = [3, 2, 4, 1, 5, 0, 6]  # preferred/optimal order of handling columns in minimax
+INF = math.inf
 
 def initialize_random_turn():
-    """ starting player chosen randomly """
+    """ Starting player chosen randomly """
     turn = random.randint(1, 2)  # game starter chosen randomly: 1=human (red), 2=AI (yellow)
     return turn
 
 def get_chip_count(board):
-    """ returning the number of chips players have dropped """
+    """ Returning the number of chips players have dropped so far """
     return len([item for row in board for item in row if item != 0])
 
 def next_free_row(board, col):
-    """ returning the lowest free row in the given column """
+    """ Returning the lowest free row in the given column """
     free_row = -1
     for row in range(N_ROWS):
         if board[row][col] == 0:
@@ -28,15 +28,15 @@ def next_free_row(board, col):
     return free_row
 
 def all_free_columns(board):
-    """ returning a list of columns that have at least one free slot/row """
+    """ Returning a list of columns that have at least one free slot/row """
     return [col for col in range(N_COLUMNS) if board[N_ROWS-1][col] == 0]
 
 def optimal_column_traversing_order(free_columns):
-    """ returns the optimal traversing order of columns """
+    """ Returning the optimal traversing order of columns """
     return [item for item in OPTIMAL_ORDER if item in free_columns]
 
 def drop_chip(board, row, col, turn):
-    """ player drops their chip and TURN is given to the other player """
+    """ Player drops his/her chip and turn is given to the other player """
     row = next_free_row(board, col)
     board[row][col] = turn
     if turn == 1:
@@ -46,8 +46,8 @@ def drop_chip(board, row, col, turn):
     return turn
 
 def check_if_game_active(board, player):
-    """ checking if the player has 4 chips in row/column/diagonal
-        returning False if game ends and True if stays active """
+    """ Checking if a player has 4 chips in row/column/diagonal
+        Returning False if game ends and True if stays active """
     # Rows
     for row in range(N_ROWS):
         for col in range(N_COLUMNS-3):
@@ -83,10 +83,10 @@ def check_if_game_active(board, player):
     return True
 
 def is_terminal_node(board):
-    """ minimax helper function,
-        returns False if game continues,
-        returns tuple (True, 0) if all chips used and draw,
-        returns tuple (True, 1 or 2) ifone of the players won """
+    """ Minimax helper function
+        Returns False if game continues
+        Returns tuple (True, 0) if all chips used and draw
+        Returns tuple (True, 1 or 2) if one of the players won """
     if get_chip_count(board) == 42:  # all chips used and draw (0)
         return (True, 0)
     if not check_if_game_active(board, 1):  # human player won (1)
@@ -96,7 +96,7 @@ def is_terminal_node(board):
     return (False, -1)  # game continues, no winner or draw
 
 def count_position_value(four_consecutive_slots):
-    """ counts position value points for 4 consequtive slots """
+    """ Counting position value points for 4 consecutive slots """
     position_value = 0
     if four_consecutive_slots.count(2) == 3 and four_consecutive_slots.count(0) == 1:
         position_value += 50
@@ -109,7 +109,7 @@ def count_position_value(four_consecutive_slots):
     return position_value
 
 def get_position_value(board):
-    """ calculates the optimal position value for the AI """
+    """ Counting the optimal position value for the AI """
     position_value = 0
     # Horizontal counting
     for row in range(N_ROWS):
@@ -148,12 +148,12 @@ class AI:
         self.winner = 0
 
     def minimax(self, board, depth, alpha, beta, maximizing_player):
-        """ minimax function that determins the best move for the AI """
+        """ Minimax function that determins the best move for the AI """
         terminal_node, self.winner = is_terminal_node(board)
         if terminal_node and self.winner == 1:
-            return (-INF, None)  # -math.inf equals human won
+            return (-INF, None)  # -math.inf equals human wins
         if terminal_node and self.winner == 2:
-            return (INF, None)   # math.inf equals AI won
+            return (INF, None)   # math.inf equals AI wins
         if depth == 0:
             return (get_position_value(board), None)
         free_columns = all_free_columns(board)

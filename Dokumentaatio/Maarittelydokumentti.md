@@ -10,8 +10,8 @@
 * Minimax ja tätä on tehostettu alpha-beta-karsinnalla.
 
 ## Ohjelman saamat syötteet
-* Käyttäjä valitsee yhden sarakkeen 1-7, pelimerkki tiputetaan ko. sarakkeen ensimmäiseen vapaaseen paikkaan.
-Tämän jälkeen tekoäly valitsee oman sarakkeen. Peli jatkuu kunnes toinen on saanut neljän suoran.
+* Käyttäjä valitsee yhden sarakkeen 1-7, pelimerkki tiputetaan ko. sarakkeen ensimmäiseen vapaaseen paikkaan (riviin).
+Tämän jälkeen tekoäly valitsee oman sarakkeen. Peli jatkuu kunnes toinen on saanut neljän suoran tai kaikki 42 merkkiä tiputettu.
 
 ## Yleistä
 * Koodin (ml. kommentit) kieli: englanti

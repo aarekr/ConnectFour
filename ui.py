@@ -5,7 +5,6 @@ import math
 import pygame
 import numpy as np
 import ai
-import time
 
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
@@ -20,18 +19,19 @@ RADIUS = int(SLOT_SIZE/2 - 5)
 HEIGHT = (N_ROWS + 1) * SLOT_SIZE
 WIDTH = N_COLUMNS * SLOT_SIZE
 BOARD_SIZE = (HEIGHT, WIDTH)
+INF = math.inf
 
 def create_game_board(rows, columns):
-    """ creating the game board """
+    """ Creating game board when game starts """
     board = np.zeros((rows, columns), dtype=int)
     return board
 
 def print_board(board):
-    """ printing slots and chips in console """
+    """ Printing slots and chips in console """
     print(np.flip(board, 0), "\n")
 
 def game_start_text(turn):
-    """ displaying who starts the game in top part of the game board window """
+    """ Displaying who starts the game in top part of the game board window """
     text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
     who_starts = ""
     if turn == 1:
@@ -42,7 +42,7 @@ def game_start_text(turn):
     return label
 
 def game_end_text(winner):
-    """ displaying the game result when game ends: winner or draw """
+    """ Displaying the game result when game ends: winner or draw """
     text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
     end_text = ""
     if winner == 0:
@@ -63,7 +63,7 @@ class UI:
         self.screen = pygame.display.set_mode(BOARD_SIZE)
 
     def draw_board(self, board):
-        """ drawing the game board in a window """
+        """ Drawing the game board in a window """
         # drawing the blue game board and white empty slots
         for col in range(N_COLUMNS):
             for row in range(N_ROWS):
@@ -86,7 +86,7 @@ class UI:
         pygame.display.update()
 
     def handle_game_end_in_console(self, winner):
-        """ prints game result in console """
+        """ Printing game end result in console """
         print("Game ended")
         announcing_winner = ""
         if winner == 0:
@@ -99,7 +99,7 @@ class UI:
         return announcing_winner
 
     def handle_game_end_in_window(self, board, winner):
-        """ shows game end result in the game window """
+        """ Showing game end result in the game window """
         self.screen.blit(game_end_text(winner), (250, 15))
         self.draw_board(board)
         pygame.time.wait(4000)
@@ -122,7 +122,6 @@ class UI:
             who_starts = None
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    print("Player chose:", event.key, " (R=114, H=104, A=97, E=101)")
                     if event.key == pygame.K_r:    # random starter
                         who_starts = ai.initialize_random_turn()
                     elif event.key == pygame.K_y:  # human starts
@@ -136,14 +135,13 @@ class UI:
             if who_starts == "end game":
                 break
             pygame.draw.rect(self.screen, BLACK, (0, 0, WIDTH, SLOT_SIZE))
-            print("who_starts:", who_starts)
             self.board = create_game_board(N_ROWS, N_COLUMNS)
             self.game_active = True
             self.screen = pygame.display.set_mode(BOARD_SIZE)
             self.game_loop(who_starts)
 
     def game_loop(self, who_starts):
-        """ who_starts function calls this function and game starts """
+        """ who_starts function calls this function and the game starts """
         turn = who_starts
         winner = 0
         print_board(self.board)
@@ -153,7 +151,7 @@ class UI:
         pygame.display.update()
 
         print("Game started")
-        # game runs in this while loop until somebody wins or all 42 chips are used
+        # game runs in this while loop until somebody wins or all 42 chips have been used
         while self.game_active:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -187,20 +185,16 @@ class UI:
 
                 # Player 2, AI
                 elif turn == 2:
-                    # pygame.time.wait(1000)  # uncomment and give time value if delay wanted
-                    print("Entering minimax")
-                    time_start = time.time()
-                    for depth in [1, 2, 3, 4, 5, 7]:
+                    best_col = ai.AI().minimax(self.board, 7, -INF, INF, True)[1]
+                    """ This for loop below is optional
+                        Shortens Minimax handling times when a solution is on a lower depth level """
+                    """for depth in [1, 2, 3, 4, 5, 7]:
                         if depth%2 == 1:
-                            minimax_value, best_col = ai.AI().minimax(self.board, depth, -math.inf, math.inf, True)
+                            minimax_value, best_col = ai.AI().minimax(self.board, depth, -INF, INF, True)
                         else:
-                            minimax_value, best_col = ai.AI().minimax(self.board, depth, -math.inf, math.inf, False)
-                        #print("- depth: " + str(depth) + ", col: " + str(best_col) + ", value: " + str(minimax_value))
-                        if minimax_value < -99999 or minimax_value > 99999:  # i.e. certain win for human or AI
-                            break
-                    #best_col = ai.AI().minimax(self.board, 7, -math.inf, math.inf, True)[1]  # without for loop
-                    time_end = time.time()
-                    print("time spent:", time_end - time_start)
+                            minimax_value, best_col = ai.AI().minimax(self.board, depth, -INF, INF, False)
+                        if abs(minimax_value) > 99999:  # i.e. certain win for human or AI
+                            break"""
                     ai.drop_chip(self.board, 0, best_col, 2)
                     print("AI chip dropped in column:", best_col)
                     print_board(self.board)

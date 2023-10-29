@@ -72,18 +72,18 @@
 26.10. |  7h  | Syvyyden läpikäynti 0,1,2,3,4,5,7. Kolmen suoran ongelman ratkesi. Testit päivitetty. Demotilaisuus. |
 27.10. |  5h  | Pisteiden laskeminen yhdistetty yhteen funktioon. Muutos heuristiikan arvoissa. Koodin refaktorointia. |
 28.10. |  7h  | Testausdokumentaation kirjoittamista, syvyys 3 testejä lisää ja 5 testiä syvyydelle 5. |
-29.10. |      |  |
+29.10. | 5,5h | Minimax syvyys 7 testejä nyt 5 kpl. Dokumentaatio kirjoitettu valmiiksi. Työ palautuskunnossa. |
 
 ## Yhteensä
 
-| Viikko | Aika  |
-|--------|-------|
-|    1   |  6,5h |
-|    2   | 10,0h |
-|    3   | 12,5h |
-|    4   | 16,5h |
-|    5   | 12,5h |
-|    6   | 18,0h |
-|    7   | 10,0h |
-|    8   |       |
-|  Summa |       |
+| Viikko | Aika   |
+|--------|--------|
+|    1   |   6,5h |
+|    2   |  10,0h |
+|    3   |  12,5h |
+|    4   |  16,5h |
+|    5   |  12,5h |
+|    6   |  18,0h |
+|    7   |  10,0h |
+|    8   |  34,5h |
+|  Summa | 120,5h |

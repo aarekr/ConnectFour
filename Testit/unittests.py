@@ -17,13 +17,13 @@ INF = math.inf
 
 class TestGameStart(unittest.TestCase):
     """ Testing game setup and basic functionalities """
-    def test_create_game_board_function_returns_valid_game_board(self):  # 1
-        """ - Test that a valid game board is created when the game starts """
+    def test_create_game_board_function_returns_valid_game_board(self):
+        """ Test that a valid game board is created when the game starts """
         board_right_shape = np.zeros((6, 7), dtype=int)
         self.assertEqual(ui.create_game_board(6, 7).shape, board_right_shape.shape)
 
-    def test_bottom_row_is_all_zeros_when_game_starts(self):  # 2
-        """ - Test that the bottom row has all zeros when game starts """
+    def test_bottom_row_is_all_zeros_when_game_starts(self):
+        """ Test that the bottom row has all zeros when game starts """
         board = np.zeros((6, 7), dtype=int)
         self.assertEqual(ai.next_free_row(board, 0), 0)
         self.assertEqual(ai.next_free_row(board, 1), 0)
@@ -33,23 +33,23 @@ class TestGameStart(unittest.TestCase):
         self.assertEqual(ai.next_free_row(board, 5), 0)
         self.assertEqual(ai.next_free_row(board, 6), 0)
 
-    def test_all_columns_free_when_game_starts(self):  # 3
-        """ - Test that when game starts all columns are free """
+    def test_all_columns_free_when_game_starts(self):
+        """ Test that when game starts all columns are free """
         board = np.zeros((6, 7), dtype=int)
         self.assertEqual(ai.all_free_columns(board), [0, 1, 2, 3, 4, 5, 6])
 
-    def test_print_board_functionality(self):  # 4
-        """ - Testing that print_board() function exists and responds.
+    def test_print_board_functionality(self):
+        """ Testing that print_board() function exists and responds.
             Does not have any return value. """
         board = np.zeros((6, 7), dtype=int)
         self.assertEqual(ui.print_board(board), None)
 
-    def test_draw_board(self):  # 5
+    def test_draw_board(self):
         """ Test that the game board is drawn """
         board = np.zeros((6, 7), dtype=int)
         self.assertEqual(ui.UI().draw_board(board), None)
 
-    def test_human_starts_the_game_text_is_generated(self):  # 6
+    def test_human_starts_the_game_text_is_generated(self):
         """ Test that 'You start' text is visible when game starts and human player moves first """
         pygame.font.init()
         text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
@@ -57,37 +57,13 @@ class TestGameStart(unittest.TestCase):
         self.assertEqual(ui.game_start_text(1).get_size()[1], correct_label.get_size()[1])
         self.assertEqual(ui.game_start_text(1).get_colorkey(), correct_label.get_colorkey())
 
-    def test_ai_starts_the_game_text_is_generated(self):  # 7
+    def test_ai_starts_the_game_text_is_generated(self):
         """ Test that 'AI starts' text is visible when game starts and AI moves first """
         pygame.font.init()
         text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
         correct_label = text_font.render("AI starts", 0, YELLOW)
         self.assertEqual(ui.game_start_text(2).get_size()[1], correct_label.get_size()[1])
         self.assertEqual(ui.game_start_text(2).get_colorkey(), correct_label.get_colorkey())
-
-    def test_draw_text_is_generated_when_game_ends_in_draw(self):  # 8
-        """ Test that 'Draw' text is visible when neither wins """
-        pygame.font.init()
-        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
-        correct_label = text_font.render("Draw", 0, YELLOW)
-        self.assertEqual(ui.game_end_text(1).get_size()[1], correct_label.get_size()[1])
-        self.assertEqual(ui.game_end_text(2).get_colorkey(), correct_label.get_colorkey())
-
-    def test_human_won_text_is_generated_when_human_wins(self):  # 9
-        """ Test that when human wins, 'YOU WON!!!' text is visible """
-        pygame.font.init()
-        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
-        correct_label = text_font.render("YOU WON!!!", 0, YELLOW)
-        self.assertEqual(ui.game_end_text(1).get_size()[1], correct_label.get_size()[1])
-        self.assertEqual(ui.game_end_text(1).get_colorkey(), correct_label.get_colorkey())
-
-    def test_ai_won_text_is_generated_when_human_wins(self):  # 10
-        """ Test that when AI wins, 'AI won...' text is visible """
-        pygame.font.init()
-        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
-        correct_label = text_font.render("AI won...", 0, YELLOW)
-        self.assertEqual(ui.game_end_text(2).get_size()[1], correct_label.get_size()[1])
-        self.assertEqual(ui.game_end_text(2).get_colorkey(), correct_label.get_colorkey())
 
 class TestFourInRow(unittest.TestCase):
     """ Testing that 4 chips in row give the right result: game end or continue """
@@ -168,12 +144,12 @@ class TestFourInRow(unittest.TestCase):
 
 class TestTurnChanges(unittest.TestCase):
     """ Testing that turn changes between players and random turn gives human or AI as starter """
-    def test_turn_changes_from_human_player_to_AI(self):
+    def test_turn_changes_from_human_player_to_ai(self):
         """ Test that turn changes from human(1) to AI(2) after chip dropped """
         board = np.zeros((6, 7), dtype=int)
         self.assertEqual(ai.drop_chip(board, 0, 0, 1), 2)
 
-    def test_turn_changes_from_AI_to_human_player(self):
+    def test_turn_changes_from_ai_to_human_player(self):
         """ Test that turn changes from AI(2) to human(1) after chip dropped """
         board = np.zeros((6, 7), dtype=int)
         self.assertEqual(ai.drop_chip(board, 0, 0, 2), 1)
@@ -181,7 +157,7 @@ class TestTurnChanges(unittest.TestCase):
     def test_random_turn_generated(self):
         """ Test that turn 1 or 2 is generated """
         random_turn = ai.initialize_random_turn()
-        self.assertEqual(random_turn >= 1 and random_turn <= 2, True)
+        self.assertEqual(1 <= random_turn <= 2, True)
 
 class TestChipCount(unittest.TestCase):
     """" Testing that chip count is correct in different stages of the game """
@@ -230,7 +206,7 @@ class TestFreeRows(unittest.TestCase):
         self.assertEqual(ai.next_free_row(board, 4), 0)
         self.assertEqual(ai.next_free_row(board, 5), 0)
 
-    def test_row_3_is_free_when_three_chips_dropped(self):
+    def test_row_three_is_free_when_three_chips_dropped(self):
         """ Test that row 3 is free when 3 chips dropped in that column """
         board = np.zeros((6, 7), dtype=int)
         board[0][5] = 1
@@ -300,7 +276,7 @@ class TestTerminalNode(unittest.TestCase):
         board[1][6] = 1
         self.assertEqual(ai.is_terminal_node(board), (True, 1))
 
-    def test_terminal_node_is_True_when_AI_has_four_chips_in_row(self):
+    def test_terminal_node_is_True_when_ai_has_four_chips_in_row(self):
         """ Test that the node is terminal when AI has 4 in row """
         board = np.zeros((6, 7), dtype=int)
         board[2][2] = 2
@@ -309,7 +285,7 @@ class TestTerminalNode(unittest.TestCase):
         board[5][2] = 2
         self.assertEqual(ai.is_terminal_node(board), (True, 2))
 
-    def test_4_chips_in_row_of_both_players_is_not_terminal_node(self):
+    def test_four_chips_in_row_of_both_players_is_not_terminal_node(self):
         """ Test that tne node is not terminal when 2 chips of both players in row """
         board = np.zeros((6, 7), dtype=int)
         board[0][1] = 1
@@ -351,7 +327,7 @@ class TestMinimaxBasicFunctionalities(unittest.TestCase):
         maximizing_player = True
         self.assertEqual(ai.AI().minimax(board, depth, -INF, INF, maximizing_player), (-INF, None))
 
-    def test_minimax_terminal_node_True_and_winner_announced_when_AI_won(self):
+    def test_minimax_terminal_node_True_and_winner_announced_when_ai_won(self):
         """ Test that terminal node when AI won """
         board = np.zeros((6, 7), dtype=int)
         board[0][1] = 2
@@ -494,7 +470,7 @@ class TestMinimaxStrategiesDepthThree(unittest.TestCase):
         maximizing_player = True
         self.assertEqual(ai.AI().minimax(board, depth, -INF, INF, maximizing_player), (INF, 2))
 
-    def test_minimax_blocks_human_2_chip_row(self):
+    def test_minimax_blocks_human_two_chip_row(self):
         """ Test human has 0011000 in bottom row, AI should block 1 side """
         board = np.zeros((6, 7), dtype=int)
         board[0][2] = 1
@@ -734,7 +710,7 @@ class TestMinimaxStrategiesDepthFive(unittest.TestCase):
 
 class TestMinimaxStrategiesDepthSeven(unittest.TestCase):
     """ Testing Minimax game strategies for 4 AI and 3 human moves """
-    def test_1_minimax_AI_wins_in_four_moves(self):
+    def test_1_minimax_ai_wins_in_four_moves(self):
         """ Test AI wins in 4 moves when board is
             0012000
             1012200
@@ -780,7 +756,7 @@ class TestMinimaxStrategiesDepthSeven(unittest.TestCase):
         board[4][5] = 1
         self.assertEqual(ai.AI().minimax(board, 1, -INF, INF, maximizing_player), (INF, 5))
 
-    def test_2_minimax_AI_wins_in_four_moves(self):
+    def test_2_minimax_ai_wins_in_four_moves(self):
         """ Test AI wins in 4 moves when board is
             0001000
             0002000
@@ -818,7 +794,7 @@ class TestMinimaxStrategiesDepthSeven(unittest.TestCase):
         board[3][0] = 1
         self.assertEqual(ai.AI().minimax(board, 1, -INF, INF, maximizing_player), (INF, 0))
 
-    def test_3_minimax_AI_wins_in_four_moves(self):
+    def test_3_minimax_ai_wins_in_four_moves(self):
         """ Test AI wins in 4 moves when board is
             0000000
             0000000
@@ -850,7 +826,7 @@ class TestMinimaxStrategiesDepthSeven(unittest.TestCase):
         board[1][4] = 1
         self.assertEqual(ai.AI().minimax(board, 1, -INF, INF, maximizing_player), (INF, 4))
 
-    def test_4_minimax_AI_wins_in_four_moves(self):
+    def test_4_minimax_ai_wins_in_four_moves(self):
         """ Test AI wins in 4 moves when board is
             0220000
             1120120
@@ -902,7 +878,7 @@ class TestMinimaxStrategiesDepthSeven(unittest.TestCase):
         board[0][3] = 1
         self.assertEqual(ai.AI().minimax(board, 1, -INF, INF, maximizing_player), (INF, 3))
 
-    def test_5_minimax_AI_wins_in_four_moves(self):
+    def test_5_minimax_ai_wins_in_four_moves(self):
         """ Test AI wins in 4 moves when board is
             0001000
             0002000
@@ -940,7 +916,7 @@ class TestMinimaxStrategiesDepthSeven(unittest.TestCase):
 
 class TestAIPositionValue(unittest.TestCase):
     """ Testing that different AI chip positions have right values """
-    def test_3_in_row_and_one_empty_gives_AI_50_points(self):
+    def test_three_in_row_and_one_empty_gives_ai_50_points(self):
         """ Test that 3 in row and 1 empty gives AI 50 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 2
@@ -950,7 +926,7 @@ class TestAIPositionValue(unittest.TestCase):
         four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
         self.assertEqual(ai.count_position_value(four_consequtive_slots), 50)
 
-    def test_3_in_row_and_one_human_chip_gives_AI_zero_points(self):
+    def test_three_in_row_and_one_human_chip_gives_ai_zero_points(self):
         """ Test that 3 in row and 1 empty gives AI 0 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 2
@@ -960,7 +936,7 @@ class TestAIPositionValue(unittest.TestCase):
         four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
         self.assertEqual(ai.count_position_value(four_consequtive_slots), 0)
 
-    def test_2_in_row_and_two_empty_gives_AI_20_points(self):
+    def test_two_in_row_and_two_empty_gives_ai_20_points(self):
         """ Test that 2 in row and 2 empty gives AI 20 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 0
@@ -978,7 +954,7 @@ class TestAIPositionValue(unittest.TestCase):
         four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
         self.assertEqual(ai.count_position_value(four_consequtive_slots), 20)
 
-    def test_2_in_row_one_human_chip_and_one_empty_gives_AI_zero_points(self):
+    def test_two_in_row_one_human_chip_and_one_empty_gives_ai_zero_points(self):
         """ Test that 2 in row and 2 empty gives AI 0 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 1
@@ -988,7 +964,7 @@ class TestAIPositionValue(unittest.TestCase):
         four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
         self.assertEqual(ai.count_position_value(four_consequtive_slots), 0)
 
-    def test_1_AI_chip_gives_AI_zero_points(self):
+    def test_1_ai_chip_gives_ai_zero_points(self):
         """ Test that 1 single AI chip gives 0 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 0
@@ -1000,7 +976,7 @@ class TestAIPositionValue(unittest.TestCase):
 
 class TestHumanPlayerPositionValue(unittest.TestCase):
     """ Testing that different human player chip positions have right values """
-    def test_3_human_player_chips_in_row_gives_AI_negative_50_points(self):
+    def test_three_human_player_chips_in_row_gives_ai_negative_50_points(self):
         """ Test that 3 human player chips in row and 1 empty gives AI -50 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 1
@@ -1010,7 +986,7 @@ class TestHumanPlayerPositionValue(unittest.TestCase):
         four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
         self.assertEqual(ai.count_position_value(four_consequtive_slots), -50)
 
-    def test_3_human_player_chips_in_row_and_one_AI_chip_gives_AI_zero_points(self):
+    def test_three_human_player_chips_in_row_and_one_ai_chip_gives_ai_zero_points(self):
         """ Test that 3 human player chips in row and 1 empty gives AI 0 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 1
@@ -1020,7 +996,7 @@ class TestHumanPlayerPositionValue(unittest.TestCase):
         four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
         self.assertEqual(ai.count_position_value(four_consequtive_slots), 0)
 
-    def test_2_human_player_chips_in_row_gives_AI_negative_20_points(self):
+    def test_two_human_player_chips_in_row_gives_ai_negative_20_points(self):
         """ Test that 2 human player chips in row and 2 empty gives AI -20 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 0
@@ -1038,7 +1014,7 @@ class TestHumanPlayerPositionValue(unittest.TestCase):
         four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
         self.assertEqual(ai.count_position_value(four_consequtive_slots), -20)
 
-    def test_2_human_player_chips_and_one_AI_chip_gives_AI_zero_points(self):
+    def test_two_human_player_chips_and_one_ai_chip_gives_ai_zero_points(self):
         """ Test that 2 in row, 1 empty gives and 1 AI chip gives AI 0 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 2
@@ -1048,7 +1024,7 @@ class TestHumanPlayerPositionValue(unittest.TestCase):
         four_consequtive_slots = [board[0][0], board[0][1], board[0][2], board[0][3]]
         self.assertEqual(ai.count_position_value(four_consequtive_slots), 0)
 
-    def test_1_human_player_chip_gives_AI_zero_points(self):
+    def test_1_human_player_chip_gives_ai_zero_points(self):
         """ Test that 1 single human player chip gives AI 0 points """
         board = np.zeros((6, 7), dtype=int)
         board[0][0] = 0
@@ -1071,6 +1047,30 @@ class TestGameEnd(unittest.TestCase):
     def test_ai_won_accounced_in_console(self):
         """ Test that when AI wins, console text is AI won... """
         self.assertEqual(ui.UI().handle_game_end_in_console(2), "AI won...\n")
+
+    def test_draw_text_is_generated_when_game_ends_in_draw(self):
+        """ Test that 'Draw' text is visible when neither wins """
+        pygame.font.init()
+        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+        correct_label = text_font.render("Draw", 0, YELLOW)
+        self.assertEqual(ui.game_end_text(1).get_size()[1], correct_label.get_size()[1])
+        self.assertEqual(ui.game_end_text(2).get_colorkey(), correct_label.get_colorkey())
+
+    def test_human_won_text_is_generated_when_human_wins(self):
+        """ Test that 'YOU WON!!!' text is visible when human wins """
+        pygame.font.init()
+        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+        correct_label = text_font.render("YOU WON!!!", 0, YELLOW)
+        self.assertEqual(ui.game_end_text(1).get_size()[1], correct_label.get_size()[1])
+        self.assertEqual(ui.game_end_text(1).get_colorkey(), correct_label.get_colorkey())
+
+    def test_ai_won_text_is_generated_when_human_wins(self):
+        """ Test that 'AI won...' text is visible when AI wins """
+        pygame.font.init()
+        text_font = pygame.font.Font(pygame.font.get_default_font(), 60)
+        correct_label = text_font.render("AI won...", 0, YELLOW)
+        self.assertEqual(ui.game_end_text(2).get_size()[1], correct_label.get_size()[1])
+        self.assertEqual(ui.game_end_text(2).get_colorkey(), correct_label.get_colorkey())
 
 # helper function
 def create_full_42_chip_board():
